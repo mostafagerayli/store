@@ -1,8 +1,11 @@
+import ClientLayout from "@/app/layout/ClientLayout";
 
 function products() {
   return (
-    <div>products</div>
-  )
+    <ClientLayout>
+      <div>products</div>
+    </ClientLayout>
+  );
 }
 
-export default products
+export default products;
