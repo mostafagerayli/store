@@ -14,8 +14,9 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Login Data:", data);
+    await new Promise((resolve) => setTimeout(resolve,1000))
     router.push("/");
   };
 
