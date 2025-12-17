@@ -43,7 +43,7 @@ export default function ProductCard({
             </span>
           )}
           <span className="text-green-400 text-lg font-bold">
-            {price.toLocaleString()} Toman
+            {price?.toLocaleString()} Toman
           </span>
         </div>
         <button className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500 text-black shadow-md transition hover:bg-white hover:text-black">

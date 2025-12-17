@@ -3,23 +3,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-const images = [
-  "/images/images1.jpg",
-  "/images/images2.jpg",
-  "/images/images3.jpg",
-];
+import data from '@/app/data/db.json'
 
 export default function HeroSection() {
   const [current, setCurrent] = useState(0);
-
+  
+  const images = data.images
+//اسلاید عکس
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
+
 
   return (
     <section className="flex justify-center px-4 py-6 md:px-10 lg:py-10">
@@ -27,7 +25,7 @@ export default function HeroSection() {
         <div className="relative overflow-hidden rounded-2xl min-h-[480px] md:min-h-[600px]">
 
           {/* Background Images */}
-          {images.map((src, index) => (
+          {data.images.map((src, index) => (
             <Image
               key={src}
               src={src}

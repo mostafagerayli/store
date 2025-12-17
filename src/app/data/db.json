@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "title": "Open Terrariums",
+      "description": "Perfect for succulents and cacti",
+      "image": "/images/images1.jpg"
+    },
+    {
+      "title": "Closed Terrariums",
+      "description": "Self-sustaining humid ecosystems",
+      "image": "/images/images2.jpg"
+    },
+    {
+      "title": "Moss Walls",
+      "description": "Preserved moss wall decorations",
+      "image": "/images/images3.jpg"
+    },
+    {
+      "title": "DIY Kits",
+      "description": "Create nature with your own hands",
+      "image": "/images/images1.jpg"
+    }
+  ],
+    "products": [
+    {
+      "title": "Royal Geometric Terrarium",
+      "price": 1200000,
+      "oldPrice": 1500000,
+      "badge": "20% Off",
+      "image": "/images/images1.jpg"
+    },
+    {
+      "title": "Forest Globe Terrarium",
+      "price": 850000,
+      "oldPrice": null,
+      "badge": null,
+      "image": "/images/images2.jpg"
+    },
+    {
+      "title": "Hexagonal Moss Frame",
+      "price": 1500000,
+      "oldPrice": null,
+      "badge": null,
+      "image": "/images/images3.jpg"
+    },
+    {
+      "title": "Hanging Kokedama",
+      "price": 450000,
+      "oldPrice": null,
+      "badge": "New",
+      "image": "/images/images1.jpg"
+    }
+  ],
+    "images": [
+    "/images/images1.jpg",
+    "/images/images2.jpg",
+    "/images/images3.jpg"
+  ]
+}
+
+
+
