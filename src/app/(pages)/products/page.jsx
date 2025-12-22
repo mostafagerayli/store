@@ -1,9 +1,10 @@
 import ClientLayout from "@/app/layout/ClientLayout";
+import ProductList from "@/app/components/products/ProductList";
 
 function products() {
   return (
     <ClientLayout>
-      <div>products</div>
+      <ProductList />
     </ClientLayout>
   );
 }

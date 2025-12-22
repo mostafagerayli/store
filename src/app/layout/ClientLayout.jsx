@@ -4,11 +4,11 @@ import Header from "./Header";
 
 function ClientLayout({ children }) {
   return (
-    <Container>
+    <>
       <Header />
-      {children}
-      <Footer/>
-    </Container>
+      <Container>{children}</Container>
+      <Footer />
+    </>
   );
 }
 

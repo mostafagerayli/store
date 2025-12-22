@@ -18,7 +18,7 @@ export default function Header() {
   const router = useRouter();
 
   return (
-    <header className="w-full bg-green-900 text-white shadow-md">
+    <header className="w-full border-[#12310e] bg-[#051001] text-white shadow-md">
       <div className="mx-auto max-w-7xl px-4">
         {/* Top Row */}
         <div className="flex h-15 items-center justify-between gap-4">

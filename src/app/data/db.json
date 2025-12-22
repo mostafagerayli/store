@@ -29,7 +29,35 @@
       "badge": "20% Off",
       "image": "/images/images1.jpg"
     },
+        {
+      "title": "Royal Geometric Terrarium",
+      "price": 1200000,
+      "oldPrice": 1500000,
+      "badge": "20% Off",
+      "image": "/images/images1.jpg"
+    },
+        {
+      "title": "Royal Geometric Terrarium",
+      "price": 1200000,
+      "oldPrice": 1500000,
+      "badge": "20% Off",
+      "image": "/images/images1.jpg"
+    },
+        {
+      "title": "Royal Geometric Terrarium",
+      "price": 1200000,
+      "oldPrice": 1500000,
+      "badge": "20% Off",
+      "image": "/images/images1.jpg"
+    },
     {
+      "title": "Forest Globe Terrarium",
+      "price": 850000,
+      "oldPrice": null,
+      "badge": null,
+      "image": "/images/images2.jpg"
+    },
+        {
       "title": "Forest Globe Terrarium",
       "price": 850000,
       "oldPrice": null,

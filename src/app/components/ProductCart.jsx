@@ -10,10 +10,10 @@ export default function ProductCard({
   image,
 }) {
   return (
-    <div className="flex flex-col rounded-xl bg-[#0f2b10] p-4 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-2xl min-w-[280px] md:min-w-[300px]">
+    <div className="flex flex-col rounded-xl bg-[#0f2b10] p-3 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-2xl min-w-[240px] md:min-w-[260px]">
       
       {/* تصویر و Badge */}
-      <div className="relative mb-4 aspect-[4/5] w-full overflow-hidden rounded-lg">
+      <div className="relative mb-4 aspect-[1/1] w-full overflow-hidden rounded-lg">
         {badge && (
           <div className="absolute right-2 top-2 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
             {badge}
