@@ -23,6 +23,7 @@
   ],
     "products": [
     {
+      "id" : 1, 
       "title": "Royal Geometric Terrarium",
       "price": 1200000,
       "oldPrice": 1500000,
@@ -30,6 +31,7 @@
       "image": "/images/images1.jpg"
     },
         {
+          "id" : 2,
       "title": "Royal Geometric Terrarium",
       "price": 1200000,
       "oldPrice": 1500000,
@@ -37,6 +39,7 @@
       "image": "/images/images1.jpg"
     },
         {
+          "id" : 3,
       "title": "Royal Geometric Terrarium",
       "price": 1200000,
       "oldPrice": 1500000,
@@ -44,6 +47,7 @@
       "image": "/images/images1.jpg"
     },
         {
+          "id" : 4,
       "title": "Royal Geometric Terrarium",
       "price": 1200000,
       "oldPrice": 1500000,
@@ -51,6 +55,7 @@
       "image": "/images/images1.jpg"
     },
     {
+      "id" : 5,
       "title": "Forest Globe Terrarium",
       "price": 850000,
       "oldPrice": null,
@@ -58,6 +63,7 @@
       "image": "/images/images2.jpg"
     },
         {
+          "id" : 6,
       "title": "Forest Globe Terrarium",
       "price": 850000,
       "oldPrice": null,
@@ -65,6 +71,7 @@
       "image": "/images/images2.jpg"
     },
     {
+      "id" : 7,
       "title": "Hexagonal Moss Frame",
       "price": 1500000,
       "oldPrice": null,
@@ -72,6 +79,7 @@
       "image": "/images/images3.jpg"
     },
     {
+      "id" : 8,
       "title": "Hanging Kokedama",
       "price": 450000,
       "oldPrice": null,

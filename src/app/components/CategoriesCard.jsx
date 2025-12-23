@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function CategoryCard({ title, description, image }) {
   return (
-    <div className="group flex cursor-pointer flex-col gap-4 rounded-xl bg-[#0b1d07] p-3 transition-all hover:bg-[#12310e] hover:-translate-y-1">
+    <div className="group flex cursor-pointer flex-col gap-4 rounded-xl bg-[#092a03] p-3 transition-all hover:bg-[#12310e] hover:-translate-y-1">
       
       <div className="aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#12310e]">
         <Image

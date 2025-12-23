@@ -1,4 +1,3 @@
-import { FaShoppingCart, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import data from "@/app/data/db.json";
 import FeaturedProductHeader from "./FeaturedProductHeader";
 import FeaturedProductsList from "./FeaturedProductsList";
