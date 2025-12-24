@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "./layout/ClientLayout";
 import ReduxProvider from "./store/Provider";
+import DarkModeProvider from "./components/darkMode/DarkModeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +20,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-zinc-900`}
       >
-        <ReduxProvider>{children}</ReduxProvider>
+        <DarkModeProvider>
+        
+          <ReduxProvider>
+          {children}
+          </ReduxProvider>
+        </DarkModeProvider>
       </body>
     </html>
   );

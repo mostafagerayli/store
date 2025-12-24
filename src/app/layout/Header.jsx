@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { FiShoppingCart, FiUser, FiSearch, FiMenu } from "react-icons/fi";
+import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX } from "react-icons/fi";
 import { GiPlantRoots } from "react-icons/gi";
 import { useSelector } from "react-redux";
+import ThemeToggle from "../components/darkMode/ThemeToggle";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -17,9 +18,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
-  const  totalQuantity  = useSelector((state) => state.cart.totalQuantity);
-  
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   return (
     <header className="bg-white">
@@ -44,6 +43,9 @@ export default function Header() {
             />
           </div>
         </div>
+
+        <ThemeToggle />
+
         {/* Center: Navigation */}
         <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 whitespace-nowrap font-bold">
           {navLinks.map((link) => {
@@ -70,15 +72,42 @@ export default function Header() {
             onClick={() => router.push("./shopingCart")}
           >
             <FiShoppingCart className="w-5 h-5" />
-            
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                {totalQuantity}
-              </span>
-            
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+              {totalQuantity}
+            </span>
           </button>
           <FiUser className="w-5 h-5" />
+
+          {/* Hamburger Menu (Mobile & Tablet) */}
+          <button
+            className="md:hidden focus:outline-none"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile & Tablet Menu */}
+      {open && (
+        <div className="md:hidden bg-white px-4 pt-2 pb-4 shadow-md">
+          {navLinks.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className={`block py-2 text-sm font-bold transition hover:text-green-600 ${
+                  active ? "text-green-700" : "text-gray-700"
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </header>
   );
 }

@@ -4,8 +4,8 @@ import FeaturedProductsList from "./FeaturedProductsList";
 
 export default function FeaturedProducts() {
   return (
-    <section className="px-4 md:px-10 py-10">
-      <div className="flex justify-center w-full max-w-[1200px] mx-auto flex-col gap-8">
+    <section className="px-4 sm:px-6 md:px-10 py-8 md:py-12">
+      <div className="flex flex-col gap-6 md:gap-8 max-w-[1200px] mx-auto w-full">
         <FeaturedProductHeader />
         <FeaturedProductsList products={data.products} />
       </div>
