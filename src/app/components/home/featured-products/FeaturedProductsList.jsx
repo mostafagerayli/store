@@ -1,4 +1,4 @@
-import ProductCard from "../../ProductCart";
+import ProductCard from "../../cart/ProductCart";
 
 function FeaturedProductsList({ products }) {
   return (

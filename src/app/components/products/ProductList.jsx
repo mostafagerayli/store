@@ -1,4 +1,4 @@
-import ProductListChild from "./ProductListChild";
+import ProductListItem from "./ProductListItem";
 
 function ProductList() {
   return (
@@ -7,7 +7,7 @@ function ProductList() {
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 sm:mb-8">
           Products
         </h1>
-        <ProductListChild />
+        <ProductListItem />
       </div>
     </div>
   );

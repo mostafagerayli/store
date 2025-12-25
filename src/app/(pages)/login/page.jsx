@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import Button from "@/app/components/Button";
+import Button from "@/app/components/button/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

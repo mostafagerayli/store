@@ -1,7 +1,7 @@
-import ProductCard from "../ProductCart";
 import data from "@/app/data/db.json";
+import ProductCard from "../cart/ProductCart";
 
-function ProductListChild() {
+function ProductListItem() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
       {data.products.map((product) => (
@@ -11,4 +11,4 @@ function ProductListChild() {
   );
 }
 
-export default ProductListChild;
+export default ProductListItem;

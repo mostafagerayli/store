@@ -1,7 +1,8 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
 import ReduxProvider from "./store/Provider";
 import DarkModeProvider from "./components/darkMode/DarkModeProvider";
+import ToastProvider from "./components/toast/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +23,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-zinc-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-zinc-900 dark:text-white`}
       >
         <DarkModeProvider>
-        
           <ReduxProvider>
-          {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
           </ReduxProvider>
         </DarkModeProvider>
       </body>

@@ -48,6 +48,20 @@ const shoppingCartSlice = createSlice({
       }
     },
 
+        increaseQuantity: (state, action) => {
+      const id = action.payload;
+      const existingItem = state.items.find(i => i.id === id);
+      if (!existingItem) return;
+
+      existingItem.quantity += 1;
+      state.totalQuantity += 1;
+      state.totalPrice += existingItem.price;
+
+      if (existingItem.quantity <= 0) {
+        state.items = state.items.filter(i => i.id !== id);
+      }
+    },
+
     clearCart: (state) => {
       state.items = [];
       state.totalQuantity = 0;
@@ -56,5 +70,5 @@ const shoppingCartSlice = createSlice({
   }
 });
 
-export const { addToCart, removeFromCart, decreaseQuantity, clearCart } = shoppingCartSlice.actions;
+export const { addToCart, removeFromCart, decreaseQuantity, clearCart ,increaseQuantity } = shoppingCartSlice.actions;
 export default shoppingCartSlice.reducer;

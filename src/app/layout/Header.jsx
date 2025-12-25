@@ -21,7 +21,7 @@ export default function Header() {
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   return (
-    <header className="bg-white">
+    <header className="bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-6">
         {/* Right: Logo */}
         <Link
@@ -76,14 +76,23 @@ export default function Header() {
               {totalQuantity}
             </span>
           </button>
-          <FiUser className="w-5 h-5" />
+          <button
+            className="relative"
+            onClick={() => router.push("./login")}
+          >
+            <FiUser className="w-5 h-5" />
+          </button>
 
           {/* Hamburger Menu (Mobile & Tablet) */}
           <button
             className="md:hidden focus:outline-none"
             onClick={() => setOpen(!open)}
           >
-            {open ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+            {open ? (
+              <FiX className="w-6 h-6" />
+            ) : (
+              <FiMenu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
