@@ -74,9 +74,9 @@ export default function Footer() {
           <div className="flex flex-col items-center justify-between gap-4 border-t border-[#12310e] pt-8 md:flex-row text-center">
             <p className="text-gray-800 text-sm">© 1403 All rights reserved.</p>
             <div className="flex gap-4">
-              <span className="h-8 w-12 rounded bg-[#111710]"></span>
-              <span className="h-8 w-12 rounded bg-[#0b1d07]"></span>
-              <span className="h-8 w-12 rounded bg-[#0b1d07]"></span>
+              <span className="h-8 w-12 rounded bg-green-500"></span>
+              <span className="h-8 w-12 rounded bg-green-500"></span>
+              <span className="h-8 w-12 rounded bg-green-500"></span>
             </div>
           </div>
 
