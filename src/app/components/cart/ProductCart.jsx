@@ -18,7 +18,7 @@ export default function ProductCard({
   return (
     <div
       className={
-        "flex flex-col rounded-xl bg-white p-3 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-2xl min-w-[240px] md:min-w-[260px] " +
+        "flex flex-col rounded-xl bg-white dark:bg-green-900 p-3 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-2xl min-w-[240px] md:min-w-[260px] " +
         className
       }
     >
@@ -39,26 +39,25 @@ export default function ProductCard({
       </div>
 
       {/* Title & Description */}
-      <h3 className="text-black text-lg font-bold">{title}</h3>
+      <h3 className="text-black dark:text-white text-lg font-bold">{title}</h3>
       {description && (
-        <p className="text-gray-800 text-sm mt-1">{description}</p>
+        <p className="text-gray-800 dark:text-gray-300 text-sm mt-1">{description}</p>
       )}
 
       {/* Price & Button */}
       <div className="mt-2 flex items-center justify-between">
         <div className="flex flex-col">
           {oldPrice && (
-            <span className="text-gray-400 text-sm line-through">
+            <span className="text-gray-400 dark:text-gray-500 text-sm line-through">
               {oldPrice.toLocaleString()} {currency}
             </span>
           )}
-          <span className="text-black text-lg font-bold">
+          <span className="text-black dark:text-white text-lg font-bold">
             {price?.toLocaleString()} {currency}
           </span>
         </div>
 
-<AddToCartButton product={product}/>
-
+        <AddToCartButton product={product} />
       </div>
     </div>
   );

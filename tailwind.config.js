@@ -1,12 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-const config = {
-  darkMode: 'class',
+module.exports = {
+  darkMode: "class",
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    "./src/app/**/*.{js,ts,jsx,tsx}",  // مسیر فایل‌های App Router
+    "./src/components/**/*.{js,ts,jsx,tsx}", // مسیر کامپوننت‌ها
+    "./src/layout/**/*.{js,ts,jsx,tsx}" // مسیر لایه‌ها
   ],
-  theme: { extend: {} },
+  theme: {
+    extend: {},
+  },
   plugins: [],
 }
-
-export default config

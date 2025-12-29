@@ -21,12 +21,12 @@ export default function Header() {
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   return (
-    <header className="bg-white dark:bg-black">
+    <header className="bg-white dark:bg-gray-900 shadow">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-6">
-        {/* Right: Logo */}
+        {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 font-extrabold text-base text-green-800 whitespace-nowrap"
+          className="flex items-center gap-2 font-extrabold text-base text-green-800 dark:text-green-400 whitespace-nowrap"
         >
           <GiPlantRoots className="w-5 h-5" />
           Terrarium Store
@@ -35,19 +35,19 @@ export default function Header() {
         {/* Search */}
         <div className="flex-1 hidden md:flex ml-20">
           <div className="relative w-full max-w-md">
-            <FiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <FiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Search products..."
-              className="w-full rounded-full bg-gray-100 pr-10 pl-4 py-2 text-sm focus:outline-none"
+              className="w-full rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white pr-10 pl-4 py-2 text-sm focus:outline-none placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
         </div>
 
         <ThemeToggle />
 
-        {/* Center: Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 whitespace-nowrap font-bold">
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap font-bold">
           {navLinks.map((link) => {
             const active = pathname === link.href;
             return (
@@ -55,8 +55,8 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className={`transition hover:text-black ${
-                  active ? "text-black" : ""
+                className={`transition hover:text-green-600 dark:hover:text-green-400 ${
+                  active ? "text-black dark:text-green-400" : ""
                 }`}
               >
                 {link.name}
@@ -65,13 +65,13 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Left: Icons */}
-        <div className="flex items-center gap-4 whitespace-nowrap hover:">
+        {/* Icons */}
+        <div className="flex items-center gap-4 whitespace-nowrap">
           <button
             className="relative"
             onClick={() => router.push("./shopingCart")}
           >
-            <FiShoppingCart className="w-5 h-5" />
+            <FiShoppingCart className="w-5 h-5 text-gray-800 dark:text-white" />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
               {totalQuantity}
             </span>
@@ -80,26 +80,26 @@ export default function Header() {
             className="relative"
             onClick={() => router.push("./login")}
           >
-            <FiUser className="w-5 h-5" />
+            <FiUser className="w-5 h-5 text-gray-800 dark:text-white" />
           </button>
 
-          {/* Hamburger Menu (Mobile & Tablet) */}
+          {/* Hamburger Menu */}
           <button
             className="md:hidden focus:outline-none"
             onClick={() => setOpen(!open)}
           >
             {open ? (
-              <FiX className="w-6 h-6" />
+              <FiX className="w-6 h-6 text-gray-800 dark:text-white" />
             ) : (
-              <FiMenu className="w-6 h-6" />
+              <FiMenu className="w-6 h-6 text-gray-800 dark:text-white" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile & Tablet Menu */}
+      {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden bg-white px-4 pt-2 pb-4 shadow-md">
+        <div className="md:hidden bg-white dark:bg-gray-900 px-4 pt-2 pb-4 shadow-md">
           {navLinks.map((link) => {
             const active = pathname === link.href;
             return (
@@ -107,8 +107,8 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className={`block py-2 text-sm font-bold transition hover:text-green-600 ${
-                  active ? "text-green-700" : "text-gray-700"
+                className={`block py-2 text-sm font-bold transition hover:text-green-600 dark:hover:text-green-400 ${
+                  active ? "text-green-700 dark:text-green-400" : "text-gray-700 dark:text-gray-300"
                 }`}
               >
                 {link.name}
