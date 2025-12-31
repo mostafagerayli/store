@@ -24,7 +24,7 @@ export default function Header() {
   const isAdmin = true
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow">
+    <header className="bg-white dark:bg-gray-900 border-b">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-6">
         {/* Logo */}
         <Link

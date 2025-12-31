@@ -5,6 +5,7 @@ import React from 'react'
 import data from '../../data/db.json'
 import OrdersTable from '@/app/components/dashboard/OrdersTable'
 import TopProducts from '@/app/components/dashboard/TopProducts'
+import OrdersDashboard from '@/app/components/dashboard/OrderDashboard'
 
 
 function DashboardPage() {
@@ -14,6 +15,7 @@ function DashboardPage() {
      <Chart/>
      <OrdersTable orders={data.orders}/>
      <TopProducts products={data.topProducts}/>
+     <OrdersDashboard/>
      </ClientLayout>
   )
 }
