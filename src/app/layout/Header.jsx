@@ -12,6 +12,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Products", href: "/products" },
   { name: "About", href: "/about" },
+  { name: "Dashboard", href: "/dashboard" },
 ];
 
 export default function Header() {
@@ -19,6 +20,8 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  
+  const isAdmin = true
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow">
@@ -49,7 +52,8 @@ export default function Header() {
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap font-bold">
           {navLinks.map((link) => {
-            const active = pathname === link.href;
+            if(link.name ==='Dashboard' && !isAdmin) return null; //شرط برای داشبورد
+            const active = pathname === link.href; // اکتیو کردن لینک ها
             return (
               <Link
                 key={link.name}
@@ -101,6 +105,7 @@ export default function Header() {
       {open && (
         <div className="md:hidden bg-white dark:bg-gray-900 px-4 pt-2 pb-4 shadow-md">
           {navLinks.map((link) => {
+            if(link.name ==='Dashboard' && !isAdmin) return null;
             const active = pathname === link.href;
             return (
               <Link

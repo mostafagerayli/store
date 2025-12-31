@@ -91,7 +91,36 @@
     "/images/images1.jpg",
     "/images/images2.jpg",
     "/images/images3.jpg"
+  ],
+"weeklyData": [
+    { "label": "Sat", "sales": 32 },
+    { "label": "Sun", "sales": 45 },
+    { "label": "Mon", "sales": 38 },
+    { "label": "Tue", "sales": 60 },
+    { "label": "Wed", "sales": 55 },
+    { "label": "Thu", "sales": 72 },
+    { "label": "Fri", "sales": 90 }
+  ],
+  "monthlyData": [
+    { "label": "Apr", "sales": 120 },
+    { "label": "May", "sales": 210 },
+    { "label": "Jun", "sales": 170 },
+    { "label": "Jul", "sales": 260 }
+  ],
+    "orders": [
+    { "id": 1, "customer": "Alice", "product": "Royal Geometric Terrarium", "amount": 1200000, "status": "Pending" },
+    { "id": 2, "customer": "Bob", "product": "Forest Globe Terrarium", "amount": 850000, "status": "Shipped" },
+    { "id": 3, "customer": "Charlie", "product": "Hexagonal Moss Frame", "amount": 1500000, "status": "Delivered" },
+    { "id": 4, "customer": "Diana", "product": "Hanging Kokedama", "amount": 450000, "status": "Pending" },
+    { "id": 5, "customer": "Eve", "product": "Royal Geometric Terrarium", "amount": 1200000, "status": "Delivered" }
+  ],
+    "topProducts": [
+    { "id": 1, "title": "Royal Geometric Terrarium", "sales": 120 },
+    { "id": 2, "title": "Forest Globe Terrarium", "sales": 85 },
+    { "id": 3, "title": "Hexagonal Moss Frame", "sales": 50 },
+    { "id": 4, "title": "Hanging Kokedama", "sales": 40 }
   ]
+
 }
 
 
