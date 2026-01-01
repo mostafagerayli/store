@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Header from "@/app/layout/Header";
+import API from "@/app/lib/axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,12 +17,29 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log("Login Data:", data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push("/");
-  };
+const onSubmit = async (data) => {
+  console.log(data);
+  
+  try {
+    // ارسال داده‌ها به سرور
+    const res = await API.post("https://lab-displaying-medicines-durable.trycloudflare.com/users/login", {
+      phone_number : data.phone_number,
+      password: data.password,
+    });
 
+    console.log("Login success:", res.data);
+
+    // ذخیره توکن JWT که سرور برمی‌گردونه
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token);
+    }
+
+    // بعد از لاگین، ریدایرکت به صفحه اصلی
+    router.push("/");
+  } catch (error) {
+    console.error("Login error:", error.response?.data || error.message);
+  }
+};
   const inputClass =
     "w-full rounded-lg bg-gray-100 px-4 py-3 text-sm text-gray-900 " +
     "placeholder-gray-500 outline-none " +
@@ -61,7 +79,7 @@ export default function LoginPage() {
                   placeholder="Mobile Number"
                   inputMode="numeric"
                   maxLength={11}
-                  {...register("mobile", {
+                  {...register("phone_number", {
                     required: "Mobile number is required",
                     pattern: {
                       value: /^09\d{9}$/,
@@ -74,9 +92,9 @@ export default function LoginPage() {
                   }
                   className={inputClass}
                 />
-                {errors.mobile && (
+                {errors.phone_number && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.mobile.message}
+                    {errors.phone_number.message}
                   </p>
                 )}
               </div>
