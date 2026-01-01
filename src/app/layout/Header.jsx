@@ -16,12 +16,12 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState();
   const pathname = usePathname();
   const router = useRouter();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-  
-  const isAdmin = true
+
+  const isAdmin = true;
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b">
@@ -52,7 +52,7 @@ export default function Header() {
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap font-bold">
           {navLinks.map((link) => {
-            if(link.name ==='Dashboard' && !isAdmin) return null; //شرط برای داشبورد
+            if (link.name === "Dashboard" && !isAdmin) return null; //شرط برای داشبورد
             const active = pathname === link.href; // اکتیو کردن لینک ها
             return (
               <Link
@@ -80,10 +80,7 @@ export default function Header() {
               {totalQuantity}
             </span>
           </button>
-          <button
-            className="relative"
-            onClick={() => router.push("./login")}
-          >
+          <button className="relative" onClick={() => router.push("./login")}>
             <FiUser className="w-5 h-5 text-gray-800 dark:text-white" />
           </button>
 
@@ -105,7 +102,7 @@ export default function Header() {
       {open && (
         <div className="md:hidden bg-white dark:bg-gray-900 px-4 pt-2 pb-4 shadow-md">
           {navLinks.map((link) => {
-            if(link.name ==='Dashboard' && !isAdmin) return null;
+            if (link.name === "Dashboard" && !isAdmin) return null;
             const active = pathname === link.href;
             return (
               <Link
@@ -113,7 +110,9 @@ export default function Header() {
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className={`block py-2 text-sm font-bold transition hover:text-green-600 dark:hover:text-green-400 ${
-                  active ? "text-green-700 dark:text-green-400" : "text-gray-700 dark:text-gray-300"
+                  active
+                    ? "text-green-700 dark:text-green-400"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
               >
                 {link.name}
