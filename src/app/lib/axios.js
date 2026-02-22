@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios instance برای همه پروژه
 const API = axios.create({
-  baseURL: "https://optional-faculty-produced-expansys.trycloudflare.com",
+  baseURL: "https://cartoons-oven-herb-arising.trycloudflare.com",
   headers: {
     "Content-Type": "application/json",
   },
