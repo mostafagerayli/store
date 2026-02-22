@@ -2,40 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import data from "@/app/data/db.json";
+import heroImage from "../../../../../public/images/trariom.png"; // عکس ثابتت رو اینجا ایمپورت کن
 
 export default function HeroSection() {
-  const [current, setCurrent] = useState(0);
-  const images = data.images;
-
-  // اسلاید خودکار تصاویر
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [images.length]);
-
   return (
     <section className="flex justify-center px-4 sm:px-6 md:px-10 py-8 md:py-12 lg:py-16">
       <div className="w-full max-w-7xl">
         <div className="relative overflow-hidden rounded-2xl min-h-[320px] sm:min-h-[480px] md:min-h-[600px] lg:min-h-[700px]">
 
-          {/* Background Images */}
-          {images.map((src, index) => (
-            <Image
-              key={src}
-              src={src}
-              alt="Lush green terrarium with moss and plants"
-              fill
-              priority={index === 0}
-              className={`object-cover transition-opacity duration-1000 ${
-                index === current ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
+          {/* Background Image ثابت */}
+          <Image
+            src={heroImage}
+            alt="Lush green terrarium with moss and plants"
+            fill
+            className="object-cover"
+            priority
+          />
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/60" />
