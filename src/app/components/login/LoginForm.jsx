@@ -1,10 +1,9 @@
-'use client'
+"use client";
 import { useForm } from "react-hook-form";
 import Button from "@/app/components/button/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import API from "@/app/lib/axios";
 
 function LoginForm() {
   const router = useRouter();
@@ -16,19 +15,37 @@ function LoginForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    
-    console.log("data", data);
     try {
-      // ارسال داده‌ها به سرور
-      const res = await API.post("/users/login", data );
+      const body = {
+        phone: data.phone,
+        password: data.password,
+      };
 
-      console.log("Login success:", res.data);
+      const res = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-      // بعد از لاگین، ریدایرکت به صفحه اصلی
-      router.push("/");
-      
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert(result.error || "Login failed");
+        return;
+      }
+
+      console.log("Login success:", result);
+
+      // ذخیره JWT
+      localStorage.setItem("token", result.token);
+
+      // ریدایرکت به صفحه اصلی
+      if (result) {
+        router.push("/");
+      }
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
+      console.error("Login error:", error);
+      alert("Login failed");
     }
   };
   const inputClass =
@@ -68,7 +85,7 @@ function LoginForm() {
                   placeholder="Mobile Number"
                   inputMode="numeric"
                   maxLength={11}
-                  {...register("phone_number", {
+                  {...register("phone", {
                     required: "Mobile number is required",
                     pattern: {
                       value: /^09\d{9}$/,
@@ -81,9 +98,9 @@ function LoginForm() {
                   }
                   className={inputClass}
                 />
-                {errors.phone_number && (
+                {errors.phone && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.phone_number.message}
+                    {errors.phone.message}
                   </p>
                 )}
               </div>

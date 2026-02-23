@@ -18,11 +18,41 @@ export default function RegisterPage() {
   const password = watch("password");
   const router = useRouter();
 
-  const onSubmit = (data) => {
-    console.log("Register Data:", data);
-    router.push("/");
-  };
+const onSubmit = async (data) => {
+  try {
+    // ساخت body مطابق با API
+    const body = {
+      name: data.name,        // دقت کن همین key ها با API یکی باشه
+      phone: data.mobile,
+      password: data.password,
+    };
 
+    const res = await fetch('http://localhost:3000/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      console.error('Register error:', result);
+      alert(result.error || 'Registration failed');
+      return;
+    }
+
+    console.log('Register success:', result);
+
+    // بعد از موفقیت، به صفحه اصلی برو
+    router.push('/');
+    
+    
+  } catch (err) {
+    console.error('Fetch error:', err);
+  }
+};
   const inputClass =
     "w-full rounded-lg bg-gray-100 px-4 py-3 text-sm text-gray-900 " +
     "placeholder-gray-500 outline-none focus:ring-2 focus:ring-green-500";
@@ -58,31 +88,15 @@ export default function RegisterPage() {
               <div>
                 <input
                   type="text"
-                  placeholder="First Name"
-                  {...register("firstName", {
-                    required: "First name is required",
+                  placeholder="name"
+                  {...register("name", {
+                    required: " name is required",
                   })}
                   className={inputClass}
                 />
-                {errors.firstName && (
+                {errors.name && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.firstName.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  {...register("lastName", {
-                    required: "Last name is required",
-                  })}
-                  className={inputClass}
-                />
-                {errors.lastName && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {errors.lastName.message}
+                    {errors.name.message}
                   </p>
                 )}
               </div>
@@ -129,24 +143,6 @@ export default function RegisterPage() {
                 {errors.password && (
                   <p className="mt-1 text-xs text-red-500">
                     {errors.password.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  {...register("confirmPassword", {
-                    required: "Please confirm your password",
-                    validate: (value) =>
-                      value === password || "Passwords do not match",
-                  })}
-                  className={inputClass}
-                />
-                {errors.confirmPassword && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {errors.confirmPassword.message}
                   </p>
                 )}
               </div>
