@@ -1,31 +1,93 @@
-import { pool } from '@/app/lib/db';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { pool } from "@/app/lib/db";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     const { phone, password } = await req.json();
+
     if (!phone || !password) {
-      return new Response(JSON.stringify({ error: 'Phone and password required' }), { status: 400 });
+      return NextResponse.json(
+        { error: "Phone and password required" },
+        { status: 400 }
+      );
     }
 
-    const result = await pool.query('SELECT * FROM users WHERE phone=$1', [phone]);
+    const result = await pool.query(
+      "SELECT * FROM users WHERE phone=$1",
+      [phone]
+    );
+
     if (result.rows.length === 0) {
-      return new Response(JSON.stringify({ error: 'User not found' }), { status: 401 });
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 401 }
+      );
     }
 
     const user = result.rows[0];
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return new Response(JSON.stringify({ error: 'Incorrect password' }), { status: 401 });
+      return NextResponse.json(
+        { error: "Incorrect password" },
+        { status: 401 }
+      );
     }
 
-    const token = jwt.sign({ id: user.id, name: user.name, phone: user.phone }, 'supersecretkey', { expiresIn: '1h' });
+    // 🔐 ساخت توکن‌ها
+    const accessToken = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      process.env.ACCESS_SECRET,
+      { expiresIn: "15m" }
+    );
 
-    return new Response(JSON.stringify({ user: { id: user.id, name: user.name, phone: user.phone }, token }), { status: 200 });
+    const refreshToken = jwt.sign(
+      { id: user.id },
+      process.env.REFRESH_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // ✅ ساخت response
+    const response = NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+      },
+    });
+
+    // ✅ ست کردن Access Token داخل Cookie
+    response.cookies.set("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 15, // 15 دقیقه
+    });
+
+    // ✅ ست کردن Refresh Token داخل Cookie
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 روز
+    });
+
+    return response;
+
   } catch (err) {
-    console.error('Login error:', err.message);
-    return new Response(JSON.stringify({ error: 'Database error', details: err.message }), { status: 500 });
+    console.error("Login error:", err.message);
+
+    return NextResponse.json(
+      { error: "Database error", details: err.message },
+      { status: 500 }
+    );
   }
 }

@@ -21,9 +21,10 @@ function LoginForm() {
         password: data.password,
       };
 
-      const res = await fetch("http://localhost:3000/api/login", {
+      const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(body),
       });
 
@@ -36,10 +37,7 @@ function LoginForm() {
 
       console.log("Login success:", result);
 
-      // ذخیره JWT
-      localStorage.setItem("token", result.token);
-
-      // ریدایرکت به صفحه اصلی
+      // // ریدایرکت به صفحه اصلی
       if (result) {
         router.push("/");
       }
