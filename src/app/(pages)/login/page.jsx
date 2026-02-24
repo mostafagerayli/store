@@ -1,11 +1,11 @@
 import Header from "@/app/layout/Header";
-import LoginForm from "@/app/components/login/LoginForm";
+import LoginPage from "@/app/components/login/LoginPage";
 
-export default function LoginPage() {
+export default function Login() {
   return (
     <>
       <Header />
-      <LoginForm />
+      <LoginPage />
     </>
   );
 }
