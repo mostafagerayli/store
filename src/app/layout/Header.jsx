@@ -7,6 +7,7 @@ import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX } from "react-icons/fi";
 import { GiPlantRoots } from "react-icons/gi";
 import { useSelector } from "react-redux";
 import ThemeToggle from "../components/darkMode/ThemeToggle";
+import { IoMdLogOut } from "react-icons/io";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -22,6 +23,24 @@ export default function Header() {
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   const isAdmin = false;
+
+async function handleLogout() {
+  try {
+    const res = await fetch("/api/logout", {
+      method: "POST",
+      credentials: "include", // مهم برای ارسال cookie
+    });
+
+    if (res.ok) {
+      router.push("/login"); // بعد از logout هدایت
+    } else {
+      const result = await res.json();
+      console.error("Logout failed:", result);
+    }
+  } catch (err) {
+    console.error("Logout error:", err);
+  }
+}
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b">
@@ -82,6 +101,9 @@ export default function Header() {
           </button>
           <button className="relative" onClick={() => router.push("/login")}>
             <FiUser className="w-5 h-5 text-gray-800 dark:text-white" />
+          </button>
+          <button className="relative" onClick={handleLogout}>
+            <IoMdLogOut className="w-5 h-5 text-gray-800 dark:text-white" />
           </button>
 
           {/* Hamburger Menu */}
