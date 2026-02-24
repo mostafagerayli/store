@@ -22,7 +22,7 @@ export default function Header() {
   const router = useRouter();
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
-  const isAdmin = false;
+  const isAdmin = true
 
 async function handleLogout() {
   try {
@@ -30,7 +30,6 @@ async function handleLogout() {
       method: "POST",
       credentials: "include", // مهم برای ارسال cookie
     });
-
     if (res.ok) {
       router.push("/login"); // بعد از logout هدایت
     } else {

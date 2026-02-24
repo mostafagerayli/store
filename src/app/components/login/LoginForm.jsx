@@ -129,7 +129,7 @@ function LoginForm() {
             </form>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between text-center text-sm text-gray-600">
-              <Link href="/forgot-password" className="hover:text-green-600">
+              <Link href="/forget-password" className="hover:text-green-600">
                 Forgot Password?
               </Link>
               <Link href="/register" className="hover:text-green-600">
