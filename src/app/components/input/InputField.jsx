@@ -12,7 +12,7 @@ const InputField = ({
   ...rest 
 }) => {
   const inputClass =
-    "w-full rounded-lg bg-gray-100 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:ring-2 focus:ring-green-500";
+    " w-full rounded-lg bg-gray-100 px-4 py-3 text-sm text-gray-900 placeholder-gray-700 outline-none focus:ring-2 focus:ring-green-500";
 
   return (
     <div>

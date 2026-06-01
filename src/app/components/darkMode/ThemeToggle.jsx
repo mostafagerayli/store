@@ -16,7 +16,7 @@ function ThemeToggle() {
       }}
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? <FaMoon size={22} /> : <FaSun size={22} />}
+      {theme === "dark" ? <FaSun size={22} className="text-white"  /> : <FaMoon size={22} />}
     </button>
   );
 }

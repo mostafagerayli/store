@@ -11,8 +11,8 @@ export default function Header() {
         <Logo />
         <InputSearch />
         <ThemeToggle />
-        <NavigationLink />
         <IconsHeader />
+        <NavigationLink />
       </div>
     </header>
   );
