@@ -2,4 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 /* میتونی استایل‌های شخصی هم اضافه کنی */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.glass-card {
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+.story-image {
+  transition: transform .8s ease;
+}
+
+.story-image:hover {
+  transform: scale(1.05);
+}

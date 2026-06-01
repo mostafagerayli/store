@@ -13,12 +13,12 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-
+//پیدا کردن کاربر از دیتابیس
     const result = await pool.query(
       "SELECT * FROM users WHERE phone=$1",
       [phone]
     );
-
+//اگر نبود
     if (result.rows.length === 0) {
       return NextResponse.json(
         { error: "User not found" },
