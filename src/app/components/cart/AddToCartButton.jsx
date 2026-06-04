@@ -1,20 +1,21 @@
-"use client"
+"use client";
 
-import { addToCart } from "@/app/store/cart/shoppingCartSlice"
-import { FaShoppingCart } from "react-icons/fa"
-import { useDispatch } from "react-redux"
+import { addToCart } from "@/app/store/cart/shoppingCartSlice";
+import { FaShoppingCart } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 
-function AddToCartButton({product}) {
-  const dispatch = useDispatch()
+function AddToCartButton({ product }) {
+  const dispatch = useDispatch();
 
   return (
-        <button
+    <button
       onClick={() => dispatch(addToCart(product))}
-      className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500 text-black shadow-md transition hover:bg-white"
+      className="w-full bg-[#02462c] text-white py-3 rounded-full flex items-center justify-center gap-2 transition hover:bg-[#08452d]"
     >
-      <FaShoppingCart />
+      <FaShoppingCart size={16} />
+      افزودن به سبد خرید
     </button>
-  )
+  );
 }
 
-export default AddToCartButton
+export default AddToCartButton;

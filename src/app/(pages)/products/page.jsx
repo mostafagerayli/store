@@ -5,8 +5,8 @@ import Pagination from "@/app/components/products/Pagination";
 function products() {
   return (
     <ClientLayout>
-      <ProductList />
       <Pagination/>
+      <ProductList />
     </ClientLayout>
   );
 }

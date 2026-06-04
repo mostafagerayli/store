@@ -1,10 +1,7 @@
 import Image from "next/image";
 import AddToCartButton from "./AddToCartButton";
 
-export default function ProductCard({
-  product,
-  className = "",
-}) {
+export default function ProductCard({ product, className = "" }) {
   const {
     title,
     image,
@@ -12,52 +9,65 @@ export default function ProductCard({
     description,
     oldPrice,
     price,
-    currency = "Toman",
+    currency = "تومان",
   } = product;
 
   return (
     <div
       className={
-        "flex flex-col rounded-xl bg-white dark:bg-green-900 p-3 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-2xl min-w-[240px] md:min-w-[260px] " +
+        "overflow-hidden rounded-[24px] bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 " +
         className
       }
     >
-      {/* Image & Badge */}
-      <div className="relative mb-4 aspect-[1/1] w-full overflow-hidden rounded-lg">
+      {/* Image */}
+      <div className="relative h-56 overflow-hidden">
         {badge && (
-          <div className="absolute right-2 top-2 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
+          <div className="absolute top-3 right-3 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
             {badge}
           </div>
         )}
-        <Image
-          src={image}
-          alt={title}
-          width={300}
-          height={375}
-          className="h-full w-full object-cover"
-        />
+
+        {image ? (
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-gray-100 text-gray-400">
+            بدون تصویر
+          </div>
+        )}
       </div>
 
-      {/* Title & Description */}
-      <h3 className="text-black dark:text-white text-lg font-bold">{title}</h3>
-      {description && (
-        <p className="text-gray-800 dark:text-gray-300 text-sm mt-1">{description}</p>
-      )}
+      {/* Content */}
+      <div className="p-4 text-center">
+        <h3 className="font-bold text-[#0b5b3c] text-lg">
+          {title}
+        </h3>
 
-      {/* Price & Button */}
-      <div className="mt-2 flex items-center justify-between">
-        <div className="flex flex-col">
+        {description && (
+          <p className="mt-2 text-sm text-gray-500 line-clamp-2">
+            {description}
+          </p>
+        )}
+
+        <div className="mt-3">
           {oldPrice && (
-            <span className="text-gray-400 dark:text-gray-500 text-sm line-through">
+            <p className="text-xs text-gray-400 line-through">
               {oldPrice.toLocaleString()} {currency}
-            </span>
+            </p>
           )}
-          <span className="text-black dark:text-white text-lg font-bold">
+
+          <p className="text-[#c69b2c] text-lg font-bold">
             {price?.toLocaleString()} {currency}
-          </span>
+          </p>
         </div>
 
-        <AddToCartButton product={product} />
+        <div className="mt-4">
+          <AddToCartButton product={product} />
+        </div>
       </div>
     </div>
   );
