@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import InputField from "../input/InputField";
+import { useRouter } from "next/navigation";
 
 export default function AddProduct() {
   const {
@@ -10,6 +11,8 @@ export default function AddProduct() {
     reset,
     formState: { errors },
   } = useForm();
+
+  const router = useRouter();
 
   const onSubmit = async (data) => {
     try {
@@ -22,8 +25,9 @@ export default function AddProduct() {
       });
 
       console.log(result);
-      if (result.status === 200) {
+      if (result.ok) {
         alert("محصول با موفقیت اضافه شد");
+        router.refresh();
       } else {
         alert("خطا در ثبت محصول");
       }

@@ -1,9 +1,14 @@
 import Image from "next/image";
-import { FaChevronDown, FaSearch} from "react-icons/fa";
+import { FaChevronDown, FaSearch } from "react-icons/fa";
 import ProductCard from "../cart/ProductCart";
-import data from "../../data/db.json"
+import { pool } from "@/app/lib/db";
 
-export default function Pagination() {
+export default async function Pagination() {
+  //get products from database With query
+  const result = await pool.query(
+    "SELECT * FROM products ORDER BY created_at DESC",
+  );
+  const products = result.rows;
 
   return (
     <main className="bg-[#f7f5ef] min-h-screen">
@@ -92,7 +97,7 @@ export default function Pagination() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {data.products.slice(0, 3).map((product) => (
+              {products.slice(0, 3).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
