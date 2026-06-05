@@ -28,6 +28,9 @@ function FormRegister() {
           type="text"
           placeholder="نام و نام خانوادگی"
           register={register}
+          rules={{
+            required: " نام و نام خانوادگی الزامی است",
+          }}
           error={errors.name?.message}
         />
 
@@ -37,6 +40,13 @@ function FormRegister() {
           inputMode="numeric"
           maxLength={11}
           register={register}
+          rules={{
+            required: "شماره موبایل الزامی است",
+            pattern: {
+              value: /^09\d{9}$/,
+              message: "شماره موبایل معتبر نیست",
+            },
+          }}
           error={errors.phone?.message}
         />
         <InputField
@@ -44,6 +54,13 @@ function FormRegister() {
           type="password"
           placeholder="رمز عبور"
           register={register}
+          rules={{
+            required: "رمز عبور الزامی است",
+            minLength: {
+              value: 6,
+              message: "رمز عبور باید حداقل 6 کاراکتر باشد",
+            },
+          }}
           error={errors.password?.message}
         />
 

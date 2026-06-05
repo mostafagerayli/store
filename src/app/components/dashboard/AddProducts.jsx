@@ -1,32 +1,34 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import InputField from "../input/InputField";
 
 export default function AddProduct() {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      const res = await fetch("/api/products", {
+      const result = await fetch("/api/products", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
-      const result = await res.json();
-
-      if (result.success) {
-        console.log("محصول ثبت شد ✅", result.product);
+      console.log(result);
+      if (result.status === 200) {
         alert("محصول با موفقیت اضافه شد");
       } else {
-        console.log("خطا ❌", result.error);
         alert("خطا در ثبت محصول");
       }
     } catch (err) {
-      console.error("Network Error:", err);
+      console.log(err);
       alert("مشکل در اتصال به سرور");
     }
     reset();
@@ -47,44 +49,86 @@ export default function AddProduct() {
           className="bg-white p-8 rounded-[28px] shadow-xl space-y-5"
         >
           {/* نام محصول */}
-          <div>
-            <label className="text-sm font-bold text-gray-600">نام محصول</label>
-            <input {...register("name")} className={inputClass} />
-          </div>
-
+          <InputField
+            label="نام محصول"
+            name="name"
+            register={register}
+            rules={{
+              required: "نام محصول الزامی است",
+            }}
+            error={errors.name?.message}
+          />
           {/* وزن */}
-          <div>
-            <label className="text-sm font-bold text-gray-600">وزن</label>
-            <input {...register("weight")} className={inputClass} />
-          </div>
+          <InputField
+            name="weight"
+            label="وزن (گرم)"
+            inputMode="numeric"
+            register={register}
+            rules={{
+              required: "وزن الزامی است",
+              pattern: {
+                value: /^\d+(\.\d+)?$/,
+                message: "وزن باید عدد معتبر باشد",
+              },
+            }}
+            error={errors.weight?.message}
+          />
 
           {/* قیمت */}
-          <div>
-            <label className="text-sm font-bold text-gray-600">قیمت</label>
-            <input {...register("price")} className={inputClass} />
-          </div>
+          <InputField
+            name="price"
+            label="قیمت"
+            inputMode="numeric"
+            register={register}
+            rules={{
+              required: "قیمت الزامی است",
+              pattern: {
+                value: /^\d+$/,
+                message: "قیمت باید عدد باشد",
+              },
+            }}
+            error={errors.price?.message}
+          />
 
           {/* موجودی */}
-          <div>
-            <label className="text-sm font-bold text-gray-600">موجودی</label>
-            <input {...register("stock")} className={inputClass} />
-          </div>
+          <InputField
+            name="stock"
+            label="موجودی"
+            inputMode="numeric"
+            register={register}
+            rules={{
+              required: "موجودی الزامی است",
+              pattern: {
+                value: /^\d+$/,
+                message: "موجودی باید عدد باشد",
+              },
+            }}
+            error={errors.stock?.message}
+          />
 
           {/* عکس */}
-          <div>
-            <label className="text-sm font-bold text-gray-600">
-              تصویر محصول
-            </label>
-            <input {...register("image-url")} className={inputClass} />
-          </div>
+          <InputField
+            name="imageURL"
+            label="ادرس تصویر"
+            register={register}
+            error={errors.imageURL?.message}
+          />
 
           {/* توضیحات */}
           <div>
             <label className="text-sm font-bold text-gray-600">توضیحات</label>
             <textarea
-              {...register("description")}
+              {...register("description", {
+                required: "توضیحات الزامی است",
+              })}
               className={`${inputClass} h-28`}
             />
+
+            {errors.description && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <button className="w-full mt-4 bg-[#0b5b3c] text-white py-3 rounded-2xl font-bold hover:bg-[#08452d] transition">
