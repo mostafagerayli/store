@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import InputField from "../input/InputField";
+import InputField from "../../input/InputField";
 import { useRouter } from "next/navigation";
 
 export default function AddProduct() {

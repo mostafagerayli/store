@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import Button from "@/app/components/button/Button";
-import InputField from "../input/InputField";
+import InputField from "../../input/InputField";
 import useLogin from "@/app/hooks/useLogin";
 import Link from "next/link";
 

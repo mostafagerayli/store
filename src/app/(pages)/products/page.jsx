@@ -1,11 +1,11 @@
 import ClientLayout from "@/app/layout/ClientLayout";
-import ProductList from "@/app/components/products/ProductList";
-import Pagination from "@/app/components/products/Pagination";
+import ProductList from "@/app/components/page/products/ProductList";
+import Products from "@/app/components/page/products/Products";
 
 function products() {
   return (
     <ClientLayout>
-      <Pagination/>
+      <Products />
       <ProductList />
     </ClientLayout>
   );

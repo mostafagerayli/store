@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
-import ProductCard from "../cart/ProductCart";
+import ProductCard from "../../cart/ProductCart";
 import { pool } from "@/app/lib/db";
 
-export default async function Pagination() {
+export default async function Products() {
   //get products from database With query
   const result = await pool.query(
     "SELECT * FROM products ORDER BY created_at DESC",

@@ -1,0 +1,147 @@
+"use client";
+import Image from "next/image";
+import { useState } from "react";
+import Modal from "../../modal/Modal";
+import EditProductForm from "./EditProductForm";
+import DeleteConfirmModal from "../../modal/DeleteConfirmModal";
+import { useRouter } from "next/navigation";
+
+export default function ProductsTable({ products }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const openDeleteModal = (product) => {
+    setSelectedProduct(product);
+    setDeleteOpen(true);
+  };
+  if (!products) {
+    return <p>در حال بارگذاری...</p>;
+  }
+  
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      console.log(selectedProduct.id);
+      
+      const res = await fetch(`/api/products/${selectedProduct.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("خطا در حذف محصول");
+      }
+
+      setDeleteOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("خطا در حذف محصول");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-[1000px] w-full">
+          <thead>
+            <tr className="border-b bg-gray-50">
+              <th className="p-3 text-center">id محصول</th>
+              <th className="p-3 text-center">نام محصول</th>
+              <th className="p-3 text-center">وزن</th>
+              <th className="p-3 text-center">قیمت</th>
+              <th className="p-3 text-center">موجودی</th>
+              <th className="p-3 text-center">عکس</th>
+              <th className="p-3 text-center">توضیحات</th>
+              <th className="p-3 text-center">عملیات</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.id} className="border-b hover:bg-gray-50">
+                <td className="p-3 text-center font-semibold">{product.id}</td>
+
+                <td className="p-3 text-center font-semibold">
+                  {product.name}
+                </td>
+
+                <td className="p-3 text-center">{product.weight} گرم</td>
+
+                <td className="p-3 text-center">
+                  {Number(product.price).toLocaleString()} تومان
+                </td>
+
+                <td className="p-3 text-center">{product.stock}</td>
+                <td className="p-3 text-center">
+                  {product.image_url ? (
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      width={64}
+                      height={64}
+                      className="rounded-xl object-cover mx-auto"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 mx-auto rounded-xl bg-gray-200 flex items-center justify-center text-xs text-gray-500">
+                      بدون عکس
+                    </div>
+                  )}
+                </td>
+                <td className="p-3 text-center max-w-[250px] truncate">
+                  {product.description}
+                </td>
+                <td className="p-3">
+                  <div className="flex justify-center gap-2">
+                    <button
+                      onClick={() => {
+                        setSelectedProduct(product);
+                        setOpen(true);
+                      }}
+                      className="px-3 py-2 rounded-xl bg-yellow-400 text-white hover:bg-yellow-600"
+                    >
+                      ویرایش
+                    </button>
+
+                    <button
+                      className="px-3 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600"
+                      onClick={() => openDeleteModal(product)}
+                    >
+                      حذف
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Modal
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          title="ویرایش محصول"
+          size="lg"
+        >
+          <EditProductForm
+            product={selectedProduct}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
+        <Modal
+          isOpen={deleteOpen}
+          onClose={() => setDeleteOpen(false)}
+          title="حذف محصول"
+          size="sm"
+        >
+          <DeleteConfirmModal
+            product={selectedProduct}
+            onConfirm={handleDelete}
+            onClose={() => setDeleteOpen(false)}
+            loading={isDeleting}
+          />
+        </Modal>
+      </div>
+    </div>
+  );
+}

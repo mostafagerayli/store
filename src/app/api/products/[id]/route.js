@@ -1,43 +1,38 @@
 // app/api/products/[id]/route.js
 // app/api/products/[id]/route.js
 
-import pool from "@/lib/db";
-import { NextResponse } from "next/server";
+import { pool } from "@/app/lib/db";
 
 export async function DELETE(req, { params }) {
   try {
     const { id } = await params;
 
-    await pool.query(
-      "DELETE FROM products WHERE id = $1",
-      [id]
+    const result = await pool.query(
+      "DELETE FROM products WHERE id = $1 RETURNING *",
+      [id],
     );
 
-    return NextResponse.json({
+    return Response.json({
       success: true,
+      data: result.rows,
     });
   } catch (error) {
-    console.error(error);
-
-    return NextResponse.json(
-      { message: "خطا در حذف محصول" },
-      { status: 500 }
+    return Response.json(
+      {
+        message: error.message,
+      },
+      { status: 500 },
     );
   }
 }
+
 export async function PUT(req, { params }) {
   try {
     const { id } = await params;
 
     const body = await req.json();
 
-    const {
-      name,
-      description,
-      price,
-      stock,
-      image_url,
-    } = body;
+    const { name, description, price, stock, image_url } = body;
 
     const result = await pool.query(
       `
@@ -51,14 +46,7 @@ export async function PUT(req, { params }) {
       WHERE id = $6
       RETURNING *
       `,
-      [
-        name,
-        description,
-        price,
-        stock,
-        image_url,
-        id,
-      ]
+      [name, description, price, stock, image_url, id],
     );
 
     return Response.json(result.rows[0]);
@@ -67,7 +55,7 @@ export async function PUT(req, { params }) {
 
     return Response.json(
       { message: "خطا در بروزرسانی محصول" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
