@@ -1,6 +1,7 @@
 // app/api/products/[id]/route.js
 // app/api/products/[id]/route.js
-
+import { writeFile } from "fs/promises";
+import path from "path";
 import { pool } from "@/app/lib/db";
 
 export async function DELETE(req, { params }) {
@@ -28,11 +29,29 @@ export async function DELETE(req, { params }) {
 
 export async function PUT(req, { params }) {
   try {
-    const { id } = await params;
+    const { id } =await params;
 
-    const body = await req.json();
+    const formData = await req.formData();
 
-    const { name, description, price, stock, image_url } = body;
+    const name = formData.get("name");
+    const description = formData.get("description");
+    const price = formData.get("price");
+    const stock = formData.get("stock");
+    const file = formData.get("image");
+
+    let image_url = formData.get("image_url"); // fallback
+
+    // اگر عکس جدید اومد
+    if (file && typeof file !== "string") {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const fileName = `${Date.now()}-${file.name}`;
+
+      await writeFile(path.join(process.cwd(), "public", fileName), buffer);
+
+      image_url = `/${fileName}`;
+    }
 
     const result = await pool.query(
       `
@@ -51,7 +70,7 @@ export async function PUT(req, { params }) {
 
     return Response.json(result.rows[0]);
   } catch (error) {
-    console.error(error);
+    console.error("PUT ERROR:", error);
 
     return Response.json(
       { message: "خطا در بروزرسانی محصول" },

@@ -19,12 +19,12 @@ export default function ProductsTable({ products }) {
   if (!products) {
     return <p>در حال بارگذاری...</p>;
   }
-  
+
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
       console.log(selectedProduct.id);
-      
+
       const res = await fetch(`/api/products/${selectedProduct.id}`, {
         method: "DELETE",
       });
@@ -76,19 +76,20 @@ export default function ProductsTable({ products }) {
 
                 <td className="p-3 text-center">{product.stock}</td>
                 <td className="p-3 text-center">
-                  {product.image_url ? (
-                    <Image
-                      src={product.image_url}
-                      alt={product.name}
-                      width={64}
-                      height={64}
-                      className="rounded-xl object-cover mx-auto"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 mx-auto rounded-xl bg-gray-200 flex items-center justify-center text-xs text-gray-500">
-                      بدون عکس
-                    </div>
-                  )}
+                  <div className="w-16 h-16 mx-auto rounded-xl overflow-hidden bg-gray-100 relative">
+                    {product.image_url ? (
+                      <Image
+                        src={product.image_url}
+                        alt={product.name || "product"}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">
+                        بدون عکس
+                      </div>
+                    )}
+                  </div>
                 </td>
                 <td className="p-3 text-center max-w-[250px] truncate">
                   {product.description}

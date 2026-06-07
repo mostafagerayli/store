@@ -1,14 +1,23 @@
 import Image from "next/image";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import ProductCard from "../../cart/ProductCart";
-import { pool } from "@/app/lib/db";
+import { getProducts } from "@/app/lib/getProducts";
+import Pagination from "../../pagination/Pagination";
 
-export default async function Products() {
-  //get products from database With query
-  const result = await pool.query(
-    "SELECT * FROM products ORDER BY created_at DESC",
-  );
-  const products = result.rows;
+export default async function Products({searchParams}) {
+    const params = await searchParams;
+    const limit = 6;
+    const page = Number(params?.page) || 1;
+    const { products, total ,error} = await getProducts(page, limit);
+    const totalPages = Math.ceil(total / limit);
+  
+    if (error) {
+      return (
+        <div className="p-6 bg-red-100 text-red-700 rounded-xl">
+          ❌ خطا در دریافت محصولات از سرور
+        </div>
+      );
+    }    
 
   return (
     <main className="bg-[#f7f5ef] min-h-screen">
@@ -97,10 +106,11 @@ export default async function Products() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {products.slice(0, 3).map((product) => (
+              {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
+        <Pagination page={page} totalPages={totalPages} basePath="/products" />
           </div>
         </div>
       </section>

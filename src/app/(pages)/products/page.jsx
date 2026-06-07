@@ -1,14 +1,12 @@
 import ClientLayout from "@/app/layout/ClientLayout";
-import ProductList from "@/app/components/page/products/ProductList";
 import Products from "@/app/components/page/products/Products";
 
-function products() {
+function ProductsPage({ searchParams }) {
   return (
     <ClientLayout>
-      <Products />
-      <ProductList />
+      <Products searchParams={searchParams}/>
     </ClientLayout>
   );
 }
 
-export default products;
+export default ProductsPage;

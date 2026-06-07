@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
-import { pool } from "@/app/lib/db"; // همون Pool که تعریف کردی
+import { pool } from "@/app/lib/db";
+import { writeFile } from "fs/promises";
+import path from "path";
 
 export async function POST(req) {
   try {
-    const { name, description, price, stock, weight, imageURL } =
-      await req.json();
+    const formData = await req.formData();
 
-    // validate ساده
+    const name = formData.get("name");
+    const description = formData.get("description");
+    const price = formData.get("price");
+    const stock = formData.get("stock");
+    const weight = formData.get("weight");
+    const file = formData.get("image");
+
     if (!name || !price) {
       return NextResponse.json(
         { success: false, message: "نام و قیمت الزامی است" },
@@ -14,13 +21,40 @@ export async function POST(req) {
       );
     }
 
-    // INSERT INTO PostgreSQL
+    // save image
+    let imagePath = null;
+
+    if (file) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const fileName = `${Date.now()}-${file.name}`;
+
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        fileName
+      );
+
+      await writeFile(filePath, buffer);
+
+      imagePath = `/${fileName}`;
+    }
+
     const query = `
       INSERT INTO products (name, description, price, stock, weight, image_url)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
-    const values = [name, description, price, stock, weight, imageURL];
+
+    const values = [
+      name,
+      description,
+      price,
+      stock,
+      weight,
+      imagePath,
+    ];
 
     const result = await pool.query(query, values);
 
@@ -28,11 +62,17 @@ export async function POST(req) {
       success: true,
       product: result.rows[0],
     });
+
   } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { success: false, error: err.message },
-      { status: 500 }
-    );
-  }
+  console.error("🔥 FULL ERROR:", err);
+
+  return NextResponse.json(
+    {
+      success: false,
+      error: err?.message,
+      stack: err?.stack,
+    },
+    { status: 500 }
+  );
+}
 }

@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import InputField from "../../input/InputField";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Image from "next/image";
 
 export default function AddProduct() {
   const {
@@ -14,17 +16,25 @@ export default function AddProduct() {
 
   const router = useRouter();
 
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+
   const onSubmit = async (data) => {
     try {
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("weight", data.weight);
+      formData.append("price", data.price);
+      formData.append("stock", data.stock);
+      formData.append("description", data.description);
+      formData.append("image", image); // 👈 فایل واقعی
+
       const result = await fetch("/api/products", {
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
-      console.log(result);
       if (result.ok) {
         alert("محصول با موفقیت اضافه شد");
         router.refresh();
@@ -33,11 +43,18 @@ export default function AddProduct() {
       }
     } catch (err) {
       console.log(err);
-      alert("مشکل در اتصال به سرور");
     }
-    reset();
-  };
 
+    reset();
+    setImage(null);
+    setPreview(null);
+  };
+  const handleFile = (file) => {
+    if (!file) return;
+
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
   const inputClass =
     "w-full mt-2 px-4 py-3 rounded-2xl border border-gray-200 outline-none focus:border-[#0b5b3c] transition";
 
@@ -111,12 +128,39 @@ export default function AddProduct() {
           />
 
           {/* عکس */}
-          <InputField
-            name="imageURL"
-            label="ادرس تصویر"
-            register={register}
-            error={errors.imageURL?.message}
-          />
+          <div
+            className="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files[0];
+              handleFile(file);
+            }}
+            onClick={() => document.getElementById("fileInput").click()}
+          >
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleFile(e.target.files[0])}
+            />
+
+            {preview ? (
+              <div className="relative h-40 w-full mx-auto rounded-xl overflow-hidden">
+                <Image
+                  src={preview}
+                  alt="preview"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <p className="text-gray-500">
+                عکس را اینجا بنداز یا کلیک کن انتخاب کن
+              </p>
+            )}
+          </div>
 
           {/* توضیحات */}
           <div>

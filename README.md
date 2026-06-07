@@ -1,40 +1,207 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🥜 Pistachio Store
 
-## Getting Started
+فروشگاه آنلاین پسته توسعه داده شده با Next.js و PostgreSQL.
 
-First, run the development server:
+این پروژه با هدف یادگیری و پیاده‌سازی مفاهیم Full Stack شامل احراز هویت، مدیریت کاربران، مدیریت محصولات، سبد خرید و پنل مدیریت توسعه داده شده است.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 قابلیت‌های پیاده‌سازی شده
+
+### Authentication & Authorization
+
+* ثبت نام کاربران
+* ورود کاربران
+* خروج کاربران
+* بازیابی رمز عبور
+* هش کردن رمز عبور با bcrypt
+* JWT Authentication
+* Access Token
+* Refresh Token
+* محافظت از Route ها
+* Middleware Authentication
+
+### User Management
+
+* ذخیره اطلاعات کاربران در PostgreSQL
+* ثبت نام با شماره تلفن
+* مدیریت اطلاعات کاربران
+
+### Product Management
+
+* افزودن محصول
+* ویرایش محصول
+* حذف محصول
+* نمایش لیست محصولات
+* مدیریت موجودی کالا
+* آپلود تصویر محصول
+
+### Shopping Cart
+
+* افزودن محصول به سبد خرید
+* حذف محصول از سبد خرید
+* تغییر تعداد محصولات
+* محاسبه مجموع سفارش
+* مدیریت State با Redux Toolkit
+
+### Admin Dashboard
+
+* پنل مدیریت
+* مدیریت محصولات
+* ویرایش اطلاعات محصولات
+* حذف محصولات
+* آپلود تصاویر
+
+---
+
+## 🛠 تکنولوژی‌های استفاده شده
+
+### Frontend
+
+* Next.js (App Router)
+* React
+* Tailwind CSS
+* Redux Toolkit
+* React Hook Form
+
+### Backend
+
+* Next.js Route Handlers
+* PostgreSQL
+
+### Security
+
+* JWT
+* bcrypt
+* Access Token
+* Refresh Token
+* Middleware
+
+---
+
+## 📂 ساختار دیتابیس
+
+### users
+
+```sql
+id
+full_name
+phone
+password
+created_at
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### products
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```sql
+id
+name
+description
+price
+stock
+image_url
+created_at
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🪝 Custom Hooks
 
-To learn more about Next.js, take a look at the following resources:
+```text
+useLogin
+useLogout
+useRegister
+useResetPassword
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🌐 API Routes
 
-## Deploy on Vercel
+### Authentication
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```http
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+POST /api/auth/reset-password
+POST /api/auth/refresh
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# store
->>>>>>> a0cf59b25147b9ff2a49b5e7bf7dff73d1d92711
+### Products
+
+```http
+GET    /api/products
+GET    /api/products/:id
+POST   /api/products
+PUT    /api/products/:id
+DELETE /api/products/:id
+```
+
+---
+
+## 📌 وضعیت فعلی پروژه
+
+### Completed
+
+* Authentication System
+* User Management
+* Product Management
+* Shopping Cart
+* Redux Toolkit
+* Image Upload
+* Admin Dashboard
+* Password Reset
+* JWT Authentication
+* Access & Refresh Token Flow
+
+### In Progress
+
+* Checkout Page
+* Product Details Page
+* Order Management
+* Payment Integration
+
+### Planned
+
+* Toast Notifications
+* Axios Interceptors
+* Centralized Error Handling
+* Search Products
+* Product Filtering
+* Pagination
+* Role Based Access Control (RBAC)
+
+---
+
+## 🔒 نکات امنیتی
+
+* رمز عبور کاربران به صورت هش شده ذخیره می‌شود.
+* احراز هویت با JWT انجام شده است.
+* Access Token و Refresh Token به صورت مجزا مدیریت می‌شوند.
+* مسیرهای محافظت شده توسط Middleware کنترل می‌شوند.
+
+---
+
+## ⚙️ راه‌اندازی پروژه
+
+```bash
+npm install
+npm run dev
+```
+
+فایل `.env.local`:
+
+```env
+DATABASE_URL=
+
+JWT_ACCESS_SECRET=
+
+JWT_REFRESH_SECRET=
+```
+
+---
+
+## 📝 یادداشت
+
+این پروژه همچنان در حال توسعه است و امکانات جدید به مرور به آن اضافه خواهد شد.

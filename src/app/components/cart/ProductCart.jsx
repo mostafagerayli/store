@@ -3,8 +3,8 @@ import AddToCartButton from "./AddToCartButton";
 
 export default function ProductCard({ product, className = "" }) {
   const {
-    title,
-    image,
+    name,
+    image_url,
     badge,
     description,
     oldPrice,
@@ -27,10 +27,10 @@ export default function ProductCard({ product, className = "" }) {
           </div>
         )}
 
-        {image ? (
+        {image_url ? (
           <Image
-            src={image}
-            alt={title}
+            src={image_url}
+            alt={name}
             fill
             className="object-cover transition-transform duration-500 hover:scale-105"
           />
@@ -43,8 +43,8 @@ export default function ProductCard({ product, className = "" }) {
 
       {/* Content */}
       <div className="p-4 text-center">
-        <h3 className="font-bold text-[#0b5b3c] text-lg">
-          {title}
+        <h3 className="font-bold text-[#011c12] text-lg">
+          {name}
         </h3>
 
         {description && (
