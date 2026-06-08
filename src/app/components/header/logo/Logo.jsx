@@ -8,7 +8,7 @@ function Logo() {
       className="flex items-center gap-2 font-extrabold text-base text-green-800 dark:text-green-400 whitespace-nowrap"
     >
       <GiPlantRoots className="w-5 h-5" />
-      Terrarium Store
+      پسته چی
     </Link>
   );
 }

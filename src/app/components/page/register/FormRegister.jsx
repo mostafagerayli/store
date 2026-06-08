@@ -1,9 +1,9 @@
 "use client";
-import Button from "../button/Button";
 import Link from "next/link";
-import InputField from "../input/InputField";
 import { useForm } from "react-hook-form";
 import useRegister from "@/app/hooks/useRegister";
+import Button from "../../button/Button";
+import InputField from "../../input/InputField";
 
 function FormRegister() {
   const {

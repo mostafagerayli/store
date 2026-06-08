@@ -13,7 +13,7 @@ export default function NavigationLink() {
   const pathname = usePathname();
   const isAdmin = true; // static
   return (
-<nav className="hidden md:flex flex-row-reverse items-center gap-6 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap font-bold">
+ <nav className="hidden md:flex flex-row-revere items-center gap-6 text-sm text-gray-500 dark:text-gray-300 font-bold">
       {navLinks.map((link) => {
         // شرط برای داشبورد
         if (link.name === "Dashboard" && !isAdmin) return null;
