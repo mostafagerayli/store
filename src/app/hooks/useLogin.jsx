@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function useLogin() {
   const router = useRouter();
-
+const { setUser } = useAuth();
   const login = async ({ phone, password }) => {
-
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -16,11 +16,11 @@ export default function useLogin() {
       const result = await res.json();
 
       if (!res.ok) {
-         alert(result.error || "Login failed");
-        
+        alert(result.error || "Login failed");
+
         return null;
       }
-
+      setUser(result.user);
       // موفقیت → ریدایرکت
       router.push("/");
       return result;
@@ -30,5 +30,5 @@ export default function useLogin() {
     }
   };
 
-  return { login};
+  return { login };
 }

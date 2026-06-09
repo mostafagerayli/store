@@ -41,6 +41,7 @@ export async function POST(req) {
       {
         id: user.id,
         role: user.role,
+        name: user.name,
       },
       process.env.ACCESS_SECRET,
       { expiresIn: "15m" }

@@ -18,7 +18,7 @@ export async function proxy(request) {
 
     // محافظت از dashboard فقط برای admin
     if (pathname.startsWith("/dashboard") && userRole !== "admin") {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/404", request.url));
     }
 
     return NextResponse.next();
@@ -29,5 +29,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/shopingCart/:path*"],
+  matcher: ["/dashboard/:path*"],
 };

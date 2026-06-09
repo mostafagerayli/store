@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import { FiMenu, FiShoppingCart, FiUser, FiX } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import MobileMenu from "./MobileMenu";
+import { ImExit } from "react-icons/im";
+import { useLogout } from "@/app/hooks/useLogout";
+import { useAuth } from "@/app/context/AuthContext";
 
 function IconsHeader() {
   const router = useRouter();
+  const { user } = useAuth();
+  const logout = useLogout();
   const [open, setOpen] = useState(false);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-
   return (
     <>
       <div className="flex items-center gap-4 whitespace-nowrap">
@@ -34,9 +38,19 @@ function IconsHeader() {
             {totalQuantity}
           </span>
         </button>
-        <button className="relative" onClick={() => router.push("/login")}>
-          <FiUser className="w-5 h-5 text-gray-800 dark:text-white" />
-        </button>
+
+        {user ? (
+          <>
+            <p>{user.name}</p>
+            <button className="relative" onClick={() => logout()}>
+              <ImExit className="w-5 h-5 text-gray-800 dark:text-white" />
+            </button>
+          </>
+        ) : (
+          <button className="relative" onClick={() => router.push("/login")}>
+            <FiUser className="w-5 h-5 text-gray-800 dark:text-white" />
+          </button>
+        )}
       </div>
       {/* Mobile Menu */}
       <MobileMenu open={open} setOpen={setOpen} />

@@ -1,7 +1,9 @@
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export function useLogout() {
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const logout = async () => {
     try {
@@ -11,6 +13,7 @@ export function useLogout() {
       });
 
       if (res.ok) {
+        setUser(null); // 👈 مهم
         router.push("/login");
       } else {
         console.error("Logout failed");

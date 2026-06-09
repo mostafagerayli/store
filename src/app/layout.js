@@ -3,6 +3,7 @@ import { ThemeProvider } from "./components/darkMode/ThemeProvider";
 import { Geist, Geist_Mono } from "next/font/google";
 import ReduxProvider from "./store/Provider";
 import ToastProvider from "./components/toast/ToastProvider";
+import AuthBootstrap from "./provider/AuthBootstrap";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +26,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider>
-          <ReduxProvider>
-            <ToastProvider>{children}</ToastProvider>
-          </ReduxProvider>
-        </ThemeProvider>
+        <AuthBootstrap>
+          <ThemeProvider>
+            <ReduxProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </ReduxProvider>
+          </ThemeProvider>
+        </AuthBootstrap>
       </body>
     </html>
   );

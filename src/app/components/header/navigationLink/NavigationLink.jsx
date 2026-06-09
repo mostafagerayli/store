@@ -1,22 +1,25 @@
 "use client";
 
+import { useAuth } from "@/app/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function NavigationLink() {
+  const { user } = useAuth();
+  const pathname = usePathname();
+
   const navLinks = [
     { name: "خانه", href: "/" },
     { name: "محصولات", href: "/products" },
     { name: "درباره ما", href: "/about" },
-    { name: "داشبورد", href: "/dashboard" },
+    { name: "داشبورد", href: "/dashboard", adminOnly: true }, // فقط ادمین
   ];
-  const pathname = usePathname();
-  const isAdmin = true; // static
+
   return (
- <nav className="hidden md:flex flex-row-revere items-center gap-6 text-sm text-gray-500 dark:text-gray-300 font-bold">
+    <nav className="hidden md:flex items-center gap-6 text-sm text-gray-500 dark:text-gray-300 font-bold">
       {navLinks.map((link) => {
-        // شرط برای داشبورد
-        if (link.name === "Dashboard" && !isAdmin) return null;
+        // فقط ادمین‌ها لینک داشبورد رو ببینند
+        if (link.adminOnly && user?.role !== "admin") return null;
 
         const active = pathname === link.href;
 
