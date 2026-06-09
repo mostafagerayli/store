@@ -4,6 +4,7 @@ import Button from "@/app/components/button/Button";
 import InputField from "../../input/InputField";
 import useLogin from "@/app/hooks/useLogin";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 function LoginForm() {
   const { login } = useLogin();
@@ -12,9 +13,13 @@ function LoginForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-
   const onSubmit = async (data) => {
-    await login(data);
+    try {
+      await login(data);
+      toast.success("لاگین با موفقیت انجام شد");
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   return (

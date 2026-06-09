@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { logoutUser } from "../services/auth.service";
 import { useAuth } from "../context/AuthContext";
 
 export function useLogout() {
@@ -6,21 +7,11 @@ export function useLogout() {
   const { setUser } = useAuth();
 
   const logout = async () => {
-    try {
-      const res = await fetch("/api/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+    await logoutUser();
 
-      if (res.ok) {
-        setUser(null); // 👈 مهم
-        router.push("/login");
-      } else {
-        console.error("Logout failed");
-      }
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
+    setUser(null);
+
+    router.push("/login");
   };
 
   return logout;

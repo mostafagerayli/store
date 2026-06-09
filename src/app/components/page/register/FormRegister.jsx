@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import useRegister from "@/app/hooks/useRegister";
 import Button from "../../button/Button";
 import InputField from "../../input/InputField";
+import { toast } from "react-toastify";
 
 function FormRegister() {
   const {
@@ -14,7 +15,12 @@ function FormRegister() {
   const { registerForm } = useRegister();
 
   const onSubmit = async (data) => {
-    await registerForm(data);
+    try {
+      await registerForm(data);
+      toast.success("ثبت نام با موفقیت انجام شد");
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
   return (
     <div className="flex flex-col justify-center px-6 sm:px-10 py-10">

@@ -36,7 +36,7 @@ export default function AddProduct() {
       });
 
       if (result.ok) {
-        alert("محصول با موفقیت اضافه شد");
+        
         router.refresh();
       } else {
         alert("خطا در ثبت محصول");

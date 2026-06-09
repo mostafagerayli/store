@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import MobileMenu from "./MobileMenu";
 import { ImExit } from "react-icons/im";
 import { useLogout } from "@/app/hooks/useLogout";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 function IconsHeader() {
   const router = useRouter();
