@@ -3,7 +3,7 @@ import { FaChartLine, FaShieldAlt } from "react-icons/fa";
 
 export default function FeaturedProducts() {
   return (
-    <div className="bg-[#032e1f] min-h-screen py-12 px-4">
+    <div className="bg-[#032e1f] min-h-screen py-24 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* نقشه طلایی ایران - با next/image */}

@@ -4,6 +4,7 @@ import Header from "@/app/layout/Header";
 import { increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "@/app/store/cart/shoppingCartSlice";
 import CartItem from "@/app/components/shoppingCart/CartItem";
 import OrderSummary from "@/app/components/shoppingCart/OrderSummery";
+import Footer from "@/app/layout/Footer";
 
 export default function ShoppingCartPage() {
   const { items, totalQuantity, totalPrice } = useSelector(state => state.cart);
@@ -37,6 +38,7 @@ export default function ShoppingCartPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }
