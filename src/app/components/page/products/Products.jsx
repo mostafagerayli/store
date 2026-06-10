@@ -1,14 +1,27 @@
-import Image from "next/image";
-import { FaChevronDown, FaSearch } from "react-icons/fa";
-import ProductCard from "../../cart/ProductCart";
 import { getProducts } from "@/app/lib/getProducts";
+import ProductsHero from "./ProductsHero";
+import ProductsToolbar from "./ProductsToolbar";
+import ProductsSidebar from "./ProductsSidebar";
+import ProductsHeader from "./ProductsHeader";
+import ProductsGrid from "./ProductsGrid";
 import Pagination from "../../pagination/Pagination";
+import GiftPage from "./GiftPage";
 
 export default async function Products({ searchParams }) {
-  const params = await searchParams;
+  const params =await searchParams;
+
   const limit = 6;
   const page = Number(params?.page) || 1;
-  const { products, total, error } = await getProducts(page, limit);
+  const sort = params?.sort || "newest";
+  const search = params?.search || "";
+
+  const { products, total, error } = await getProducts(
+    page,
+    limit,
+    sort,
+    search
+  );
+
   const totalPages = Math.ceil(total / limit);
 
   if (error) {
@@ -21,115 +34,31 @@ export default async function Products({ searchParams }) {
 
   return (
     <main className="bg-[#f7f5ef] min-h-screen">
-      {/* Hero */}
-      <section className="relative h-[220px] md:h-[280px] overflow-hidden">
-        <Image
-          src="/images/a_lush_sun_drenched_pistachio_orchard_in_kerman_iran._rows_of_mature_pistachio.png"
-          alt="پسته"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-[#0d4d2c]/70" />
+      <ProductsHero />
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 text-center">
-          <h1 className="text-xl md:text-4xl font-bold mb-2 md:mb-4">
-            فروشگاه محصولات ممتاز
-          </h1>
+      <ProductsToolbar />
 
-          <p className="text-xs md:text-sm opacity-90">
-            بهترین پسته‌های ایرانی با کیفیت صادراتی
-          </p>
-        </div>
-      </section>
-
-      {/* Search */}
-      <section className="-mt-6 relative z-10 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl md:rounded-full shadow-lg p-3 flex flex-col md:flex-row items-stretch md:items-center gap-3">
-            
-            <button className="bg-[#0b5b3c] text-white px-4 md:px-6 py-2 rounded-xl md:rounded-full text-sm">
-              دسته‌بندی
-            </button>
-
-            <button className="flex items-center justify-center gap-2 border rounded-xl md:rounded-full px-4 py-2 text-sm">
-              مرتب‌سازی
-              <FaChevronDown size={14} />
-            </button>
-
-            <div className="flex-1 relative">
-              <FaSearch
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                size={16}
-              />
-
-              <input
-                type="text"
-                placeholder="جستجوی محصولات"
-                className="w-full pr-10 py-2 outline-none text-sm"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Products Layout */}
       <section className="max-w-6xl mx-auto px-4 mt-8 md:mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-          
-          {/* Sidebar */}
-          <aside className="lg:col-span-3 order-1 lg:order-none">
-            <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-6">
-              <h3 className="font-bold text-[#0b5b3c] mb-4">
-                دسته‌بندی
-              </h3>
 
-              <ul className="space-y-3 text-sm text-gray-600">
-                <li>پسته اکبری</li>
-                <li>پسته احمدآقایی</li>
-                <li>پسته فندقی</li>
-                <li>پسته کله قوچی</li>
-              </ul>
-            </div>
+          <ProductsSidebar />
 
-            <div className="bg-[#0b5b3c] text-white rounded-2xl md:rounded-3xl p-5 md:p-6 mt-4 md:mt-6">
-              <h4 className="font-bold mb-2">محصولات ویژه</h4>
-              <p className="text-sm opacity-90">
-                بهترین محصولات صادراتی با کیفیت تضمینی
-              </p>
-            </div>
-          </aside>
-
-          {/* Products */}
           <div className="lg:col-span-9 order-2">
-            
-            {/* header */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8 gap-2">
-              <h2 className="text-xl md:text-2xl font-bold text-[#0b5b3c]">
-                محصولات منتخب
-              </h2>
+            <ProductsHeader />
 
-              <button className="text-sm text-[#c69b2c]">
-                مشاهده همه
-              </button>
-            </div>
+            <ProductsGrid products={products} />
 
-            {/* grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            {/* pagination */}
             <div className="mt-8">
               <Pagination
                 page={page}
                 totalPages={totalPages}
                 basePath="/products"
+                searchParams={params}
               />
             </div>
           </div>
         </div>
+        <GiftPage/>
       </section>
     </main>
   );

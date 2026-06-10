@@ -7,8 +7,8 @@ export default function ProductCard({ product, className = "" }) {
     image_url,
     badge,
     description,
-    oldPrice,
     price,
+    weight,
     currency = "تومان",
   } = product;
 
@@ -43,10 +43,12 @@ export default function ProductCard({ product, className = "" }) {
 
       {/* Content */}
       <div className="p-4 text-center">
-        <h3 className="font-bold text-[#011c12] text-lg">
-          {name}
-        </h3>
-
+        <h3 className="font-bold text-[#011c12] text-lg">{name}</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            {weight >= 1000
+              ? `${weight / 1000} کیلوگرم`
+              : `${weight} گرم`}
+          </p>
         {description && (
           <p className="mt-2 text-sm text-gray-500 line-clamp-2">
             {description}
@@ -54,14 +56,9 @@ export default function ProductCard({ product, className = "" }) {
         )}
 
         <div className="mt-3">
-          {oldPrice && (
-            <p className="text-xs text-gray-400 line-through">
-              {oldPrice.toLocaleString()} {currency}
-            </p>
-          )}
 
           <p className="text-[#c69b2c] text-lg font-bold">
-            {price?.toLocaleString()} {currency}
+            {Number(price)?.toLocaleString()} {currency}
           </p>
         </div>
 

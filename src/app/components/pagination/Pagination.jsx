@@ -1,11 +1,26 @@
 import Link from "next/link";
 
-export default function Pagination({ page, totalPages, basePath }) {
+export default function Pagination({
+  page,
+  totalPages,
+  basePath,
+  searchParams,
+}) {
+const createPageUrl = (pageNumber) => {
+  const params = new URLSearchParams(
+    searchParams?.toString?.() ?? ""
+  );
+
+  params.set("page", pageNumber);
+
+  return `${basePath}?${params.toString()}`;
+};
+
   return (
     <div className="mt-8 flex items-center justify-center">
       <div className="flex items-center gap-2 rounded-2xl bg-white p-2 shadow-lg">
         <Link
-          href={`${basePath}?page=${page - 1}`}
+          href={createPageUrl(page - 1)}
           scroll={false}
           className={`flex h-10 w-10 items-center justify-center rounded-xl border transition
           ${
@@ -23,7 +38,7 @@ export default function Pagination({ page, totalPages, basePath }) {
           return (
             <Link
               key={pageNumber}
-              href={`${basePath}?page=${pageNumber}`}
+              href={createPageUrl(pageNumber)}
               scroll={false}
               className={`flex h-10 w-10 items-center justify-center rounded-xl font-medium transition
                 ${
@@ -38,7 +53,7 @@ export default function Pagination({ page, totalPages, basePath }) {
         })}
 
         <Link
-          href={`${basePath}?page=${page + 1}`}
+          href={createPageUrl(page + 1)}
           scroll={false}
           className={`flex h-10 w-10 items-center justify-center rounded-xl border transition
           ${
