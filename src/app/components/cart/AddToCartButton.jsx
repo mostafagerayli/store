@@ -15,7 +15,7 @@ function AddToCartButton({ product }) {
             id: product.id,
             name: product.name,
             price: product.price,
-            image: product.image?.trim() || "/placeholder.png",
+            image: product.image_url?.trim() || "/placeholder.png",
             quantity: 1,
           }),
         )

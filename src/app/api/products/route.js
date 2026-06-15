@@ -16,15 +16,17 @@ export async function POST(req) {
 
     if (!name || !price) {
       return NextResponse.json(
-        { success: false, message: "نام و قیمت الزامی است" },
+        {
+          success: false,
+          message: "نام و قیمت الزامی است",
+        },
         { status: 400 }
       );
     }
 
-    // save image
     let imagePath = null;
 
-    if (file) {
+    if (file && file.size > 0) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
@@ -41,38 +43,56 @@ export async function POST(req) {
       imagePath = `/${fileName}`;
     }
 
-    const query = `
-      INSERT INTO products (name, description, price, stock, weight, image_url)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *;
-    `;
-
     const values = [
       name,
       description,
-      price,
-      stock,
-      weight,
+      Number(price),
+      Number(stock || 0),
+      Number(weight || 0),
       imagePath,
     ];
 
-    const result = await pool.query(query, values);
+    const result = await pool.query(
+      `
+      INSERT INTO products
+      (name, description, price, stock, weight, image_url)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *;
+      `,
+      values
+    );
+
+    const product = result.rows[0];
+
+    // ساخت slug از روی id
+    const slug = `pestechi-${product.id}`;
+
+    await pool.query(
+      `
+      UPDATE products
+      SET slug = $1
+      WHERE id = $2
+      `,
+      [slug, product.id]
+    );
+
+    product.slug = slug;
 
     return NextResponse.json({
       success: true,
-      product: result.rows[0],
+      product,
     });
 
   } catch (err) {
-  console.error("🔥 FULL ERROR:", err);
+    console.error("🔥 FULL ERROR:", err);
 
-  return NextResponse.json(
-    {
-      success: false,
-      error: err?.message,
-      stack: err?.stack,
-    },
-    { status: 500 }
-  );
-}
+    return NextResponse.json(
+      {
+        success: false,
+        error: err?.message,
+        stack: err?.stack,
+      },
+      { status: 500 }
+    );
+  }
 }

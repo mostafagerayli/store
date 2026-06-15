@@ -13,7 +13,7 @@ const shoppingCartSlice = createSlice({
     addToCart: (state, action) => {
       const item = action.payload;
 
-      if (!item.price) return; // 🔥 جلوگیری از خراب شدن state
+      if (!item.price) return; //  جلوگیری از خراب شدن state
 
       const existingItem = state.items.find((i) => i.id === item.id);
 

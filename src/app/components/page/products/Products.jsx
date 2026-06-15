@@ -21,7 +21,7 @@ export default async function Products({ searchParams }) {
     sort,
     search
   );
-
+  
   const totalPages = Math.ceil(total / limit);
 
   if (error) {

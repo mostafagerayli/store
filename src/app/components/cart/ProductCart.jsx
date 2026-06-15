@@ -1,5 +1,7 @@
+"use client"
 import Image from "next/image";
 import AddToCartButton from "./AddToCartButton";
+import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product, className = "" }) {
   const {
@@ -12,12 +14,15 @@ export default function ProductCard({ product, className = "" }) {
     currency = "تومان",
   } = product;
 
+  const router = useRouter()
+
   return (
     <div
       className={
-        "overflow-hidden rounded-[24px] bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 " +
+        "overflow-hidden rounded-[24px] bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer" +
         className
       }
+      onClick={() => router.push(`/products/${product.slug}`)}
     >
       {/* Image */}
       <div className="relative h-56 overflow-hidden">
