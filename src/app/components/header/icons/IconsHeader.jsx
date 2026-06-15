@@ -7,13 +7,16 @@ import MobileMenu from "./MobileMenu";
 import { ImExit } from "react-icons/im";
 import { useLogout } from "@/app/hooks/useLogout";
 import { useAuth } from "../../../context/AuthContext";
+import {
+  selectCartQuantity
+} from "@/app/store/cart/shoppingCartSlice";
 
 function IconsHeader() {
   const router = useRouter();
   const { user } = useAuth();
   const logout = useLogout();
   const [open, setOpen] = useState(false);
-  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const totalQuantity = useSelector(selectCartQuantity);
   return (
     <>
       <div className="flex items-center gap-4 whitespace-nowrap">

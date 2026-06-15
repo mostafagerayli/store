@@ -5,6 +5,7 @@ import Modal from "../../modal/Modal";
 import EditProductForm from "./EditProductForm";
 import DeleteConfirmModal from "../../modal/DeleteConfirmModal";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function ProductsTable({ products }) {
   const router = useRouter();
@@ -23,20 +24,19 @@ export default function ProductsTable({ products }) {
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      console.log(selectedProduct.id);
 
       const res = await fetch(`/api/products/${selectedProduct.id}`, {
         method: "DELETE",
       });
       if (!res.ok) {
-        throw new Error("خطا در حذف محصول");
+        toast.error("خطا در حذف محصول", error.message);
+      } else {
+        setDeleteOpen(false);
+        router.refresh();
+        toast.success("محصول با موفقیت حذف شد");
       }
-
-      setDeleteOpen(false);
-      router.refresh();
     } catch (error) {
-      console.error(error);
-      alert("خطا در حذف محصول");
+      toast.error("خطا در حذف محصول", error.message);
     } finally {
       setIsDeleting(false);
     }
@@ -52,7 +52,7 @@ export default function ProductsTable({ products }) {
               <th className="p-3 text-center">نام محصول</th>
               <th className="p-3 text-center">وزن</th>
               <th className="p-3 text-center">قیمت</th>
-              <th className="p-3 text-center">موجودی</th>
+              <th className="p-3 text-center">موجودی/گرم</th>
               <th className="p-3 text-center">عکس</th>
               <th className="p-3 text-center">توضیحات</th>
               <th className="p-3 text-center">عملیات</th>
@@ -68,13 +68,13 @@ export default function ProductsTable({ products }) {
                   {product.name}
                 </td>
 
-                <td className="p-3 text-center">{product.weight} گرم</td>
+                <td className="p-3 text-center">{Number(product.weight)}کیلوگرم</td>
 
                 <td className="p-3 text-center">
                   {Number(product.price).toLocaleString()} تومان
                 </td>
 
-                <td className="p-3 text-center">{product.stock}</td>
+                <td className="p-3 text-center">{Number(product.stock)}</td>
                 <td className="p-3 text-center">
                   <div className="w-16 h-16 mx-auto rounded-xl overflow-hidden bg-gray-100 relative">
                     {product.image_url ? (

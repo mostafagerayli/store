@@ -1,13 +1,15 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "@/app/layout/Header";
-import { increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "@/app/store/cart/shoppingCartSlice";
+import { increaseQuantity, decreaseQuantity, removeFromCart, clearCart, selectCartTotal, selectCartQuantity } from "@/app/store/cart/shoppingCartSlice";
 import CartItem from "@/app/components/shoppingCart/CartItem";
 import OrderSummary from "@/app/components/shoppingCart/OrderSummery";
 import Footer from "@/app/layout/Footer";
 
 export default function ShoppingCartPage() {
-  const { items, totalQuantity, totalPrice } = useSelector(state => state.cart);
+  const { items } = useSelector(state => state.cart);
+  const totalPrice = useSelector(selectCartTotal)
+  const totalQuantity = useSelector(selectCartQuantity);
   const dispatch = useDispatch();
 
   return (

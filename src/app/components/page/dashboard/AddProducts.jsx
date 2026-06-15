@@ -5,6 +5,7 @@ import InputField from "../../input/InputField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 export default function AddProduct() {
   const {
@@ -36,13 +37,13 @@ export default function AddProduct() {
       });
 
       if (result.ok) {
-        
+        toast.success('محصول با موفقیت اضافه شد')
         router.refresh();
       } else {
-        alert("خطا در ثبت محصول");
+        toast.error('خطا در ثبت محصول')
       }
     } catch (err) {
-      console.log(err);
+      toast.error(err.message)
     }
 
     reset();
@@ -98,7 +99,7 @@ export default function AddProduct() {
           {/* قیمت */}
           <InputField
             name="price"
-            label="قیمت"
+            label=" قیمت"
             inputMode="numeric"
             register={register}
             rules={{

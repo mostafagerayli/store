@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  items: [], // { id, title, price, quantity, image }
-  totalQuantity: 0,
-  totalPrice: 0,
+  items: [], // { id, name, price, quantity, image, selectedWeight }
 };
 
 const shoppingCartSlice = createSlice({
@@ -13,10 +11,12 @@ const shoppingCartSlice = createSlice({
     addToCart: (state, action) => {
       const item = action.payload;
 
-      if (!item.price) return; //  جلوگیری از خراب شدن state
+      if (!item.price) return;
 
       const existingItem = state.items.find(
-        (i) => i.id === item.id && i.selectedWeight === item.selectedWeight,
+        (i) =>
+          i.id === item.id &&
+          i.selectedWeight === item.selectedWeight
       );
 
       if (existingItem) {
@@ -31,29 +31,21 @@ const shoppingCartSlice = createSlice({
           quantity: item.quantity || 1,
         });
       }
-
-      state.totalQuantity += 1;
-      state.totalPrice += Number(item.price) || 0;
     },
 
     removeFromCart: (state, action) => {
       const id = action.payload;
-      const existingItem = state.items.find((i) => i.id === id);
-      if (!existingItem) return;
 
-      state.totalQuantity -= existingItem.quantity;
-      state.totalPrice -= existingItem.price * existingItem.quantity;
       state.items = state.items.filter((i) => i.id !== id);
     },
 
     decreaseQuantity: (state, action) => {
       const id = action.payload;
+
       const existingItem = state.items.find((i) => i.id === id);
       if (!existingItem) return;
 
       existingItem.quantity -= 1;
-      state.totalQuantity -= 1;
-      state.totalPrice -= existingItem.price;
 
       if (existingItem.quantity <= 0) {
         state.items = state.items.filter((i) => i.id !== id);
@@ -62,35 +54,42 @@ const shoppingCartSlice = createSlice({
 
     increaseQuantity: (state, action) => {
       const id = action.payload;
+
       const existingItem = state.items.find((i) => i.id === id);
       if (!existingItem) return;
 
       existingItem.quantity += 1;
-      state.totalQuantity += 1;
-      state.totalPrice += existingItem.price;
-
-      if (existingItem.quantity <= 0) {
-        state.items = state.items.filter((i) => i.id !== id);
-      }
     },
 
     clearCart: (state) => {
       state.items = [];
-      state.totalQuantity = 0;
-      state.totalPrice = 0;
     },
+
     hydrateCart: (state, action) => {
-  return action.payload;
-},
+      // فقط items رو جایگزین کن (نه کل state)
+      state.items = action.payload?.items || [];
+    },
   },
 });
+
+export default shoppingCartSlice.reducer;
 
 export const {
   addToCart,
   removeFromCart,
   decreaseQuantity,
-  clearCart,
   increaseQuantity,
-   hydrateCart,
+  clearCart,
+  hydrateCart,
 } = shoppingCartSlice.actions;
-export default shoppingCartSlice.reducer;
+
+export const selectCartItems = (state) => state.cart.items;
+
+export const selectCartQuantity = (state) =>
+  state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
+
+export const selectCartTotal = (state) =>
+  state.cart.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
