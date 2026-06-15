@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import ReduxProvider from "./store/Provider";
 import ToastProvider from "./components/toast/ToastProvider";
 import AuthBootstrap from "./provider/AuthBootstrap";
+import CartPersistence from "./components/shoppingCart/Persistence";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,10 @@ export default function RootLayout({ children }) {
         <AuthBootstrap>
           <ThemeProvider>
             <ReduxProvider>
-              <ToastProvider>{children}</ToastProvider>
+              <ToastProvider>
+              <CartPersistence/>
+              {children}
+              </ToastProvider>
             </ReduxProvider>
           </ThemeProvider>
         </AuthBootstrap>

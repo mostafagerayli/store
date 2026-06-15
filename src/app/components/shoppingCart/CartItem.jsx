@@ -47,9 +47,9 @@ export default function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
         <button
           onClick={onRemove}
-          className="text-sm text-red-500 hover:underline"
+          className="text-red-500 hover:underline"
         >
-          Remove
+          حذف
         </button>
       </div>
     </div>

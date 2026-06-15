@@ -15,7 +15,7 @@ export default function ShoppingCartPage() {
       <Header />
       <div className="min-h-screen bg-gray-50 px-4 py-10">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">سبد خرید</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-4">

@@ -6,61 +6,73 @@ import AddToCartButton from "../../cart/AddToCartButton";
 
 export default function ProductDetail({ product }) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedWeight, setSelectedWeight] = useState("500g");
-console.log(product);
+  const [selectedWeight, setSelectedWeight] = useState(500);
 
-  const weights = ["250g", "500g", "1kg"];
+  const weights = [250, 500, 1000];
+
+  const totalPrice =
+    ((product.price * selectedWeight) / 1000) * quantity;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 bg- shadow-2xl mt-5 mb-5 rounded-lg">
-      {/* GRID */}
+    <div className="max-w-6xl mx-auto px-4 py-10 shadow-2xl mt-5 mb-5 rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        {/* RIGHT - INFO */}
+        {/* INFO */}
         <div className="flex flex-col gap-5 text-right">
-          {/* TITLE */}
-          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {product.name}
+          </h1>
 
-          {/* SHORT DESC */}
           <p className="text-gray-600 leading-7 text-sm">
             {product.description}
           </p>
 
-          {/* PRICE */}
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-bold text-green-700">
-              {product.price.toLocaleString()}
-            </span>
-            <span className="text-sm text-gray-500">تومان</span>
+          {/* Price per KG */}
+          <div>
+            <p className="text-sm text-gray-500">
+              قیمت هر کیلو:
+            </p>
+
+            <p className="text-xl font-bold text-green-700">
+              {Number(product.price)?.toLocaleString()} تومان
+            </p>
           </div>
 
-          {/* WEIGHT */}
+          {/* Weight */}
           <div>
-            <p className="text-sm text-gray-500 mb-2">انتخاب وزن</p>
+            <p className="text-sm text-gray-500 mb-2">
+              انتخاب وزن
+            </p>
 
-            <div className="flex gap-2">
-              {weights.map((w) => (
+            <div className="flex gap-2 flex-wrap">
+              {weights.map((weight) => (
                 <button
-                  key={w}
-                  onClick={() => setSelectedWeight(w)}
+                  key={weight}
+                  onClick={() => setSelectedWeight(weight)}
                   className={`px-4 py-2 rounded-full border transition text-sm ${
-                    selectedWeight === w
+                    selectedWeight === weight
                       ? "bg-green-800 text-white border-green-800"
                       : "bg-white text-gray-700"
                   }`}
                 >
-                  {w}
+                  {weight >= 1000
+                    ? `${weight / 1000}kg`
+                    : `${weight}g`}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* QUANTITY */}
+          {/* Quantity */}
           <div className="flex items-center gap-3 mt-2">
-            <p className="text-sm text-gray-500">تعداد</p>
+            <p className="text-sm text-gray-500">
+              تعداد بسته
+            </p>
 
             <div className="flex items-center border rounded-full overflow-hidden">
               <button
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                onClick={() =>
+                  setQuantity((q) => Math.max(1, q - 1))
+                }
                 className="px-3 py-1 bg-gray-100"
               >
                 -
@@ -77,10 +89,27 @@ console.log(product);
             </div>
           </div>
 
-          {/* ADD TO CART */}
-          <AddToCartButton product={product} />
+          {/* Total Price */}
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="text-sm text-gray-500">
+              قیمت نهایی
+            </p>
+
+            <p className="text-2xl font-bold text-green-700">
+              {totalPrice.toLocaleString()} تومان
+            </p>
+          </div>
+
+          {/* Add To Cart */}
+          <AddToCartButton
+            product={product}
+            quantity={quantity}
+            selectedWeight={selectedWeight}
+            totalPrice={totalPrice}
+          />
         </div>
-        {/* LEFT - IMAGE */}
+
+        {/* IMAGE */}
         <div className="relative w-full h-[420px] rounded-3xl overflow-hidden shadow-xl bg-white">
           <Image
             src={product.image_url || "/placeholder.png"}

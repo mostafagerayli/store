@@ -15,7 +15,9 @@ const shoppingCartSlice = createSlice({
 
       if (!item.price) return; //  جلوگیری از خراب شدن state
 
-      const existingItem = state.items.find((i) => i.id === item.id);
+      const existingItem = state.items.find(
+        (i) => i.id === item.id && i.selectedWeight === item.selectedWeight,
+      );
 
       if (existingItem) {
         existingItem.quantity += 1;
@@ -23,9 +25,10 @@ const shoppingCartSlice = createSlice({
         state.items.push({
           id: item.id,
           name: item.name,
-          price: Number(item.price) || 0,
           image: item.image,
-          quantity: 1,
+          selectedWeight: item.selectedWeight,
+          price: Number(item.price),
+          quantity: item.quantity || 1,
         });
       }
 
@@ -76,6 +79,9 @@ const shoppingCartSlice = createSlice({
       state.totalQuantity = 0;
       state.totalPrice = 0;
     },
+    hydrateCart: (state, action) => {
+  return action.payload;
+},
   },
 });
 
@@ -85,5 +91,6 @@ export const {
   decreaseQuantity,
   clearCart,
   increaseQuantity,
+   hydrateCart,
 } = shoppingCartSlice.actions;
 export default shoppingCartSlice.reducer;

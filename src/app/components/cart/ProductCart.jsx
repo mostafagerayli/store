@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import Image from "next/image";
-import AddToCartButton from "./AddToCartButton";
 import { useRouter } from "next/navigation";
+import { FaShoppingCart } from "react-icons/fa";
 
 export default function ProductCard({ product, className = "" }) {
   const {
@@ -14,7 +14,7 @@ export default function ProductCard({ product, className = "" }) {
     currency = "تومان",
   } = product;
 
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div
@@ -49,11 +49,9 @@ export default function ProductCard({ product, className = "" }) {
       {/* Content */}
       <div className="p-4 text-center">
         <h3 className="font-bold text-[#011c12] text-lg">{name}</h3>
-          <p className="text-sm text-gray-500 mt-1">
-            {weight >= 1000
-              ? `${weight / 1000} کیلوگرم`
-              : `${weight} گرم`}
-          </p>
+        <p className="text-sm text-gray-500 mt-1">
+          {weight >= 1000 ? `${weight / 1000} کیلوگرم` : `${weight} گرم`}
+        </p>
         {description && (
           <p className="mt-2 text-sm text-gray-500 line-clamp-2">
             {description}
@@ -61,14 +59,16 @@ export default function ProductCard({ product, className = "" }) {
         )}
 
         <div className="mt-3">
-
           <p className="text-[#c69b2c] text-lg font-bold">
             {Number(price)?.toLocaleString()} {currency}
           </p>
         </div>
 
         <div className="mt-4">
-          <AddToCartButton product={product} />
+          <button className="w-full bg-[#02462c] text-white py-3 rounded-full flex items-center justify-center gap-2 transition hover:bg-[#08452d]">
+            <FaShoppingCart size={16} />
+            افزودن به سبد خرید
+          </button>
         </div>
       </div>
     </div>

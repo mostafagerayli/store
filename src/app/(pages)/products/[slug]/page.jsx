@@ -14,7 +14,6 @@ export default async function Page({ params }) {
   const { slug } = await params; // ✅ مهم
 
   const product = await getProduct(slug);
-console.log('p' , product);
 
   return (
     <>
