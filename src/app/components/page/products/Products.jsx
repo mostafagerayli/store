@@ -7,7 +7,7 @@ import ProductsGrid from "./ProductsGrid";
 import Pagination from "../../pagination/Pagination";
 import GiftPage from "./GiftPage";
 
-export default async function Products({ searchParams }) {
+export default async function Products({ searchParams }) { 
   const params =await searchParams;
 
   const limit = 6;
