@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { editProduct } from "@/app/lib/actions/product.actions";
+import { toast } from "react-toastify";
 
 export default function EditProductForm({ product, onClose }) {
   const router = useRouter();
@@ -20,32 +22,28 @@ export default function EditProductForm({ product, onClose }) {
     },
   });
 
-const onSubmit = async (data) => {
-  const formData = new FormData();
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
 
-  formData.append("name", data.name);
-  formData.append("weight", data.weight);
-  formData.append("price", data.price);
-  formData.append("stock", data.stock);
-  formData.append("description", data.description);
+      formData.append("name", data.name);
+      formData.append("weight", data.weight);
+      formData.append("price", data.price);
+      formData.append("stock", data.stock);
+      formData.append("description", data.description);
 
-  if (image) {
-    formData.append("image", image);
-  }
+      if (image) {
+        formData.append("image", image);
+      }
 
-  const res = await fetch(`/api/products/${product.id}`, {
-    method: "PUT",
-    body: formData,
-  });
-
-  if (!res.ok) {
-    alert("خطا در آپدیت");
-    return;
-  }
-
-  router.refresh();
-  onClose();
-};
+      await editProduct(product.id,formData);
+      toast.success("محصول با موفقیت اپدیت شد");
+      router.refresh();
+      onClose();
+    } catch (err) {
+      toast.error(`محصول با موفقیت اپدیت نشد ${err.message}`);    
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -96,18 +94,13 @@ const onSubmit = async (data) => {
           }}
         />
 
-{preview ? (
-  <div className="relative w-full h-32 mx-auto rounded-lg overflow-hidden">
-    <Image
-      src={preview}
-      alt="preview"
-      fill
-      className="object-cover"
-    />
-  </div>
-) : (
-  <p>برای تغییر تصویر کلیک یا درگ کن</p>
-)}
+        {preview ? (
+          <div className="relative w-full h-32 mx-auto rounded-lg overflow-hidden">
+            <Image src={preview} alt="preview" fill className="object-cover" />
+          </div>
+        ) : (
+          <p>برای تغییر تصویر کلیک یا درگ کن</p>
+        )}
       </div>
 
       <textarea

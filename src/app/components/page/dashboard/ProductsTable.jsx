@@ -6,6 +6,7 @@ import EditProductForm from "./EditProductForm";
 import DeleteConfirmModal from "../../modal/DeleteConfirmModal";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { deleteProduct } from "@/app/lib/actions/product.actions";
 
 export default function ProductsTable({ products }) {
   const router = useRouter();
@@ -23,20 +24,13 @@ export default function ProductsTable({ products }) {
 
   const handleDelete = async () => {
     try {
-      setIsDeleting(true);
+      await deleteProduct(selectedProduct.id);
+      router.refresh();
+      setDeleteOpen(false);
+      toast.success("محصول با موفقیت حذف شد");
 
-      const res = await fetch(`/api/products/${selectedProduct.id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) {
-        toast.error("خطا در حذف محصول", error.message);
-      } else {
-        setDeleteOpen(false);
-        router.refresh();
-        toast.success("محصول با موفقیت حذف شد");
-      }
     } catch (error) {
-      toast.error("خطا در حذف محصول", error.message);
+      toast.error("خطا در حذف محصول" || error.message);
     } finally {
       setIsDeleting(false);
     }
@@ -68,7 +62,9 @@ export default function ProductsTable({ products }) {
                   {product.name}
                 </td>
 
-                <td className="p-3 text-center">{Number(product.weight)}کیلوگرم</td>
+                <td className="p-3 text-center">
+                  {Number(product.weight)}کیلوگرم
+                </td>
 
                 <td className="p-3 text-center">
                   {Number(product.price).toLocaleString()} تومان

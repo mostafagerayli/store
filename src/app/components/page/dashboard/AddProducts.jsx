@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { createProduct } from "@/app/lib/actions/product.actions";
 
 export default function AddProduct() {
   const {
@@ -29,26 +30,20 @@ export default function AddProduct() {
       formData.append("price", data.price);
       formData.append("stock", data.stock);
       formData.append("description", data.description);
-      formData.append("image", image); // 👈 فایل واقعی
-
-      const result = await fetch("/api/products", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (result.ok) {
-        toast.success('محصول با موفقیت اضافه شد')
-        router.refresh();
-      } else {
-        toast.error('خطا در ثبت محصول')
+      if (image) {
+        formData.append("image", image);
       }
-    } catch (err) {
-      toast.error(err.message)
-    }
+      await createProduct(formData); // 👈 اینجا magic اتفاق میفته
 
-    reset();
-    setImage(null);
-    setPreview(null);
+      toast.success("محصول با موفقیت اضافه شد");
+      router.refresh();
+
+      reset();
+      setImage(null);
+      setPreview(null);
+    } catch (err) {
+      toast.error(`محصول با موفقیت اضافه نشد ${err.message}`);
+    }
   };
   const handleFile = (file) => {
     if (!file) return;
@@ -180,7 +175,7 @@ export default function AddProduct() {
             )}
           </div>
 
-          <button className="w-full mt-4 bg-[#0b5b3c] text-white py-3 rounded-2xl font-bold hover:bg-[#08452d] transition">
+          <button type="submit" className="w-full mt-4 bg-[#0b5b3c] text-white py-3 rounded-2xl font-bold hover:bg-[#08452d] transition">
             ثبت محصول
           </button>
         </form>

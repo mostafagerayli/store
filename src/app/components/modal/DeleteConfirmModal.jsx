@@ -9,11 +9,7 @@ export default function DeleteConfirmModal({
   return (
     <div className="space-y-6">
       <p className="text-gray-600">
-        آیا از حذف محصول
-        <span className="mx-1 font-bold text-red-500">
-          {product?.name}
-        </span>
-        مطمئن هستید؟
+ایا از حذف محصول {product.name} مطمئن هستید؟
       </p>
 
       <div className="flex justify-end gap-3">
