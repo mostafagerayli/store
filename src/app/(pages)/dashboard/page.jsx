@@ -1,13 +1,13 @@
-import ClientLayout from "@/app/layout/ClientLayout";
-import React from "react";
+import AddProduct from "@/app/components/page/dashboard/AddProducts";
 import OrdersDashboard from "@/app/components/page/dashboard/OrderDashboard";
-import AddProducts from "@/app/components/page/dashboard/AddProducts";
+import ClientLayout from "@/app/layout/ClientLayout";
+
 
 async function DashboardPage({ searchParams }) {
   const params = await searchParams;
   return (
     <ClientLayout>
-      <AddProducts />
+      <AddProduct/>
       <OrdersDashboard searchParams={params} />
     </ClientLayout>
   );
