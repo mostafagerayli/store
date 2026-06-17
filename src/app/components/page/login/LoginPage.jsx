@@ -1,7 +1,7 @@
 import Image from "next/image";
 import LoginForm from "./LoginForm";
 
-function LoginPage() {
+async function LoginPage() {
   return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 relative">
         {/* MOBILE BACKGROUND ONLY */}

@@ -1,23 +1,24 @@
-import { pool } from "@/app/lib/db";
+import { prisma } from "@/app/lib/prisma";
 
 export async function GET(req, { params }) {
   try {
-    const { slug } = await params;
+    const { slug } = params;
 
-    const result = await pool.query(
-      "SELECT * FROM products WHERE slug = $1",
-      [slug]
-    );
+    const product = await prisma.products.findUnique({
+      where: {
+        slug,
+      },
+    });
 
-    if (result.rows.length === 0) {
+    if (!product) {
       return Response.json(
         { message: "Product not found" },
         { status: 404 }
       );
     }
 
-  
-    return Response.json(result.rows[0]);
+    return Response.json(product);
+
   } catch (error) {
     return Response.json(
       { message: error.message },

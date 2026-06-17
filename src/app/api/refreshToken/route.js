@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { pool } from "@/app/lib/db";
+import { prisma } from "@/app/lib/prisma";
 
 export async function POST(req) {
   try {
@@ -8,32 +8,26 @@ export async function POST(req) {
     const refreshToken = req.cookies.get("refreshToken")?.value;
 
     if (!refreshToken) {
-      return NextResponse.json(
-        { error: "No refresh token" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
     }
 
     // 2️⃣ بررسی اعتبار refresh token
-    const decoded = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_SECRET
-    );
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
 
     // 3️⃣ گرفتن role واقعی از دیتابیس
-    const result = await pool.query(
-      "SELECT id, role FROM users WHERE id=$1",
-      [decoded.id]
-    );
+    const user = await prisma.users.findUnique({
+      where: {
+        id: decoded.id,
+      },
+      select: {
+        id: true,
+        role: true,
+      },
+    });
 
-    if (result.rows.length === 0) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-
-    const user = result.rows[0];
 
     // 4️⃣ ساخت access token جدید با role آپدیت‌شده
     const newAccessToken = jwt.sign(
@@ -42,7 +36,7 @@ export async function POST(req) {
         role: user.role,
       },
       process.env.ACCESS_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "15m" },
     );
 
     const response = NextResponse.json({ success: true });
@@ -50,18 +44,17 @@ export async function POST(req) {
     // 5️⃣ ست کردن access جدید داخل cookie
     response.cookies.set("accessToken", newAccessToken, {
       httpOnly: true,
-      secure:false,
+      secure: false,
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 15,
     });
 
     return response;
-
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { error: "Invalid refresh token" },
-      { status: 403 }
+      { status: 403 },
     );
   }
 }

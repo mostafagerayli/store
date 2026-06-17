@@ -2,9 +2,8 @@
 
 import { writeFile } from "fs/promises";
 import path from "path";
-import { pool } from "@/app/lib/db";
+import { prisma } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
-import fs from "fs";
 
 export async function createProduct(formData) {
   const name = formData.get("name");
@@ -22,46 +21,37 @@ export async function createProduct(formData) {
 
     const fileName = `${Date.now()}-${image.name}`;
 
-    const filePath = path.join(
-      process.cwd(),
-      "public/upload",
-      fileName
-    );
+    const filePath = path.join(process.cwd(), "public/upload", fileName);
 
     await writeFile(filePath, buffer);
 
     imagePath = `/upload/${fileName}`;
   }
 
-  // محصول را ایجاد کن و id را بگیر
-  const result = await pool.query(
-    `
-    INSERT INTO products
-    (name, weight, price, stock, description, image_url)
-    VALUES ($1,$2,$3,$4,$5,$6)
-    RETURNING id
-    `,
-    [name, weight, price, stock, description, imagePath]
-  );
+  // 1. create product
+  const product = await prisma.products.create({
+    data: {
+      name,
+      weight: weight ? Number(weight) : null,
+      price: price ? Number(price) : null,
+      stock: stock ? Number(stock) : 0,
+      description,
+      image_url: imagePath,
+    },
+  });
 
-  const productId = result.rows[0].id;
+  // 2. slug
+  const slug = `pestechi-${product.id}`;
 
-  // ساخت slug
-  const slug = `pestechi-${productId}`;
-
-  // ذخیره slug
-  await pool.query(
-    `
-    UPDATE products
-    SET slug = $1
-    WHERE id = $2
-    `,
-    [slug, productId]
-  );
+  await prisma.products.update({
+    where: { id: product.id },
+    data: { slug },
+  });
 
   revalidatePath("/dashboard");
-}
 
+  return product;
+}
 
 export async function editProduct(id, formData) {
   try {
@@ -73,13 +63,9 @@ export async function editProduct(id, formData) {
 
     const uploadDir = path.join(process.cwd(), "public/upload");
 
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
+    let image_url;
 
-    let result;
-
-    // اگر عکس جدید انتخاب شده باشد
+    // اگر عکس جدید آپلود شد
     if (file instanceof File && file.size > 0) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
@@ -89,44 +75,34 @@ export async function editProduct(id, formData) {
 
       await writeFile(filePath, buffer);
 
-      const image_url = `/upload/${fileName}`;
-
-      result = await pool.query(
-        `
-        UPDATE products
-        SET
-          name = $1,
-          description = $2,
-          price = $3,
-          stock = $4,
-          image_url = $5
-        WHERE id = $6
-        RETURNING *
-        `,
-        [name, description, price, stock, image_url, id]
-      );
-    } else {
-      // بدون تغییر عکس
-      result = await pool.query(
-        `
-        UPDATE products
-        SET
-          name = $1,
-          description = $2,
-          price = $3,
-          stock = $4
-        WHERE id = $5
-        RETURNING *
-        `,
-        [name, description, price, stock, id]
-      );
+      image_url = `/upload/${fileName}`;
     }
+
+    const updated = await prisma.products.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        name,
+        description,
+        price: price ? Number(price) : undefined,
+        stock: stock ? Number(stock) : undefined,
+        ...(image_url && { image_url }),
+      },
+    });
+
+    // 🔥 حل مشکل Decimal برای ارسال به Client
+    const safeData = {
+      ...updated,
+      price: updated.price ? Number(updated.price) : null,
+      weight: updated.weight ? Number(updated.weight) : null,
+    };
 
     revalidatePath("/dashboard");
 
     return {
       success: true,
-      data: result.rows[0],
+      data: safeData,
     };
   } catch (error) {
     console.error("UPDATE PRODUCT ERROR:", error);
@@ -137,23 +113,21 @@ export async function editProduct(id, formData) {
     };
   }
 }
-
 export async function deleteProduct(id) {
   try {
-    if (!id) {
-      throw new Error("Product id is required");
-    }
+    if (!id) throw new Error("Product id is required");
 
-    const result = await pool.query(
-      "DELETE FROM products WHERE id = $1 RETURNING *",
-      [id]
-    );
+    const deleted = await prisma.products.delete({
+      where: {
+        id: Number(id),
+      },
+    });
 
     revalidatePath("/dashboard");
 
     return {
       success: true,
-      data: result.rows[0],
+      data: deleted,
     };
   } catch (error) {
     console.error("DELETE PRODUCT ERROR:", error);

@@ -1,4 +1,4 @@
-import { pool } from "./db";
+import { prisma } from "@/app/lib/prisma";
 
 export async function getProducts(
   page = 1,
@@ -9,64 +9,62 @@ export async function getProducts(
   try {
     const offset = (page - 1) * limit;
 
-    let orderBy = "created_at DESC";
+    // sorting
+    let orderBy;
 
     switch (sort) {
       case "price_asc":
-        orderBy = "price ASC";
+        orderBy = { price: "asc" };
         break;
 
       case "price_desc":
-        orderBy = "price DESC";
+        orderBy = { price: "desc" };
         break;
 
       default:
-        orderBy = "created_at DESC";
+        orderBy = { created_at: "desc" };
     }
 
-    const hasSearch = search.trim().length > 0;
+    // search filter
+    const where = search
+      ? {
+          OR: [
+            {
+              name: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }
+      : {};
 
-    const productsQuery = `
-      SELECT *
-      FROM products
-      ${
-        hasSearch
-          ? `WHERE name ILIKE $3
-             OR description ILIKE $3`
-          : ""
-      }
-      ORDER BY ${orderBy}
-      LIMIT $1 OFFSET $2
-    `;
+    // get products
+    const products = await prisma.products.findMany({
+      where,
+      orderBy,
+      take: Number(limit),
+      skip: Number(offset),
+    });
 
-    const productsValues = hasSearch
-      ? [limit, offset, `%${search}%`]
-      : [limit, offset];
-
-    const productsResult = await pool.query(
-      productsQuery,
-      productsValues
-    );
-
-    const countQuery = hasSearch
-      ? `
-        SELECT COUNT(*) AS total
-        FROM products
-        WHERE name ILIKE $1
-        OR description ILIKE $1
-      `
-      : `
-        SELECT COUNT(*) AS total
-        FROM products
-      `;
-
-    const countResult = hasSearch
-      ? await pool.query(countQuery, [`%${search}%`])
-      : await pool.query(countQuery);
+    // count total
+    const total = await prisma.products.count({
+      where,
+    });
 
     return {
-      products: productsResult.rows,
-      total: Number(countResult.rows[0].total),
+      products: products.map((p) => ({
+        ...p,
+        price: p.price ? Number(p.price) : null,
+        weight: p.weight ? Number(p.weight) : null,
+      })),
+      total,
       error: null,
     };
   } catch (error) {

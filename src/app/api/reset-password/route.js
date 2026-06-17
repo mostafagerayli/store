@@ -1,4 +1,4 @@
-import { pool } from "@/app/lib/db";
+import { prisma } from "@/app/lib/prisma";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
@@ -14,14 +14,21 @@ export async function POST(req) {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     // آپدیت رمز در DB
-    await pool.query("UPDATE users SET password=$1 WHERE id=$2", [
-      hashedPassword,
-      decoded.id,
-    ]);
+    await prisma.users.update({
+      where: {
+        id: decoded.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
 
     return NextResponse.json({ message: "Password updated successfully!" });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to reset password" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to reset password" },
+      { status: 500 },
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { pool } from "@/app/lib/db";
+import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
@@ -10,29 +10,25 @@ export async function POST(req) {
     if (!phone || !password) {
       return NextResponse.json(
         { error: "Phone and password required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
-//پیدا کردن کاربر از دیتابیس
-    const result = await pool.query(
-      "SELECT * FROM users WHERE phone=$1",
-      [phone]
-    );
-//اگر نبود
-    if (result.rows.length === 0) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 401 }
-      );
+    //پیدا کردن کاربر از دیتابیس
+    const user = await prisma.users.findUnique({
+      where: {
+        phone: phone,
+      },
+    });
+    //اگر نبود
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 401 });
     }
-
-    const user = result.rows[0];
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return NextResponse.json(
         { error: "Incorrect password" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -44,14 +40,12 @@ export async function POST(req) {
         name: user.name,
       },
       process.env.ACCESS_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "15m" },
     );
 
-    const refreshToken = jwt.sign(
-      { id: user.id },
-      process.env.REFRESH_SECRET,
-      { expiresIn: "7d" }
-    );
+    const refreshToken = jwt.sign({ id: user.id }, process.env.REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
 
     // ✅ ساخت response
     const response = NextResponse.json({
@@ -82,13 +76,12 @@ export async function POST(req) {
     });
 
     return response;
-
   } catch (err) {
     console.error("Login error:", err.message);
 
     return NextResponse.json(
       { error: "Database error", details: err.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
