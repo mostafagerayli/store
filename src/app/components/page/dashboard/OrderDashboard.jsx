@@ -15,10 +15,17 @@ export default async function OrdersDashboard({ searchParams }) {
       </div>
     );
   }
-  return (
-    <>
-      <ProductsTable products={products} />
-      <Pagination page={page} totalPages={totalPages} basePath="/dashboard" />
-    </>
-  );
+return (
+  <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6">
+    <ProductsTable products={products} />
+
+    <div className="mt-6">
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        basePath="/dashboard"
+      />
+    </div>
+  </div>
+);
 }

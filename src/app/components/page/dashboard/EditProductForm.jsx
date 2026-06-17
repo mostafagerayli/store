@@ -6,21 +6,37 @@ import { useState } from "react";
 import Image from "next/image";
 import { editProduct } from "@/app/lib/actions/product.actions";
 import { toast } from "react-toastify";
+import InputField from "../../input/InputField";
 
 export default function EditProductForm({ product, onClose }) {
   const router = useRouter();
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(product?.image_url || null);
-  const { register, handleSubmit } = useForm({
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
     defaultValues: {
       name: product?.name,
-      weight: product?.weight,
-      price: product?.price,
-      stock: product?.stock,
-      image_url: product?.image_url,
+      weight: Number(product?.weight),
+      price: Number(product?.price),
+      stock: Number(product?.stock),
       description: product?.description,
     },
   });
+
+  const inputClass =
+    "w-full mt-2 px-4 py-3 rounded-2xl border border-gray-200 outline-none focus:border-[#0b5b3c] transition";
+
+  const handleFile = (file) => {
+    if (!file) return;
+
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -36,95 +52,164 @@ export default function EditProductForm({ product, onClose }) {
         formData.append("image", image);
       }
 
-      await editProduct(product.id,formData);
-      toast.success("محصول با موفقیت اپدیت شد");
+      await editProduct(product.id, formData);
+
+      toast.success("محصول با موفقیت ویرایش شد");
+
       router.refresh();
       onClose();
     } catch (err) {
-      toast.error(`محصول با موفقیت اپدیت نشد ${err.message}`);    
+      toast.error(err.message || "خطا در ویرایش محصول");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <input
-        {...register("name")}
-        placeholder="نام محصول"
-        className="w-full rounded-xl border p-3"
-      />
+    <div className="px-1">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* Header */}
+        <div className="pb-4 border-b">
+          <h3 className="text-xl font-black text-[#0b5b3c]">
+            ویرایش محصول
+          </h3>
 
-      <input
-        {...register("weight")}
-        placeholder="وزن"
-        className="w-full rounded-xl border p-3"
-      />
+          <p className="text-sm text-gray-500 mt-1">
+            اطلاعات محصول را بروزرسانی کنید
+          </p>
+        </div>
 
-      <input
-        {...register("price")}
-        placeholder="قیمت"
-        className="w-full rounded-xl border p-3"
-      />
-
-      <input
-        {...register("stock")}
-        placeholder="موجودی"
-        className="w-full rounded-xl border p-3"
-      />
-
-      <div
-        className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer"
-        onClick={() => document.getElementById("editImage").click()}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          e.preventDefault();
-          const file = e.dataTransfer.files[0];
-          setImage(file);
-          setPreview(URL.createObjectURL(file));
-        }}
-      >
-        <input
-          id="editImage"
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => {
-            const file = e.target.files[0];
-            setImage(file);
-            setPreview(URL.createObjectURL(file));
+        {/* نام محصول */}
+        <InputField
+          label="نام محصول"
+          name="name"
+          register={register}
+          rules={{
+            required: "نام محصول الزامی است",
           }}
+          error={errors.name?.message}
         />
 
-        {preview ? (
-          <div className="relative w-full h-32 mx-auto rounded-lg overflow-hidden">
-            <Image src={preview} alt="preview" fill className="object-cover" />
+        {/* وزن */}
+        <InputField
+          label="وزن (کیلوگرم)"
+          name="weight"
+          inputMode="numeric"
+          register={register}
+          rules={{
+            required: "وزن الزامی است",
+          }}
+          error={errors.weight?.message}
+        />
+
+        {/* قیمت */}
+        <InputField
+          label="قیمت (تومان)"
+          name="price"
+          inputMode="numeric"
+          register={register}
+          rules={{
+            required: "قیمت الزامی است",
+          }}
+          error={errors.price?.message}
+        />
+
+        {/* موجودی */}
+        <InputField
+          label="موجودی"
+          name="stock"
+          inputMode="numeric"
+          register={register}
+          rules={{
+            required: "موجودی الزامی است",
+          }}
+          error={errors.stock?.message}
+        />
+
+        {/* تصویر */}
+        <div>
+          <label className="text-sm font-bold text-gray-600 mb-2 block">
+            تصویر محصول
+          </label>
+
+          <div
+            className="border-2 border-dashed border-gray-200 hover:border-[#0b5b3c] rounded-2xl p-5 text-center cursor-pointer transition"
+            onClick={() => document.getElementById("editImage").click()}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              handleFile(e.dataTransfer.files[0]);
+            }}
+          >
+            <input
+              id="editImage"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleFile(e.target.files[0])}
+            />
+
+            {preview ? (
+              <div className="relative h-44 w-full rounded-2xl overflow-hidden">
+                <Image
+                  src={preview}
+                  alt="preview"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <div className="py-8">
+                <p className="font-semibold text-gray-600">
+                  برای تغییر تصویر کلیک کنید
+                </p>
+
+                <p className="text-sm text-gray-400 mt-1">
+                  یا فایل را اینجا رها کنید
+                </p>
+              </div>
+            )}
           </div>
-        ) : (
-          <p>برای تغییر تصویر کلیک یا درگ کن</p>
-        )}
-      </div>
+        </div>
 
-      <textarea
-        {...register("description")}
-        placeholder="توضیحات"
-        className="w-full rounded-xl border p-3"
-      />
+        {/* توضیحات */}
+        <div>
+          <label className="text-sm font-bold text-gray-600">
+            توضیحات محصول
+          </label>
 
-      <div className="flex justify-end gap-2">
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-xl bg-gray-200 px-4 py-2"
-        >
-          انصراف
-        </button>
+          <textarea
+            {...register("description", {
+              required: "توضیحات الزامی است",
+            })}
+            className={`${inputClass} h-32 resize-none`}
+            placeholder="توضیحات محصول..."
+          />
 
-        <button
-          type="submit"
-          className="rounded-xl bg-[#0b5b3c] px-4 py-2 text-white"
-        >
-          ذخیره تغییرات
-        </button>
-      </div>
-    </form>
+          {errors.description && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex gap-3 pt-4 border-t">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 rounded-2xl bg-gray-100 py-3 font-bold text-gray-700 hover:bg-gray-200 transition"
+          >
+            انصراف
+          </button>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 rounded-2xl bg-[#0b5b3c] py-3 font-bold text-white hover:bg-[#08452d] transition disabled:opacity-50"
+          >
+            {isSubmitting ? "در حال ذخیره..." : "ذخیره تغییرات"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

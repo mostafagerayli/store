@@ -3,7 +3,6 @@
 export default function Modal({
   isOpen,
   onClose,
-  title,
   children,
   size = "md",
 }) {
@@ -36,11 +35,7 @@ export default function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-6 py-4">
-          <h2 className="text-lg font-bold text-gray-800">
-            {title}
-          </h2>
-
+        <div className="flex items-center justify-between px-6 py-4">
           <button
             onClick={onClose}
             className="flex h-9 w-9 items-center justify-center rounded-full text-xl text-gray-500 transition hover:bg-gray-100 hover:text-black"

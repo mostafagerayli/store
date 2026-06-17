@@ -42,7 +42,7 @@ export default function AddProduct() {
       setImage(null);
       setPreview(null);
     } catch (err) {
-      toast.error(`محصول با موفقیت اضافه نشد ${err.message}`);
+      toast.error(`محصول با موفقیت اضافه نشد ` || err.message);
     }
   };
   const handleFile = (file) => {
@@ -55,15 +55,15 @@ export default function AddProduct() {
     "w-full mt-2 px-4 py-3 rounded-2xl border border-gray-200 outline-none focus:border-[#0b5b3c] transition";
 
   return (
-    <div className="min-h-screen bg-[#f7f5ef] p-6 flex justify-center">
-      <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-black text-[#0b5b3c] mb-6">
+    <div className="sticky top-6">
+      <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6">
+        <h1 className="text-3xl font-black text-[#0b5b3c] mb-4 mt-6">
           افزودن محصول
         </h1>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-8 rounded-[28px] shadow-xl space-y-5"
+          className="bg-white p-8  space-y-5"
         >
           {/* نام محصول */}
           <InputField
@@ -152,9 +152,7 @@ export default function AddProduct() {
                 />
               </div>
             ) : (
-              <p className="text-gray-500">
-                عکس را اینجا بنداز یا کلیک کن انتخاب کن
-              </p>
+              <p className="text-gray-500">عکس را بکشید و اینجا رها کنید</p>
             )}
           </div>
 
@@ -175,7 +173,10 @@ export default function AddProduct() {
             )}
           </div>
 
-          <button type="submit" className="w-full mt-4 bg-[#0b5b3c] text-white py-3 rounded-2xl font-bold hover:bg-[#08452d] transition">
+          <button
+            type="submit"
+            className="w-full bg-[#0b5b3c] text-white py-3 rounded-2xl font-bold hover:bg-[#08452d] transition"
+          >
             ثبت محصول
           </button>
         </form>

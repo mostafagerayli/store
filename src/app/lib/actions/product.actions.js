@@ -16,7 +16,6 @@ export async function createProduct(formData) {
 
   let imagePath = null;
 
-  // 🔥 مهم‌ترین بخش
   if (image instanceof File && image.size > 0) {
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -34,17 +33,34 @@ export async function createProduct(formData) {
     imagePath = `/upload/${fileName}`;
   }
 
-  await pool.query(
-    `INSERT INTO products (name, weight, price, stock, description, image_url)
-     VALUES ($1,$2,$3,$4,$5,$6)`,
+  // محصول را ایجاد کن و id را بگیر
+  const result = await pool.query(
+    `
+    INSERT INTO products
+    (name, weight, price, stock, description, image_url)
+    VALUES ($1,$2,$3,$4,$5,$6)
+    RETURNING id
+    `,
     [name, weight, price, stock, description, imagePath]
+  );
+
+  const productId = result.rows[0].id;
+
+  // ساخت slug
+  const slug = `pestechi-${productId}`;
+
+  // ذخیره slug
+  await pool.query(
+    `
+    UPDATE products
+    SET slug = $1
+    WHERE id = $2
+    `,
+    [slug, productId]
   );
 
   revalidatePath("/dashboard");
 }
-
-
-
 
 
 export async function editProduct(id, formData) {
@@ -119,7 +135,7 @@ export async function deleteProduct(id) {
       [id]
     );
 
-    revalidatePath("/dashboard/products");
+    revalidatePath("/dashboard");
 
     return {
       success: true,

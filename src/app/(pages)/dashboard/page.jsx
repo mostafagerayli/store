@@ -7,8 +7,21 @@ async function DashboardPage({ searchParams }) {
   const params = await searchParams;
   return (
     <ClientLayout>
-      <AddProduct/>
-      <OrdersDashboard searchParams={params} />
+      <div className="p-6">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          
+          {/* فرم */}
+          <div className="xl:col-span-4 ">
+            <AddProduct />
+          </div>
+
+          {/* جدول */}
+          <div className="xl:col-span-8">
+            <OrdersDashboard searchParams={params} />
+          </div>
+
+        </div>
+      </div>
     </ClientLayout>
   );
 }
