@@ -69,18 +69,17 @@ export async function editProduct(id, formData) {
     const description = formData.get("description");
     const price = formData.get("price");
     const stock = formData.get("stock");
-    const file = formData.get("image");
+    const file = formData.get("image_url");
 
-    let image_url = formData.get("image_url") || null;
-
-    // 📁 ensure uploads folder exists
     const uploadDir = path.join(process.cwd(), "public/upload");
 
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    // 🖼️ اگر عکس جدید اومد
+    let result;
+
+    // اگر عکس جدید انتخاب شده باشد
     if (file instanceof File && file.size > 0) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
@@ -90,23 +89,38 @@ export async function editProduct(id, formData) {
 
       await writeFile(filePath, buffer);
 
-      image_url = `/upload/${fileName}`;
-    }
+      const image_url = `/upload/${fileName}`;
 
-    const result = await pool.query(
-      `
-      UPDATE products
-      SET
-        name = $1,
-        description = $2,
-        price = $3,
-        stock = $4,
-        image_url = $5
-      WHERE id = $6
-      RETURNING *
-      `,
-      [name, description, price, stock, image_url, id]
-    );
+      result = await pool.query(
+        `
+        UPDATE products
+        SET
+          name = $1,
+          description = $2,
+          price = $3,
+          stock = $4,
+          image_url = $5
+        WHERE id = $6
+        RETURNING *
+        `,
+        [name, description, price, stock, image_url, id]
+      );
+    } else {
+      // بدون تغییر عکس
+      result = await pool.query(
+        `
+        UPDATE products
+        SET
+          name = $1,
+          description = $2,
+          price = $3,
+          stock = $4
+        WHERE id = $5
+        RETURNING *
+        `,
+        [name, description, price, stock, id]
+      );
+    }
 
     revalidatePath("/dashboard");
 

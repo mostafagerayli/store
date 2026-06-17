@@ -12,7 +12,7 @@ export default function EditProductForm({ product, onClose }) {
   const router = useRouter();
 
   const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(product?.image_url || null);
+  const [preview, setPreview] = useState(product?.image_url);
 
   const {
     register,
@@ -49,7 +49,7 @@ export default function EditProductForm({ product, onClose }) {
       formData.append("description", data.description);
 
       if (image) {
-        formData.append("image", image);
+        formData.append("image_url", image);
       }
 
       await editProduct(product.id, formData);

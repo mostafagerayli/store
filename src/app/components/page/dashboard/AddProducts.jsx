@@ -69,6 +69,7 @@ export default function AddProduct() {
           <InputField
             label="نام محصول"
             name="name"
+            placeholder=' مثال : پسته اکبری'
             register={register}
             rules={{
               required: "نام محصول الزامی است",
@@ -79,6 +80,7 @@ export default function AddProduct() {
           <InputField
             name="weight"
             label="وزن (گرم)"
+            placeholder='مثال : 1,000'
             inputMode="numeric"
             register={register}
             rules={{
@@ -94,8 +96,9 @@ export default function AddProduct() {
           {/* قیمت */}
           <InputField
             name="price"
-            label=" قیمت"
+            label="قیمت (تومان)"
             inputMode="numeric"
+            placeholder="مثال : 1,000,000"
             register={register}
             rules={{
               required: "قیمت الزامی است",
@@ -112,6 +115,7 @@ export default function AddProduct() {
             name="stock"
             label="موجودی"
             inputMode="numeric"
+            placeholder="مثال : 10"
             register={register}
             rules={{
               required: "موجودی الزامی است",

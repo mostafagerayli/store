@@ -44,7 +44,6 @@ function IconsHeader() {
 
         {user ? (
           <>
-            <p>{user.name}</p>
             <button className="relative" onClick={() => logout()}>
               <ImExit className="w-5 h-5 text-gray-800 dark:text-white" />
             </button>
