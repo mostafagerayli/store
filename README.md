@@ -1,180 +1,152 @@
 # 🥜 Pistachio Store
 
-فروشگاه آنلاین پسته توسعه داده شده با Next.js و PostgreSQL.
+فروشگاه آنلاین پسته توسعه داده شده با **Next.js** و **PostgreSQL**.
 
-این پروژه با هدف یادگیری و پیاده‌سازی مفاهیم Full Stack شامل احراز هویت، مدیریت کاربران، مدیریت محصولات، سبد خرید و پنل مدیریت توسعه داده شده است.
-
----
-
-## 🚀 قابلیت‌های پیاده‌سازی شده
-## 🚀 قابلیت‌ها
-
-- ایجاد، ویرایش و حذف محصولات (CRUD کامل)
-- استفاده از Server Actions به جای API Routes
-- آپلود تصویر محصول و ذخیره آن در `/public/uploads`
-- ذخیره مسیر تصویر در دیتابیس PostgreSQL
-- نمایش لیست محصولات در داشبورد
-- نمایش تصویر با `next/image` و fallback در صورت نبود تصویر
-- استفاده از react-hook-form برای مدیریت فرم‌ها و validation
-- نمایش پیام‌های موفقیت و خطا با react-toastify
-- استفاده از modal برای ویرایش و حذف محصولات
-- بروزرسانی خودکار UI بعد از تغییرات با `router.refresh`
+این پروژه با هدف یادگیری و پیاده‌سازی مفاهیم **Full Stack Development** توسعه داده شده و شامل سیستم احراز هویت، مدیریت کاربران، مدیریت محصولات، سبد خرید و پنل مدیریت است.
 
 ---
 
-## 🧱 تکنولوژی‌ها
+# ✨ Features
 
-- Next.js (App Router)
-- React
-- Server Actions
-- PostgreSQL (pg)
-- React Hook Form
-- React Toastify
-- Next Image
-### Authentication & Authorization
+## 🔐 Authentication & Authorization
 
-- ثبت نام کاربران
-- ورود کاربران
-- خروج کاربران
-- بازیابی رمز عبور
-- هش کردن رمز عبور با bcrypt
-- JWT Authentication
-- Access Token
-- Refresh Token
-- محافظت از Route ها
-- Middleware Authentication
-
-### User Management
-
-- ذخیره اطلاعات کاربران در PostgreSQL
-- ثبت نام با شماره تلفن
-- مدیریت اطلاعات کاربران
-
-### Product Management
-
-- افزودن محصول
-- ویرایش محصول
-- حذف محصول
-- نمایش لیست محصولات
-- مدیریت موجودی کالا
-- آپلود تصویر محصول
-🎯 بهبود سیستم اعلان‌ها و مدیریت خطاها (Toast + Error Handling)
-
-در این مرحله از پروژه، سیستم اعلان‌ها و مدیریت خطاها به صورت استاندارد و حرفه‌ای بازطراحی شد.
+* ثبت‌نام کاربران
+* ورود کاربران
+* خروج کاربران
+* بازیابی رمز عبور
+* رمزنگاری رمز عبور با **bcrypt**
+* احراز هویت با **JWT**
+* Access Token & Refresh Token
+* نگهداری Session بعد از Refresh
+* دریافت اطلاعات کاربر از طریق `/api/me`
+* ذخیره JWT داخل **HttpOnly Cookie**
+* محافظت از Routeها با Middleware
 
 ---
 
+## 👤 User Management
 
-
-## ✨ تغییرات انجام شده
-
-### 🔔 سیستم Toast
-- جایگزینی Toast سفارشی با react-toastify
-- اضافه شدن ToastContainer به صورت global
-- ساده‌سازی ساختار ToastProvider
-- حذف Context غیرضروری و کاهش پیچیدگی
+* ذخیره اطلاعات کاربران در PostgreSQL
+* ثبت‌نام با شماره تلفن
+* مدیریت اطلاعات کاربران
+* نمایش نام و نقش کاربر در رابط کاربری
 
 ---
 
-### ⚠️ سیستم مدیریت خطا (Error Handling)
+## 📦 Product Management
 
-- ایجاد fetchClient برای مدیریت مرکزی درخواست‌های API
-- استفاده از ApiError برای استانداردسازی خطاها
-- یکپارچه‌سازی مدیریت خطا در تمام سرویس‌ها
-- refactor کردن سرویس‌های auth (login / register / logout)
-- استفاده از try/catch در UI برای نمایش خطا با Toast
+* ایجاد محصول
+* ویرایش محصول
+* حذف محصول
+* مشاهده لیست محصولات
+* مدیریت موجودی کالا
+* آپلود تصویر محصول
+* ذخیره تصاویر در `/public/uploads`
+* ذخیره مسیر تصویر در PostgreSQL
+* نمایش تصاویر با `next/image`
+* پشتیبانی از Fallback Image
+* Pagination
+* Search
+* Sort
 
 ---
 
-## 🧠 معماری جدید پروژه
+## 🛒 Shopping Cart
 
+* افزودن محصول به سبد خرید
+* حذف محصول از سبد خرید
+* تغییر تعداد محصولات
+* محاسبه مجموع سفارش
+* مدیریت State با Redux Toolkit
 
-UI (try/catch + toast)
-↓
+---
+
+## ⚙️ Admin Dashboard
+
+* داشبورد مدیریت
+* مدیریت محصولات
+* ایجاد، ویرایش و حذف محصولات
+* آپلود تصاویر
+* مدیریت موجودی
+
+---
+
+## 🎨 UI & UX
+
+* React Hook Form
+* فرم‌های اعتبارسنجی شده
+* Modal برای ویرایش و حذف
+* React Toastify
+* بروزرسانی خودکار رابط کاربری با `router.refresh`
+
+---
+
+## ⚠️ Error Handling
+
+ساختار مدیریت خطاها به صورت لایه‌ای پیاده‌سازی شده است:
+
+```
+UI
+ ↓
 Service Layer
-↓
+ ↓
 fetchClient
-↓
-API
+ ↓
+Server
+```
 
+### قابلیت‌ها
 
----
-
-## 🚀 نتیجه نهایی
-
-- کد تمیزتر و قابل نگهداری‌تر شده
-- مدیریت خطاها استاندارد و یکپارچه شده
-- تجربه کاربری (UX) با Toast بهبود یافته
-- ساختار پروژه آماده توسعه‌های بزرگ‌تر شده
-
-اگر بخوای قدم بعدی رو بریم، می‌تونیم پروژه‌تو برسونیم به سطح بالاتر:
-
-🔥 
-error mapping (مثلاً phone error مستقیم زیر input بیاد)
-🔥 
-auto logout روی 401
-🔥 
-loading global system
-🔥 
-retry failed requests
-
-
-### Shopping Cart
-
-- افزودن محصول به سبد خرید
-- حذف محصول از سبد خرید
-- تغییر تعداد محصولات
-- محاسبه مجموع سفارش
-- مدیریت State با Redux Toolkit
-
-### Admin Dashboard
-
-- پنل مدیریت
-- مدیریت محصولات
-- ویرایش اطلاعات محصولات
-- حذف محصولات
-- آپلود تصاویر
+* Centralized Error Handling
+* ApiError
+* Fetch Client
+* Toast Notifications
+* try/catch در UI
+* مدیریت یکپارچه خطاها
 
 ---
 
-## 🛠 تکنولوژی‌های استفاده شده
+# 🧱 Tech Stack
 
-### Frontend
+## Frontend
 
-- Next.js (App Router)
-- React
-- Tailwind CSS
-- Redux Toolkit
-- React Hook Form
+* Next.js (App Router)
+* React
+* Tailwind CSS
+* Redux Toolkit
+* React Hook Form
+* React Toastify
 
-### Backend
+## Backend
 
-- Next.js Route Handlers
-- PostgreSQL
+* Next.js
+* Server Actions
+* Prisma ORM
+* PostgreSQL
 
-### Security
+## Security
 
-- JWT
-- bcrypt
-- Access Token
-- Refresh Token
-- Middleware
+* JWT
+* bcrypt
+* HttpOnly Cookies
+* Middleware Authentication
 
 ---
 
-## 📂 ساختار دیتابیس
+# 🗄 Database Schema
 
-### users
+## users
 
 ```sql
 id
 full_name
 phone
 password
+role
 created_at
 ```
 
-### products
+## products
 
 ```sql
 id
@@ -188,7 +160,7 @@ created_at
 
 ---
 
-## 🪝 Custom Hooks
+# 🪝 Custom Hooks
 
 ```text
 useLogin
@@ -199,91 +171,110 @@ useResetPassword
 
 ---
 
-## 🌐 API Routes
+# 📂 Project Structure
 
-### Authentication
-
-```http
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-POST /api/auth/reset-password
-POST /api/auth/refresh
-```
-
-### Products
-
-```http
-GET    /api/products
-GET    /api/products/:id
-POST   /api/products
-PUT    /api/products/:id
-DELETE /api/products/:id
+```text
+app/
+components/
+actions/
+services/
+lib/
+hooks/
+context/
+prisma/
+public/uploads/
 ```
 
 ---
 
-## 📌 وضعیت فعلی پروژه
+# 🔥 Highlights
 
-### Completed
-
-- Authentication System
-- User Management
-- Product Management
-- Shopping Cart
-- Redux Toolkit
-- Image Upload
-- Admin Dashboard
-- Password Reset
-- JWT Authentication
-- Access & Refresh Token Flow
-  *Session Persistence بعد از Refresh
-  *نمایش نام و نقش کاربر در UI بدون از دست رفتن state
-  \*بازیابی اطلاعات کاربر بعد از Refresh (Persist Session)
-  👤 User Session Management (جدید)
-  ذخیره JWT داخل HttpOnly Cookie
-  دریافت اطلاعات کاربر بعد از Refresh از طریق /api/me
-  نگهداری state کاربر در AuthContext
-  جلوگیری از logout شدن کاربر بعد از refresh
-  نمایش نام و نقش کاربر در UI (Header / Profile Menu)
-
-### In Progress
-
-- Checkout Page
-- Product Details Page
-- Order Management
-- Payment Integration
-
-### Planned
-
-- Toast Notifications
-- Axios Interceptors
-- Centralized Error Handling
-- Search Products
-- Product Filtering
-- Pagination
-- Role Based Access Control (RBAC)
+* Full CRUD محصولات
+* Prisma ORM
+* Server Actions
+* Image Upload
+* Authentication با JWT
+* Refresh Token Flow
+* Session Persistence
+* Shopping Cart
+* Admin Dashboard
+* Centralized Error Handling
+* Pagination
+* Search & Sort
 
 ---
 
-## 🔒 نکات امنیتی
+# 📈 Project Status
 
-- رمز عبور کاربران به صورت هش شده ذخیره می‌شود.
-- احراز هویت با JWT انجام شده است.
-- Access Token و Refresh Token به صورت مجزا مدیریت می‌شوند.
-- مسیرهای محافظت شده توسط Middleware کنترل می‌شوند.
-  \*اطلاعات حساس فقط از طریق HttpOnly Cookie منتقل می‌شوند
+## ✅ Completed
+
+* Authentication
+* User Management
+* Product CRUD
+* Admin Dashboard
+* Shopping Cart
+* Image Upload
+* Password Reset
+* JWT Authentication
+* Refresh Token Flow
+* Session Persistence
+* Prisma Migration
+* Pagination
+* Search
+* Sort
+* Centralized Error Handling
 
 ---
 
-## ⚙️ راه‌اندازی پروژه
+## 🚧 In Progress
+
+* Checkout Page
+* Product Details Page
+* Order Management
+* Payment Integration
+
+---
+
+## 📌 Planned
+
+* Role Based Access Control (RBAC)
+* Global Loading System
+* Auto Logout on 401
+* Retry Failed Requests
+* Error Mapping
+* Product Filtering
+* Order History
+* User Profile
+
+---
+
+# 🔒 Security
+
+* رمز عبور کاربران با **bcrypt** هش می‌شود.
+* احراز هویت با JWT انجام شده است.
+* Access Token و Refresh Token به صورت مجزا مدیریت می‌شوند.
+* اطلاعات حساس از طریق **HttpOnly Cookie** منتقل می‌شوند.
+* Routeهای محافظت‌شده توسط Middleware کنترل می‌شوند.
+
+---
+
+# ⚙️ Installation
 
 ```bash
+git clone <repository-url>
+
+cd pistachio-store
+
 npm install
+
 npm run dev
 ```
 
-فایل `.env.local`:
+---
+
+# 🔑 Environment Variables
+
+فایل `.env.local`
 
 ```env
 DATABASE_URL=
@@ -295,6 +286,18 @@ JWT_REFRESH_SECRET=
 
 ---
 
-## 📝 یادداشت
+# 🚀 Future Improvements
 
-این پروژه همچنان در حال توسعه است و امکانات جدید به مرور به آن اضافه خواهد شد.
+* Payment Gateway
+* Wishlist
+* Product Reviews
+* Order Tracking
+* Email Verification
+* Notifications
+* Dashboard Analytics
+
+---
+
+# 📝 Notes
+
+این پروژه همچنان در حال توسعه است و به مرور قابلیت‌های جدیدی به آن اضافه خواهد شد. هدف اصلی پروژه، پیاده‌سازی یک فروشگاه آنلاین مدرن با معماری استاندارد Full Stack و استفاده از بهترین شیوه‌های توسعه در اکوسیستم Next.js است.

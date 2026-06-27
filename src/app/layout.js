@@ -3,8 +3,8 @@ import { ThemeProvider } from "./components/darkMode/ThemeProvider";
 import { Geist, Geist_Mono } from "next/font/google";
 import ReduxProvider from "./store/Provider";
 import ToastProvider from "./components/toast/ToastProvider";
-import AuthBootstrap from "./provider/AuthBootstrap";
 import CartPersistence from "./components/shoppingCart/Persistence";
+import AuthProvider from "./context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,16 +27,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthBootstrap>
+        <AuthProvider>
           <ThemeProvider>
             <ReduxProvider>
               <ToastProvider>
-              <CartPersistence/>
-              {children}
+                <CartPersistence />
+                {children}
               </ToastProvider>
             </ReduxProvider>
           </ThemeProvider>
-        </AuthBootstrap>
+        </AuthProvider>
       </body>
     </html>
   );

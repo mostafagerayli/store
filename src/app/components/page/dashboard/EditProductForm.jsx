@@ -56,7 +56,7 @@ export default function EditProductForm({ product, onClose }) {
 
       toast.success("محصول با موفقیت ویرایش شد");
 
-      router.refresh();
+      router.refresh()
       onClose();
     } catch (err) {
       toast.error(err.message || "خطا در ویرایش محصول");

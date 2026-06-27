@@ -37,7 +37,6 @@ export default function AddProduct() {
 
       toast.success("محصول با موفقیت اضافه شد");
       router.refresh();
-
       reset();
       setImage(null);
       setPreview(null);
@@ -69,7 +68,7 @@ export default function AddProduct() {
           <InputField
             label="نام محصول"
             name="name"
-            placeholder=' مثال : پسته اکبری'
+            placeholder=" مثال : پسته اکبری"
             register={register}
             rules={{
               required: "نام محصول الزامی است",
@@ -80,7 +79,7 @@ export default function AddProduct() {
           <InputField
             name="weight"
             label="وزن (گرم)"
-            placeholder='مثال : 1,000'
+            placeholder="مثال : 1,000"
             inputMode="numeric"
             register={register}
             rules={{

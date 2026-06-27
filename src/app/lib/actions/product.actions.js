@@ -3,7 +3,7 @@
 import { writeFile } from "fs/promises";
 import path from "path";
 import { prisma } from "@/app/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function createProduct(formData) {
   const name = formData.get("name");
@@ -48,8 +48,7 @@ export async function createProduct(formData) {
     data: { slug },
   });
 
-  revalidatePath("/dashboard");
-
+  revalidateTag("products");
   return product;
 }
 
@@ -98,7 +97,7 @@ export async function editProduct(id, formData) {
       weight: updated.weight ? Number(updated.weight) : null,
     };
 
-    revalidatePath("/dashboard");
+    revalidateTag("products");
 
     return {
       success: true,
@@ -123,7 +122,7 @@ export async function deleteProduct(id) {
       },
     });
 
-    revalidatePath("/dashboard");
+    revalidateTag("products");
 
     return {
       success: true,

@@ -1,10 +1,11 @@
 import { prisma } from "@/app/lib/prisma";
 
+export const revalidate = 60;
 export async function getProducts(
   page = 1,
   limit = 10,
   sort = "newest",
-  search = ""
+  search = "",
 ) {
   try {
     const offset = (page - 1) * limit;
@@ -45,18 +46,17 @@ export async function getProducts(
         }
       : {};
 
-    // get products
-    const products = await prisma.products.findMany({
-      where,
-      orderBy,
-      take: Number(limit),
-      skip: Number(offset),
-    });
-
-    // count total
-    const total = await prisma.products.count({
-      where,
-    });
+    const [products, total] = await Promise.all([
+      prisma.products.findMany({
+        where,
+        orderBy,
+        take: Number(limit),
+        skip: Number(offset),
+      }),
+      prisma.products.count({
+        where,
+      }),
+    ]);
 
     return {
       products: products.map((p) => ({

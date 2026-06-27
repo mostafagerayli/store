@@ -10,17 +10,14 @@ export default function ProductDetail({ product }) {
 
   const weights = [250, 500, 1000];
 
-  const totalPrice =
-    ((product.price * selectedWeight) / 1000) * quantity;
+  const totalPrice = ((product.price * selectedWeight) / 1000) * quantity;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 shadow-2xl mt-5 mb-5 rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* INFO */}
         <div className="flex flex-col gap-5 text-right">
-          <h1 className="text-3xl font-bold text-gray-900">
-            {product.name}
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
 
           <p className="text-gray-600 leading-7 text-sm">
             {product.description}
@@ -28,9 +25,7 @@ export default function ProductDetail({ product }) {
 
           {/* Price per KG */}
           <div>
-            <p className="text-sm text-gray-500">
-              قیمت هر کیلو:
-            </p>
+            <p className="text-sm text-gray-500">قیمت هر کیلو:</p>
 
             <p className="text-xl font-bold text-green-700">
               {Number(product.price)?.toLocaleString()} تومان
@@ -39,9 +34,7 @@ export default function ProductDetail({ product }) {
 
           {/* Weight */}
           <div>
-            <p className="text-sm text-gray-500 mb-2">
-              انتخاب وزن
-            </p>
+            <p className="text-sm text-gray-500 mb-2">انتخاب وزن</p>
 
             <div className="flex gap-2 flex-wrap">
               {weights.map((weight) => (
@@ -54,9 +47,7 @@ export default function ProductDetail({ product }) {
                       : "bg-white text-gray-700"
                   }`}
                 >
-                  {weight >= 1000
-                    ? `${weight / 1000}kg`
-                    : `${weight}g`}
+                  {weight >= 1000 ? `${weight / 1000}kg` : `${weight}g`}
                 </button>
               ))}
             </div>
@@ -64,15 +55,11 @@ export default function ProductDetail({ product }) {
 
           {/* Quantity */}
           <div className="flex items-center gap-3 mt-2">
-            <p className="text-sm text-gray-500">
-              تعداد بسته
-            </p>
+            <p className="text-sm text-gray-500">تعداد بسته</p>
 
             <div className="flex items-center border rounded-full overflow-hidden">
               <button
-                onClick={() =>
-                  setQuantity((q) => Math.max(1, q - 1))
-                }
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 className="px-3 py-1 bg-gray-100"
               >
                 -
@@ -91,9 +78,7 @@ export default function ProductDetail({ product }) {
 
           {/* Total Price */}
           <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-sm text-gray-500">
-              قیمت نهایی
-            </p>
+            <p className="text-sm text-gray-500">قیمت نهایی</p>
 
             <p className="text-2xl font-bold text-green-700">
               {totalPrice.toLocaleString()} تومان

@@ -4,7 +4,8 @@ import Header from "@/app/layout/Header";
 
 async function getProduct(slug) {
   const res = await fetch(`http://localhost:3000/api/products/slug/${slug}`, {
-    cache: "no-store",
+    cache: "force-cache",
+    next: { revalidate: 60 },
   });
 
   return res.json();
@@ -19,7 +20,7 @@ export default async function Page({ params }) {
     <>
       <Header />
       <ProductDetail product={product} />
-      <Footer/>
+      <Footer />
     </>
   );
 }

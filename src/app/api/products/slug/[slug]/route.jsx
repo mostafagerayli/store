@@ -2,7 +2,7 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function GET(req, { params }) {
   try {
-    const { slug } = params;
+    const { slug } =await params;
 
     const product = await prisma.products.findUnique({
       where: {
