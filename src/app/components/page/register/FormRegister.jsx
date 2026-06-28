@@ -5,6 +5,7 @@ import useRegister from "@/app/hooks/useRegister";
 import Button from "../../button/Button";
 import InputField from "../../input/InputField";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 function FormRegister() {
   const {
@@ -13,10 +14,12 @@ function FormRegister() {
     formState: { errors, isSubmitting },
   } = useForm();
   const { registerForm } = useRegister();
+  const router = useRouter()
 
   const onSubmit = async (data) => {
     try {
       await registerForm(data);
+      router.replace('/login')
       toast.success("ثبت نام با موفقیت انجام شد");
     } catch (err) {
       toast.error(err.message);

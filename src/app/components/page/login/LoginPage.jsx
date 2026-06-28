@@ -22,7 +22,7 @@ async function LoginPage() {
           {/* Right Image */}
           <div className="hidden md:block relative">
             <Image
-              src="/images/luxury_vertical_background_for_a_login_screen._close_up_artistic_shot_of.png"
+              src="/images/a_lush_sun_drenched_pistachio_orchard_in_kerman_iran._rows_of_mature_pistachio.png"
               alt="Terrarium"
               fill
               className="object-cover"

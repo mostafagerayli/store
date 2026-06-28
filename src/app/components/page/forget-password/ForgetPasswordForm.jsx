@@ -1,10 +1,9 @@
 "use client"
-import React from "react";
-import Button from "../button/Button";
-import InputField from "../input/InputField";
 import Link from "next/link";
 import { useFogetPassword } from "@/app/hooks/useFogetPassword";
 import { useForm } from "react-hook-form";
+import Button from "../../button/Button";
+import InputField from "../../input/InputField";
 
 function ForgetPasswordForm() {
   const ForgetPassword = useFogetPassword();

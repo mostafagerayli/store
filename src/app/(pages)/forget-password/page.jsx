@@ -1,4 +1,4 @@
-import ForgetPasswordForm from "@/app/components/forget-password/ForgetPasswordForm";
+import ForgetPasswordForm from "@/app/components/page/forget-password/ForgetPasswordForm";
 import Image from "next/image";
 
 function ForgotPassword() {
