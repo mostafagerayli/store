@@ -3,40 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-model product_variants {
-  id         Int       @id @default(autoincrement())
-  product_id Int
-  weight     Int
-  price      Int
-  stock      Int?      @default(0)
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  products   products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+model users {
+  id         String   @id @default(uuid())
+  name       String   @db.VarChar(100)
+  phone      String   @unique @db.VarChar(11)
+  password   String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  role       String   @default("user")
 }
 
 model products {
-  id               Int                @id @default(autoincrement())
-  name             String             @db.VarChar(150)
-  description      String?
-  image_url        String?
-  created_at       DateTime?          @default(now()) @db.Timestamp(6)
-  updated_at       DateTime?          @default(now()) @db.Timestamp(6)
-  slug             String?            @unique(map: "products_slug_unique") @db.VarChar(255)
-  price            Decimal?           @default(0) @db.Decimal(12, 2)
-  weight           Decimal?           @default(0) @db.Decimal(10, 3)
-  stock            Int?               @default(0)
-  product_variants product_variants[]
-}
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model users {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(100)
-  phone      String    @unique @db.VarChar(11)
-  password   String    @db.VarChar(255)
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  role       String?   @default("user") @db.VarChar(20)
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  description String?
+  image_url   String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  slug        String   @unique @db.VarChar(255)
+  price       Float    @default(0)
+  weight      Float    @default(0)
+  stock       Int      @default(0)
 }

@@ -14,12 +14,13 @@ function FormRegister() {
     formState: { errors, isSubmitting },
   } = useForm();
   const { registerForm } = useRegister();
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmit = async (data) => {
     try {
+      if (isSubmitting) return;
       await registerForm(data);
-      router.replace('/login')
+      router.replace("/login");
       toast.success("ثبت نام با موفقیت انجام شد");
     } catch (err) {
       toast.error(err.message);

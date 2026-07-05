@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMenu, FiShoppingCart, FiUser, FiX } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import MobileMenu from "./MobileMenu";
@@ -18,6 +18,20 @@ function IconsHeader() {
   const [open, setOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const totalQuantity = useSelector(selectCartQuantity);
+
+  const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+if (!mounted) {
+  return (
+    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+      0
+    </span>
+  );
+}
   return (
     <>
       <div className="flex items-center gap-4 whitespace-nowrap">

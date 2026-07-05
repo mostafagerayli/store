@@ -5,30 +5,58 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const { phone } = await req.json();
+
+    if (!phone) {
+      return NextResponse.json(
+        { error: "Phone is required" },
+        { status: 400 }
+      );
+    }
+
+    // پیدا کردن کاربر
     const user = await prisma.users.findUnique({
       where: { phone },
     });
 
+    // برای جلوگیری از user enumeration
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "If user exists, reset link will be sent" },
+        { status: 200 }
+      );
     }
 
-    // توکن یکبار مصرف برای reset password
+    // بررسی secret
+    const secret = process.env.RESET_PASSWORD_SECRET;
+    if (!secret) {
+      throw new Error("RESET_PASSWORD_SECRET is not defined");
+    }
+
+    // ساخت توکن
     const resetToken = jwt.sign(
       { id: user.id },
-      process.env.RESET_PASSWORD_SECRET,
-      { expiresIn: "15m" }, // فقط 15 دقیقه اعتبار
+      secret,
+      { expiresIn: "15m" }
     );
 
-    // لینک برای بازیابی رمز
-    const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+    // base url برای production
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    // اینجا باید ایمیل یا SMS بفرستی، الان فقط console.log
-    console.log("Reset link:", resetLink);
+    const resetLink = `${baseUrl}/reset-password?token=${resetToken}`;
 
-    return NextResponse.json({ message: "Reset link sent!" });
+    // TODO: اینجا باید ایمیل یا SMS واقعی بزنی
+    console.log("🔐 Reset Password Link:", resetLink);
+
+    return NextResponse.json({
+      message: "Reset link generated successfully",
+    });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed" }, { status: 500 });
+    console.error("RESET PASSWORD ERROR:", err);
+
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

@@ -1,9 +1,33 @@
 "use server";
 
-import { writeFile } from "fs/promises";
-import path from "path";
 import { prisma } from "@/app/lib/prisma";
 import { revalidateTag } from "next/cache";
+import { supabaseAdmin } from "../supabaseAdmin";
+
+export async function uploadImage(file) {
+  const fileName = `${Date.now()}-${file.name}`;
+
+  // 🔥 تبدیل File به Buffer (خیلی مهم)
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const { error } = await supabaseAdmin.storage
+    .from("products")
+    .upload(fileName, buffer, {
+      contentType: file.type,
+      upsert: false,
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { data } = supabaseAdmin.storage
+    .from("products")
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
+}
 
 export async function createProduct(formData) {
   const name = formData.get("name");
@@ -16,19 +40,16 @@ export async function createProduct(formData) {
   let imagePath = null;
 
   if (image instanceof File && image.size > 0) {
-    const bytes = await image.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const fileName = `${Date.now()}-${image.name}`;
-
-    const filePath = path.join(process.cwd(), "public/upload", fileName);
-
-    await writeFile(filePath, buffer);
-
-    imagePath = `/upload/${fileName}`;
+    imagePath = await uploadImage(image);
   }
 
-  // 1. create product
+  // 🔥 ساخت slug
+  const slug = `${name
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")}-${Date.now()}`;
+
   const product = await prisma.products.create({
     data: {
       name,
@@ -37,15 +58,8 @@ export async function createProduct(formData) {
       stock: stock ? Number(stock) : 0,
       description,
       image_url: imagePath,
+      slug, // ✅ مهم
     },
-  });
-
-  // 2. slug
-  const slug = `pestechi-${product.id}`;
-
-  await prisma.products.update({
-    where: { id: product.id },
-    data: { slug },
   });
 
   revalidateTag("products");
@@ -54,27 +68,24 @@ export async function createProduct(formData) {
 
 export async function editProduct(id, formData) {
   try {
+    if (!id) {
+      return {
+        success: false,
+        message: "Product id is required",
+      };
+    }
+
     const name = formData.get("name");
     const description = formData.get("description");
     const price = formData.get("price");
     const stock = formData.get("stock");
     const file = formData.get("image_url");
 
-    const uploadDir = path.join(process.cwd(), "public/upload");
-
     let image_url;
 
-    // اگر عکس جدید آپلود شد
+    // 🔥 اگر عکس جدید آپلود شد → بفرست به Supabase
     if (file instanceof File && file.size > 0) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const fileName = `${Date.now()}-${file.name}`;
-      const filePath = path.join(uploadDir, fileName);
-
-      await writeFile(filePath, buffer);
-
-      image_url = `/upload/${fileName}`;
+      image_url = await uploadImage(file);
     }
 
     const updated = await prisma.products.update({
@@ -82,22 +93,24 @@ export async function editProduct(id, formData) {
         id: Number(id),
       },
       data: {
-        name,
-        description,
-        price: price ? Number(price) : undefined,
-        stock: stock ? Number(stock) : undefined,
+        ...(name && { name }),
+        ...(description && { description }),
+        ...(price !== null && price !== "" && {
+          price: Number(price),
+        }),
+        ...(stock !== null && stock !== "" && {
+          stock: Number(stock),
+        }),
         ...(image_url && { image_url }),
       },
     });
 
-    // 🔥 حل مشکل Decimal برای ارسال به Client
     const safeData = {
       ...updated,
+      id: updated.id.toString?.() || updated.id,
       price: updated.price ? Number(updated.price) : null,
       weight: updated.weight ? Number(updated.weight) : null,
     };
-
-    revalidateTag("products");
 
     return {
       success: true,
@@ -108,10 +121,11 @@ export async function editProduct(id, formData) {
 
     return {
       success: false,
-      message: "خطا در بروزرسانی محصول",
+      message: error.message || "خطا در بروزرسانی محصول",
     };
   }
 }
+
 export async function deleteProduct(id) {
   try {
     if (!id) throw new Error("Product id is required");

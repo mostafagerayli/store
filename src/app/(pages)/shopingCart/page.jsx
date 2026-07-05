@@ -9,7 +9,7 @@ import Footer from "@/app/layout/Footer";
 export default function ShoppingCartPage() {
   const { items } = useSelector(state => state.cart);
   const totalPrice = useSelector(selectCartTotal)
-  const totalQuantity = useSelector(selectCartQuantity);
+  const totalQuantity = useSelector(selectCartQuantity); 
   const dispatch = useDispatch();
 
   return (
