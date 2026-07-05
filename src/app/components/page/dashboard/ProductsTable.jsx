@@ -1,22 +1,24 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
+
 import Modal from "../../modal/Modal";
-import EditProductForm from "./EditProductForm";
 import DeleteConfirmModal from "../../modal/DeleteConfirmModal";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { deleteProduct } from "@/app/lib/actions/product.actions";
+import EditProductForm from "./EditProductForm";
+
+import useDeleteProduct from "@/app/hooks/product/useDeleteProduct";
 
 export default function ProductsTable({ products }) {
-  const router = useRouter();
-
-  const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+
+  const { remove, loading } = useDeleteProduct(() => {
+    setDeleteOpen(false);
+    setSelectedProduct(null);
+  });
 
   if (!products) {
     return (
@@ -26,25 +28,14 @@ export default function ProductsTable({ products }) {
     );
   }
 
-  const openDeleteModal = (product) => {
+  const handleEdit = (product) => {
     setSelectedProduct(product);
-    setDeleteOpen(true);
+    setEditOpen(true);
   };
 
-  const handleDelete = async () => {
-    try {
-      setIsDeleting(true);
-
-      await deleteProduct(selectedProduct.id);
-
-      toast.success("محصول با موفقیت حذف شد");
-      setDeleteOpen(false);
-      router.refresh();
-    } catch (error) {
-      toast.error(error?.message || "خطا در حذف محصول");
-    } finally {
-      setIsDeleting(false);
-    }
+  const handleDeleteModal = (product) => {
+    setSelectedProduct(product);
+    setDeleteOpen(true);
   };
 
   return (
@@ -55,7 +46,7 @@ export default function ProductsTable({ products }) {
           <div>
             <h2 className="text-2xl font-black">مدیریت محصولات</h2>
             <p className="text-sm text-white/80 mt-1">
-               ویرایش و حذف محصولات فروشگاه
+              ویرایش و حذف محصولات فروشگاه
             </p>
           </div>
         </div>
@@ -65,37 +56,14 @@ export default function ProductsTable({ products }) {
           <table className="min-w-[1000px] w-full">
             <thead>
               <tr className="bg-gray-50 border-b text-gray-700">
-                <th className="p-4 text-center font-extrabold">
-                  شناسه
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  نام محصول
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  وزن
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  قیمت
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  موجودی
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  تصویر
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  توضیحات
-                </th>
-
-                <th className="p-4 text-center font-extrabold">
-                  عملیات
-                </th>
+                <th className="p-4 text-center font-extrabold">شناسه</th>
+                <th className="p-4 text-center font-extrabold">نام محصول</th>
+                <th className="p-4 text-center font-extrabold">وزن</th>
+                <th className="p-4 text-center font-extrabold">قیمت</th>
+                <th className="p-4 text-center font-extrabold">موجودی</th>
+                <th className="p-4 text-center font-extrabold">تصویر</th>
+                <th className="p-4 text-center font-extrabold">توضیحات</th>
+                <th className="p-4 text-center font-extrabold">عملیات</th>
               </tr>
             </thead>
 
@@ -130,16 +98,16 @@ export default function ProductsTable({ products }) {
                   </td>
 
                   <td className="p-4 text-center">
-                    <div className="w-20 h-20 mx-auto rounded-2xl overflow-hidden bg-gray-100 relative shadow">
+                    <div className="relative w-20 h-20 mx-auto rounded-2xl overflow-hidden bg-gray-100 shadow">
                       {product.image_url ? (
                         <Image
                           src={product.image_url}
-                          alt={product.name || "product"}
+                          alt={product.name}
                           fill
-                          className="object-cover hover:scale-110 transition duration-300"
+                          className="object-cover hover:scale-110 transition"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">
+                        <div className="flex items-center justify-center w-full h-full text-xs text-gray-500">
                           بدون عکس
                         </div>
                       )}
@@ -156,20 +124,17 @@ export default function ProductsTable({ products }) {
                   <td className="p-4">
                     <div className="flex justify-center gap-3">
                       <button
-                        onClick={() => {
-                          setSelectedProduct(product);
-                          setOpen(true);
-                        }}
+                        onClick={() => handleEdit(product)}
                         className="px-4 py-2 rounded-xl bg-amber-400 text-white font-bold hover:bg-amber-600 transition"
                       >
-                         ویرایش
+                        ویرایش
                       </button>
 
                       <button
-                        onClick={() => openDeleteModal(product)}
+                        onClick={() => handleDeleteModal(product)}
                         className="px-4 py-2 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition"
                       >
-                         حذف
+                        حذف
                       </button>
                     </div>
                   </td>
@@ -178,10 +143,7 @@ export default function ProductsTable({ products }) {
 
               {products.length === 0 && (
                 <tr>
-                  <td
-                    colSpan={8}
-                    className="text-center py-12 text-gray-500"
-                  >
+                  <td colSpan={8} className="py-12 text-center text-gray-500">
                     محصولی برای نمایش وجود ندارد.
                   </td>
                 </tr>
@@ -193,13 +155,13 @@ export default function ProductsTable({ products }) {
 
       {/* Edit Modal */}
       <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
+        isOpen={editOpen}
+        onClose={() => setEditOpen(false)}
         size="lg"
       >
         <EditProductForm
           product={selectedProduct}
-          onClose={() => setOpen(false)}
+          onClose={() => setEditOpen(false)}
         />
       </Modal>
 
@@ -212,9 +174,9 @@ export default function ProductsTable({ products }) {
       >
         <DeleteConfirmModal
           product={selectedProduct}
-          onConfirm={handleDelete}
+          onConfirm={() => remove(selectedProduct?.id)}
           onClose={() => setDeleteOpen(false)}
-          loading={isDeleting}
+          loading={loading}
         />
       </Modal>
     </>
