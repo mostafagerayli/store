@@ -8,14 +8,15 @@ import DeleteConfirmModal from "../../modal/DeleteConfirmModal";
 import EditProductForm from "./EditProductForm";
 
 import useDeleteProduct from "@/app/hooks/product/useDeleteProduct";
-import { ProductTableItem } from "@/types/product";
+import { Product } from "@/types/product";
 
 export default function ProductsTable({
   products = [],
 }: {
-  products: ProductTableItem[];
+  products: Product[];
 }) {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+const [selectedProduct, setSelectedProduct] =
+  useState<Product | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -24,12 +25,12 @@ export default function ProductsTable({
     setSelectedProduct(null);
   });
 
-  const handleEdit = (product: ProductTableItem ) => {
+  const handleEdit = (product: Product ) => {
     setSelectedProduct(product);
     setEditOpen(true);
   };
 
-  const handleDelete = (product: ProductTableItem) => {
+  const handleDelete = (product: Product) => {
     setSelectedProduct(product);
     setDeleteOpen(true);
   };
@@ -163,12 +164,14 @@ export default function ProductsTable({
       </div>
 
       {/* Edit Modal */}
-      <Modal isOpen={editOpen} onClose={closeEditModal} size="lg">
-        <EditProductForm
-          product={selectedProduct}
-          onClose={closeEditModal}
-        />
-      </Modal>
+<Modal isOpen={editOpen} onClose={closeEditModal} size="lg">
+  {selectedProduct && (
+    <EditProductForm
+      product={selectedProduct}
+      onClose={closeEditModal}
+    />
+  )}
+</Modal>
 
       {/* Delete Modal */}
       <Modal isOpen={deleteOpen} onClose={closeDeleteModal} size="sm">

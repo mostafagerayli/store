@@ -4,14 +4,23 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Image from "next/image";
 import InputField from "../../input/InputField";
-import { ProductFormData } from "@/types/product";
+import { Product, ProductFormData } from "@/types/product";
 import { useEditProduct } from "@/app/hooks/product/useEditProduct";
+import { useRef } from "react";
 
-export default function EditProductForm({ product, onClose }) {
+type EditProductFormProps = {
+  product: Product;
+  onClose: () => void;
+};
+export default function EditProductForm({
+  product,
+  onClose,
+}: EditProductFormProps) {
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(product?.image_url);
 
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(product?.image_url);
-const { edit, } = useEditProduct(product.id, onClose);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { edit } = useEditProduct(product.id, onClose);
   const {
     register,
     handleSubmit,
@@ -22,23 +31,23 @@ const { edit, } = useEditProduct(product.id, onClose);
       weight: Number(product?.weight),
       price: Number(product?.price),
       stock: Number(product?.stock),
-      description: product?.description,
+      description: product?.description ?? "",
     },
   });
 
-const handleFile = (file: File | null) => {
-  if (!file) return;
+  const handleFile = (file: File | null) => {
+    if (!file) return;
 
-  setImage(file);
-  setPreview(URL.createObjectURL(file));
-};
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
 
-const onSubmit = (data: ProductFormData) => {
-  edit({
-    ...data,
-    image,
-  });
-};
+  const onSubmit = async (data: ProductFormData) => {
+    await edit({
+      ...data,
+      image,
+    });
+  };
 
   const inputClass =
     "w-full mt-2 px-4 py-3 rounded-2xl border border-gray-200 outline-none focus:border-[#0b5b3c] transition";
@@ -48,9 +57,7 @@ const onSubmit = (data: ProductFormData) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Header */}
         <div className="pb-4 border-b">
-          <h3 className="text-xl font-black text-[#0b5b3c]">
-            ویرایش محصول
-          </h3>
+          <h3 className="text-xl font-black text-[#0b5b3c]">ویرایش محصول</h3>
 
           <p className="text-sm text-gray-500 mt-1">
             اطلاعات محصول را بروزرسانی کنید
@@ -112,19 +119,20 @@ const onSubmit = (data: ProductFormData) => {
 
           <div
             className="border-2 border-dashed border-gray-200 hover:border-[#0b5b3c] rounded-2xl p-5 text-center cursor-pointer transition"
-            onClick={() => document.getElementById("editImage").click()}
+            onClick={() => fileInputRef.current?.click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
-              handleFile(e.dataTransfer.files[0]);
+              handleFile(e.dataTransfer.files[0] ?? null);
             }}
           >
             <input
+              ref={fileInputRef}
               id="editImage"
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={(e) => handleFile(e.target.files[0])}
+              onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
             />
 
             {preview ? (

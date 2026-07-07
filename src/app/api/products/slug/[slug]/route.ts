@@ -7,10 +7,7 @@ interface RouteParams {
   }>;
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: RouteParams
-) {
+export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
     const { slug } = await params;
 
@@ -27,16 +24,13 @@ export async function GET(
         },
         {
           status: 404,
-        }
+        },
       );
     }
 
     return NextResponse.json(product);
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Unknown error";
+    const message = error instanceof Error ? error.message : "Unknown error";
 
     return NextResponse.json(
       {
@@ -44,7 +38,7 @@ export async function GET(
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

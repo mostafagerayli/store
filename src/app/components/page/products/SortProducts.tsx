@@ -15,7 +15,9 @@ export default function SortProducts() {
     params.set("sort", e.target.value);
     params.set("page", "1");
 
-    router.push(`/products?${params.toString()}`);
+    router.push(`/products?${params.toString()}`, {
+      scroll: false,
+    })
   };
 
   return (

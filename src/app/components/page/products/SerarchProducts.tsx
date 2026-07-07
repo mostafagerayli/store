@@ -8,9 +8,7 @@ export default function SearchProducts() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleSubmit = (
-    e: FormEvent<HTMLFormElement>
-  ): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -27,7 +25,9 @@ export default function SearchProducts() {
 
     params.set("page", "1");
 
-    router.push(`/products?${params.toString()}`);
+    router.push(`/products?${params.toString()}`, {
+      scroll: false,
+    });
   };
 
   return (

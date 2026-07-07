@@ -9,8 +9,10 @@
       "dom.iterable",
       "esnext"
     ],
-        "paths": {
-      "@/*": ["./src/*"]
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
     },
     "skipLibCheck": true,
     "incremental": true,
@@ -19,7 +21,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "plugins": [
       {
         "name": "next"
@@ -32,8 +34,10 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "**/*.ts",
-    "**/*.tsx"
-, "tailwind.config.js", "postcss.config.js"  ],
+    "**/*.tsx",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ],
   "exclude": [
     "node_modules"
   ]

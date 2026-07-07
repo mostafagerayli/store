@@ -61,8 +61,8 @@ export async function getProducts(
     return {
       products: products.map((p) => ({
         ...p,
-        price: p.price ? Number(p.price) : null,
-        weight: p.weight ? Number(p.weight) : null,
+        price: p.price = Number(p.price),
+        weight: p.weight = Number(p.weight),
       })),
       total,
       error: null,

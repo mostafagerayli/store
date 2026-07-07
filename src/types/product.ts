@@ -23,8 +23,9 @@ export interface CreateProductDto {
   image?: File;
 }
 
-export type UpdateProductDto =
-  Partial<CreateProductDto>;
+export type UpdateProductDto = Partial<CreateProductDto> & {
+  id: number;
+};
 
   export interface ProductFormData {
   name: string;

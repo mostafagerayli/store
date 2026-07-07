@@ -19,7 +19,7 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-} from "@/app/store/hooks";
+} from "@/app/store/hook";
 
 export default function ShoppingCartPage() {
   const dispatch = useAppDispatch();

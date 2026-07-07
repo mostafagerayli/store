@@ -24,10 +24,10 @@ export default function HeroSectioneEnd() {
         </h1>
 
         <Link
-          href="/shop"
+          href="/products"
           className="rounded-full bg-[#d4aa2a] px-8 py-3 text-sm font-semibold text-black transition-colors hover:bg-[#c39b20] md:px-10 md:text-base"
         >
-          رزرو بازدید فروشگاه
+           بازدید فروشگاه
         </Link>
       </div>
     </section>

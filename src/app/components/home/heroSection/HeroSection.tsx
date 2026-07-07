@@ -55,10 +55,10 @@ export default function HeroSection() {
           </Link>
 
           <Link
-            href="/custom-order"
+            href="/products"
             className="px-8 h-14 rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:bg-white/20"
           >
-            سفارش اختصاصی
+            سفارش محصولات
           </Link>
         </div>
 

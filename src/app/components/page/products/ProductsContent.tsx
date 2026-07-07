@@ -19,11 +19,12 @@ type ProductsContentProps = {
 export default async function ProductsContent({
   searchParams,
 }: ProductsContentProps) {
+    const params = await searchParams;
   const limit = 6;
 
-  const page = Number(searchParams?.page) || 1;
-  const sort = searchParams?.sort ?? "newest";
-  const search = searchParams?.search ?? "";
+ const page = Number(params?.page) || 1;
+  const sort = params?.sort ?? "newest";
+  const search = params?.search ?? "";
 
   const { products, total, error } = await getProducts(
     page,

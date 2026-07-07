@@ -32,7 +32,7 @@ export default function ClubSection() {
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
 
               <Link
-                href="/signup"
+                href="/rejister"
                 className="
                 h-12
                 px-8
@@ -51,7 +51,7 @@ export default function ClubSection() {
               </Link>
 
               <Link
-                href="/about-club"
+                href="/about"
                 className="
                 h-12
                 px-8

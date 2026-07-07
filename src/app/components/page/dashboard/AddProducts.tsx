@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import InputField from "../../input/InputField";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { ProductFormData } from "@/types/product";
 import { useAddProduct } from "@/app/hooks/product/useAddProduct";
@@ -16,11 +16,11 @@ export default function AddProduct() {
 
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { addProduct } = useAddProduct();
 
-  const onSubmit = (data: ProductFormData) => {
-    addProduct({
+  const onSubmit = async (data: ProductFormData) => {
+    await addProduct({
       ...data,
       image,
     });
@@ -113,17 +113,17 @@ export default function AddProduct() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
-              const file = e.dataTransfer.files[0];
-              handleFile(file);
+              handleFile(e.dataTransfer.files[0] ?? null);
             }}
-            onClick={() => document.getElementById("fileInput").click()}
+            onClick={() => fileInputRef.current?.click()}
           >
             <input
+              ref={fileInputRef}
               id="fileInput"
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={(e) => handleFile(e.target.files[0])}
+              onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
             />
 
             {preview ? (
@@ -160,7 +160,7 @@ export default function AddProduct() {
             disabled={isSubmitting}
             className="w-full bg-[#0b5b3c] text-white py-3 rounded-2xl font-bold hover:bg-[#08452d] transition"
           >
-            {isSubmitting ? "ذخیره محصول" : "در حال ذخیره محصول..."}
+            {isSubmitting ? "در حال ذخیره محصول..." : "ذخیره محصول"}
           </button>
         </form>
       </div>

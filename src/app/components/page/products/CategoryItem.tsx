@@ -7,10 +7,7 @@ type CategoryItemProps = {
   value: string;
 };
 
-export default function CategoryItem({
-  title,
-  value,
-}: CategoryItemProps) {
+export default function CategoryItem({ title, value }: CategoryItemProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -20,7 +17,9 @@ export default function CategoryItem({
     params.set("search", value);
     params.set("page", "1");
 
-    router.push(`/products?${params.toString()}`);
+    router.push(`/products?${params.toString()}`, {
+      scroll: false,
+    });
   };
 
   return (
