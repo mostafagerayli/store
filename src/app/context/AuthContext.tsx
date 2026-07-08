@@ -30,7 +30,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     async function loadUser() {
       try {
-        const res = await fetch("/api/login/auth/me");
+        const res = await fetch("/api/v1/login/auth/me");
 
         const data = await res.json();
 

@@ -4,7 +4,7 @@ type PaginationProps = {
   page: number;
   totalPages: number;
   basePath: string;
-  searchParams?: URLSearchParams | ReadonlyURLSearchParams;
+  searchParams?: URLSearchParams ;
 };
 
 export default function Pagination({

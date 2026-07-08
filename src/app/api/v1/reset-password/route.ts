@@ -1,12 +1,9 @@
 import { prisma } from "@/app/lib/prisma";
+import { ResetPasswordSchema } from "@/validations/auth.validation";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-interface ResetPasswordDto {
-  token: string;
-  newPassword: string;
-}
 
 interface ResetPasswordTokenPayload extends JwtPayload {
   id: string;
@@ -14,14 +11,23 @@ interface ResetPasswordTokenPayload extends JwtPayload {
 
 export async function POST(req: NextRequest) {
   try {
-    const { token, newPassword }: ResetPasswordDto = await req.json();
+    const body = await req.json();
 
-    if (!token || !newPassword) {
+    const result = ResetPasswordSchema.safeParse(body);
+
+    if (!result.success) {
       return NextResponse.json(
-        { error: "Token and new password are required" },
-        { status: 400 }
+        {
+          success: false,
+          errors: result.error.flatten(),
+        },
+        {
+          status: 400,
+        },
       );
     }
+
+    const { token, newPassword } = result.data;
 
     const resetSecret = process.env.RESET_PASSWORD_SECRET;
 
@@ -30,10 +36,7 @@ export async function POST(req: NextRequest) {
     }
 
     // تایید توکن
-    const decoded = jwt.verify(
-      token,
-      resetSecret
-    ) as ResetPasswordTokenPayload;
+    const decoded = jwt.verify(token, resetSecret) as ResetPasswordTokenPayload;
 
     // هش کردن رمز جدید
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -53,10 +56,7 @@ export async function POST(req: NextRequest) {
       message: "Password updated successfully!",
     });
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Unknown error";
+    const message = error instanceof Error ? error.message : "Unknown error";
 
     console.error("Reset password error:", message);
 
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

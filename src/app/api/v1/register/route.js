@@ -1,15 +1,28 @@
 import { prisma } from "@/app/lib/prisma";
+import { RegisterSchema } from "@/validations/auth.validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { name, phone, password } = await req.json();
-    if (!name || !phone || !password) {
-      return new Response(JSON.stringify({ error: "All fields required" }), {
-        status: 400,
-      });
+    const body = await req.json();
+
+    const result = RegisterSchema.safeParse(body);
+
+    if (!result.success) {
+      return Response.json(
+        {
+          success: false,
+          errors: result.error.flatten(),
+        },
+        {
+          status: 400,
+        },
+      );
     }
+
+    const { name, phone, password } = result.data;
 
     // چک شماره موبایل
     const existingUser = await prisma.users.findUnique({
@@ -42,12 +55,12 @@ export async function POST(req) {
       expiresIn: "1h",
     });
 
-    return new Response(JSON.stringify({ user, token }), {
+    return  NextResponse(JSON.stringify({ user, token }), {
       status: 201,
     });
   } catch (err) {
     console.error("Register error:", err.message);
-    return new Response(
+    return NextResponse(
       JSON.stringify({ error: "Database error", details: err.message }),
       { status: 500 },
     );

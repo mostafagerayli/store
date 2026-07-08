@@ -1,19 +1,26 @@
 import { prisma } from "@/app/lib/prisma";
-import { LoginDto } from "@/types/auth";
+import { LoginSchema } from "@/validations/auth.validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { phone, password }: LoginDto = await req.json();
+    const body = await req.json();
 
-    if (!phone || !password) {
+    const result = LoginSchema.safeParse(body);
+
+    if (!result.success) {
       return NextResponse.json(
-        { error: "Phone and password required" },
+        {
+          success: false,
+          errors: result.error.flatten(),
+        },
         { status: 400 },
       );
     }
+
+    const { phone, password } = result.data;
     //پیدا کردن کاربر از دیتابیس
     const user = await prisma.users.findUnique({
       where: {

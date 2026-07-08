@@ -15,7 +15,7 @@ export default async function BlogsDashboard({
 }: BlogsDashboardProps) {
   const params = await searchParams;
 
-  const limit = 5;
+  const limit = 3;
   const page = Number(params.page ?? "1");
 
   const { blogs, total, error } = await getBlogs(page, limit);
@@ -34,34 +34,31 @@ export default async function BlogsDashboard({
     <section className="mt-5 w-full">
       <div
         className="
-          rounded-3xl
-          border
-          border-gray-100
-          bg-white
-          p-4
-          shadow-lg
-          sm:p-6
-          lg:p-8
-        "
+      rounded-3xl
+      border
+      border-gray-100
+      bg-white
+      p-4
+      shadow-lg
+      sm:p-6
+      lg:p-8
+    "
       >
-        {/* Header */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {/* Table */}
-          <div className="w-full overflow-x-auto rounded-2xl">
-            <BlogTable blogs={blogs} />
-          </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-6 flex justify-center">
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                basePath="/dashboard/blogs"
-              />
-            </div>
-          )}
+        {/* Table */}
+        <div className="w-full overflow-x-auto rounded-2xl">
+          <BlogTable blogs={blogs} />
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-6 flex justify-center">
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              basePath="/dashboard"
+            />
+          </div>
+        )}
       </div>
     </section>
   );

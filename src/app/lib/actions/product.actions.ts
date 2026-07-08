@@ -1,12 +1,13 @@
 "use server";
-
-import { prisma } from "@/app/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 import { supabaseAdmin } from "../supabaseAdmin";
 import { Product } from "@/types/product";
-import { getString } from "@/app/utils/getString";
-import { getNumber } from "@/app/utils/getNumber";
-import { Prisma } from "@/generated/prisma/browser";
+import {
+  CreateProductSchema,
+  UpdateProductSchema,
+} from "@/validations/product.validation";
+import { prisma } from "../prisma";
 
 export async function uploadImage(file: File) {
   const fileName = `${Date.now()}-${file.name}`;
@@ -34,11 +35,25 @@ export async function uploadImage(file: File) {
 }
 
 export async function createProduct(formData: FormData) {
-  const name = getString(formData, "name");
-  const description = getString(formData, "description");
-  const price = getNumber(formData, "price");
-  const weight = getNumber(formData, "weight");
-  const stock = getNumber(formData, "stock");
+  // دریافت مقادیر از FormData
+  const body = {
+    name: formData.get("name"),
+    description: formData.get("description"),
+    price: formData.get("price"),
+    weight: formData.get("weight"),
+    stock: formData.get("stock"),
+  };
+
+  // اعتبارسنجی
+  const result = CreateProductSchema.safeParse(body);
+
+  if (!result.success) {
+    throw new Error(result.error.issues[0].message);
+  }
+
+  const { name, description, price, weight, stock } = result.data;
+
+  // فایل
   const image = formData.get("image");
 
   let imagePath: string | null = null;
@@ -47,74 +62,80 @@ export async function createProduct(formData: FormData) {
     imagePath = await uploadImage(image);
   }
 
-  // 🔥 ساخت slug
+  // ساخت Slug
   const slug = `${name
-    .toString()
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "-")}-${Date.now()}`;
 
+  // ذخیره در دیتابیس
   const product = await prisma.products.create({
     data: {
       name,
-      weight: weight ? Number(weight) : null,
-      price: price ? Number(price) : null,
-      stock: stock ? Number(stock) : 0,
       description,
+      price,
+      weight: weight ?? 0,
+      stock,
       image_url: imagePath,
-      slug, // ✅ مهم
+      slug,
     },
   });
 
   revalidateTag("products", "max");
+
   return product;
 }
 
+export async function editProduct(id: number | string, formData: FormData) {
 
-export async function editProduct(
-  id: number | string,
-  formData: FormData
-) {
   try {
     if (!id) {
       return {
         success: false,
-        message: "Product id is required",
+        message: "شناسه محصول الزامی است",
       };
     }
 
-    const name = formData.get("name");
-    const description = formData.get("description");
-    const price = formData.get("price");
-    const stock = formData.get("stock");
-    const file = formData.get("image_url");
+    const body = {
+      name: formData.get("name") || undefined,
+      description: formData.get("description") || undefined,
+      price: formData.get("price") || undefined,
+      stock: formData.get("stock") || undefined,
+    };
 
-    let image_url: string | undefined;
+    const result = UpdateProductSchema.safeParse(body);
 
-    if (file instanceof File && file.size > 0) {
-      image_url = await uploadImage(file);
+    if (!result.success) {
+      return {
+        success: false,
+        errors: result.error.flatten().fieldErrors,
+      };
     }
+
+    const { name, description, price, stock } = result.data;
 
     const data: Prisma.productsUpdateInput = {};
 
-    if (typeof name === "string") {
-      data.name = name.trim();
+    if (name !== undefined) {
+      data.name = name;
     }
 
-    if (typeof description === "string") {
-      data.description = description.trim();
+    if (description !== undefined) {
+      data.description = description;
     }
 
-    if (price !== null && price !== "") {
-      data.price = Number(price);
+    if (price !== undefined) {
+      data.price = price;
     }
 
-    if (stock !== null && stock !== "") {
-      data.stock = Number(stock);
+    if (stock !== undefined) {
+      data.stock = stock;
     }
 
-    if (image_url) {
-      data.image_url = image_url;
+    const image = formData.get("image_url");
+
+    if (image instanceof File && image.size > 0) {
+      data.image_url = await uploadImage(image);
     }
 
     const updated = await prisma.products.update({
@@ -134,23 +155,19 @@ export async function editProduct(
     return {
       success: false,
       message:
-        error instanceof Error
-          ? error.message
-          : "خطا در بروزرسانی محصول",
+        error instanceof Error ? error.message : "خطا در بروزرسانی محصول",
     };
   }
 }
 
-export async function deleteProduct(
-  id: number
-): Promise<{
+export async function deleteProduct(id: number): Promise<{
   success: boolean;
   data?: Product;
   message?: string;
 }> {
   try {
-    if (!id) {
-      throw new Error("Product id is required");
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new Error("Invalid product id");
     }
 
     const deleted = await prisma.products.delete({
@@ -170,10 +187,7 @@ export async function deleteProduct(
 
     return {
       success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "خطا در حذف محصول",
+      message: error instanceof Error ? error.message : "خطا در حذف محصول",
     };
   }
 }

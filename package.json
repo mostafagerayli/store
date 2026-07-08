@@ -27,7 +27,8 @@
     "react-redux": "^9.2.0",
     "react-toastify": "^11.1.0",
     "recharts": "^3.6.0",
-    "swiper": "^12.2.0"
+    "swiper": "^12.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

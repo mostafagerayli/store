@@ -1,22 +1,26 @@
 import { prisma } from "@/app/lib/prisma";
+import { ForgotPasswordSchema } from "@/validations/auth.validation";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-interface ForgotPasswordDto {
-  phone: string;
-}
-
 export async function POST(req: NextRequest) {
   try {
-    const { phone }: ForgotPasswordDto = await req.json();
+    const body = await req.json();
 
-    if (!phone) {
+    const result = ForgotPasswordSchema.safeParse(body);
+
+    if (!result.success) {
       return NextResponse.json(
-        { error: "Phone is required" },
-        { status: 400 }
+        {
+          success: false,
+          errors: result.error.flatten(),
+        },
+        {
+          status: 400,
+        },
       );
     }
-
+    const { phone } = result.data;
     // پیدا کردن کاربر
     const user = await prisma.users.findUnique({
       where: { phone },
@@ -30,7 +34,7 @@ export async function POST(req: NextRequest) {
         },
         {
           status: 200,
-        }
+        },
       );
     }
 
@@ -48,12 +52,10 @@ export async function POST(req: NextRequest) {
       secret,
       {
         expiresIn: "15m",
-      }
+      },
     );
 
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ??
-      "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
     const resetLink = `${baseUrl}/reset-password?token=${resetToken}`;
 
@@ -65,10 +67,7 @@ export async function POST(req: NextRequest) {
       message: "Reset link generated successfully",
     });
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Unknown error";
+    const message = error instanceof Error ? error.message : "Unknown error";
 
     console.error("RESET PASSWORD ERROR:", message);
 
@@ -78,7 +77,7 @@ export async function POST(req: NextRequest) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

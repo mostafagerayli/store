@@ -1,10 +1,9 @@
 "use server";
 
 import { prisma } from "../prisma";
-import { getString } from "@/app/utils/getString";
-import { BlogUpdateData } from "@/types/blog";
 import { revalidateTag } from "next/cache";
 import { supabaseAdmin } from "../supabaseAdmin";
+import { CreateBlogSchema, UpdateBlogSchema } from "@/validations/blog.validation";
 
 export async function uploadBlogImage(file: File) {
   const fileName = `${Date.now()}-${file.name}`;
@@ -29,18 +28,32 @@ export async function uploadBlogImage(file: File) {
 }
 
 export async function createBlog(formData: FormData) {
-  const title = getString(formData, "title");
-  const description = getString(formData, "description");
-  const content = getString(formData, "content");
-  const category = getString(formData, "category");
+  const body = {
+    title: formData.get("title"),
+    description: formData.get("description"),
+    content: formData.get("content"),
+    category: formData.get("category"),
+  };
+
+  const result = CreateBlogSchema.safeParse(body);
+
+  if (!result.success) {
+    return {
+      success: false,
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  const { title, description, content, category } = result.data;
 
   const image = formData.get("image");
-
-  let imagePath: string | null = null;
-
-  if (image instanceof File && image.size > 0) {
-    imagePath = await uploadBlogImage(image);
-  }
+if (!(image instanceof File) || image.size === 0) {
+  return {
+    success: false,
+    message: "تصویر مقاله الزامی است",
+  };
+}
+  const imagePath = await uploadBlogImage(image)
 
   const slug = `${title
     .toLowerCase()
@@ -50,76 +63,67 @@ export async function createBlog(formData: FormData) {
   const blog = await prisma.blogs.create({
     data: {
       title,
-
       description,
-
       content,
-
-      category, // ✅ اضافه شد
-
+      category,
       image: imagePath,
-
       slug,
     },
   });
 
   revalidateTag("blogs", "max");
 
-  return blog;
+  return {
+    success: true,
+    data: blog,
+  };
 }
 
 export async function editBlog(id: number | string, formData: FormData) {
   try {
-    if (!id) {
+    if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
       return {
         success: false,
-        message: "Blog id is required",
+        message: "شناسه بلاگ نامعتبر است",
       };
     }
 
-    const title = formData.get("title");
+    const body = {
+      title: formData.get("title") || undefined,
+      description: formData.get("description") || undefined,
+      content: formData.get("content") || undefined,
+      category: formData.get("category") || undefined,
+    };
 
-    const description = formData.get("description");
+    const result = UpdateBlogSchema.safeParse(body);
 
-    const content = formData.get("content");
-
-    const category = formData.get("category"); // ✅ اضافه شد
-
-    const file = formData.get("image");
-
-    let image: string | undefined;
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadBlogImage(file);
+    if (!result.success) {
+      return {
+        success: false,
+        errors: result.error.flatten().fieldErrors,
+      };
     }
 
-    const data: BlogUpdateData = {};
+    const { title, description, content, category } = result.data;
 
-    if (typeof title === "string") {
-      data.title = title.trim();
-    }
+    const data = {
+      ...(title !== undefined && { title }),
+      ...(description !== undefined && { description }),
+      ...(content !== undefined && { content }),
+      ...(category !== undefined && { category }),
+        image: undefined as string | undefined,
+    };
 
-    if (typeof description === "string") {
-      data.description = description.trim();
-    }
+    const image = formData.get("image");
 
-    if (typeof content === "string") {
-      data.content = content.trim();
-    }
-
-    if (typeof category === "string") {
-      data.category = category.trim(); // ✅ اضافه شد
-    }
-
-    if (image) {
-      data.image = image;
+    if (image instanceof File && image.size > 0) {
+      data.image = await uploadBlogImage(image);
     }
 
     const updated = await prisma.blogs.update({
       where: {
         id: Number(id),
       },
-
       data,
     });
 
@@ -127,7 +131,6 @@ export async function editBlog(id: number | string, formData: FormData) {
 
     return {
       success: true,
-
       data: updated,
     };
   } catch (error) {
@@ -135,8 +138,10 @@ export async function editBlog(id: number | string, formData: FormData) {
 
     return {
       success: false,
-
-      message: error instanceof Error ? error.message : "خطا در بروزرسانی بلاگ",
+      message:
+        error instanceof Error
+          ? error.message
+          : "خطا در بروزرسانی بلاگ",
     };
   }
 }
