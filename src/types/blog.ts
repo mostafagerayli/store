@@ -1,6 +1,14 @@
-import { blogs } from "@prisma/client/wasm";
-
-export type Blog = blogs;
+export type Blog = {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  image: string;
+  slug: string;
+  category: string;
+  created_at: string;
+  updated_at: string;
+};
 
 export type BlogUpdateData = {
   title?: string;

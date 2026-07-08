@@ -7,7 +7,7 @@ type SearchParams = {
 };
 
 type ProductsDashboardProps = {
-  searchParams: Promise<SearchParams>;
+  searchParams: SearchParams;
 };
 
 export default async function ProductsDashboard({

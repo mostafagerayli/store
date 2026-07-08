@@ -1,17 +1,47 @@
-"use server"
+"use server";
+
 import { prisma } from "../prisma";
 import { getString } from "@/app/utils/getString";
-import { uploadImage } from "./product.actions";
 import { BlogUpdateData } from "@/types/blog";
 import { revalidateTag } from "next/cache";
+import { supabaseAdmin } from "../supabaseAdmin";
+
+export async function uploadBlogImage(file: File) {
+  const fileName = `${Date.now()}-${file.name}`;
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const { error } = await supabaseAdmin.storage
+    .from("blogs")
+    .upload(fileName, buffer, {
+      contentType: file.type,
+      upsert: false,
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { data } = supabaseAdmin.storage.from("blogs").getPublicUrl(fileName);
+
+  return data.publicUrl;
+}
 
 export async function createBlog(formData: FormData) {
   const title = getString(formData, "title");
   const description = getString(formData, "description");
   const content = getString(formData, "content");
-  const image = getString(formData, "image");
+  const category = getString(formData, "category");
 
-  // ساخت slug
+  const image = formData.get("image");
+
+  let imagePath: string | null = null;
+
+  if (image instanceof File && image.size > 0) {
+    imagePath = await uploadBlogImage(image);
+  }
+
   const slug = `${title
     .toLowerCase()
     .trim()
@@ -20,9 +50,15 @@ export async function createBlog(formData: FormData) {
   const blog = await prisma.blogs.create({
     data: {
       title,
+
       description,
+
       content,
-      image,
+
+      category, // ✅ اضافه شد
+
+      image: imagePath,
+
       slug,
     },
   });
@@ -32,10 +68,7 @@ export async function createBlog(formData: FormData) {
   return blog;
 }
 
-export async function editBlog(
-  id: number | string,
-  formData: FormData
-) {
+export async function editBlog(id: number | string, formData: FormData) {
   try {
     if (!id) {
       return {
@@ -45,14 +78,19 @@ export async function editBlog(
     }
 
     const title = formData.get("title");
+
     const description = formData.get("description");
+
     const content = formData.get("content");
+
+    const category = formData.get("category"); // ✅ اضافه شد
+
     const file = formData.get("image");
 
     let image: string | undefined;
 
     if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file);
+      image = await uploadBlogImage(file);
     }
 
     const data: BlogUpdateData = {};
@@ -69,6 +107,10 @@ export async function editBlog(
       data.content = content.trim();
     }
 
+    if (typeof category === "string") {
+      data.category = category.trim(); // ✅ اضافه شد
+    }
+
     if (image) {
       data.image = image;
     }
@@ -77,11 +119,15 @@ export async function editBlog(
       where: {
         id: Number(id),
       },
+
       data,
     });
 
+    revalidateTag("blogs", "max");
+
     return {
       success: true,
+
       data: updated,
     };
   } catch (error) {
@@ -89,17 +135,13 @@ export async function editBlog(
 
     return {
       success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "خطا در بروزرسانی بلاگ",
+
+      message: error instanceof Error ? error.message : "خطا در بروزرسانی بلاگ",
     };
   }
 }
 
-export async function deleteBlog(
-  id: number
-): Promise<{
+export async function deleteBlog(id: number): Promise<{
   success: boolean;
   data?: unknown;
   message?: string;
@@ -119,6 +161,7 @@ export async function deleteBlog(
 
     return {
       success: true,
+
       data: deleted,
     };
   } catch (error) {
@@ -126,10 +169,8 @@ export async function deleteBlog(
 
     return {
       success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "خطا در حذف بلاگ",
+
+      message: error instanceof Error ? error.message : "خطا در حذف بلاگ",
     };
   }
 }

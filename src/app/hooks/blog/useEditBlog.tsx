@@ -1,11 +1,12 @@
 "use client";
 
-import { createBlog } from "@/app/lib/actions/blog.actions";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-type AddBlogData = {
+import { editBlog } from "@/app/lib/actions/blog.actions";
+
+type EditBlogData = {
   title: string;
   description: string;
   content: string;
@@ -13,11 +14,14 @@ type AddBlogData = {
   image: File | null;
 };
 
-export function useAddBlog() {
+export function useEditBlog(
+  blogId: number,
+  onClose?: () => void
+) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const addBlog = async (data: AddBlogData) => {
+  const edit = async (data: EditBlogData) => {
     try {
       setLoading(true);
 
@@ -32,30 +36,27 @@ export function useAddBlog() {
         formData.append("image", data.image);
       }
 
-      await createBlog(formData);
+      await editBlog(blogId, formData);
 
-      toast.success("پست با موفقیت اضافه شد");
+      toast.success("پست با موفقیت ویرایش شد");
 
       router.refresh();
 
-      return true;
-    } catch (err) {
-      console.error(err);
+      onClose?.();
 
+    } catch (err) {
       toast.error(
         err instanceof Error
           ? err.message
-          : "خطا در افزودن پست"
+          : "خطا در ویرایش پست"
       );
-
-      return false;
     } finally {
       setLoading(false);
     }
   };
 
   return {
-    addBlog,
+    edit,
     loading,
   };
 }

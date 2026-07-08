@@ -15,8 +15,7 @@ export default function ProductsTable({
 }: {
   products: Product[];
 }) {
-const [selectedProduct, setSelectedProduct] =
-  useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -25,7 +24,7 @@ const [selectedProduct, setSelectedProduct] =
     setSelectedProduct(null);
   });
 
-  const handleEdit = (product: Product ) => {
+  const handleEdit = (product: Product) => {
     setSelectedProduct(product);
     setEditOpen(true);
   };
@@ -61,7 +60,6 @@ const [selectedProduct, setSelectedProduct] =
   return (
     <>
       <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
-
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 px-6 py-5 bg-gradient-to-r from-[#336437] to-[#083f10] text-white">
           <div>
@@ -75,7 +73,6 @@ const [selectedProduct, setSelectedProduct] =
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="min-w-[1000px] w-full">
-
             <thead>
               <tr className="bg-gray-50 border-b text-gray-700">
                 <th className="p-4 text-center">شناسه</th>
@@ -95,9 +92,7 @@ const [selectedProduct, setSelectedProduct] =
                   key={product.id}
                   className="border-b hover:bg-green-50 transition"
                 >
-                  <td className="p-4 text-center font-bold">
-                    #{product.id}
-                  </td>
+                  <td className="p-4 text-center font-bold">#{product.id}</td>
 
                   <td className="p-4 text-center font-semibold">
                     {product.name}
@@ -111,9 +106,7 @@ const [selectedProduct, setSelectedProduct] =
                     {Number(product.price).toLocaleString()} تومان
                   </td>
 
-                  <td className="p-4 text-center">
-                    {product.stock}
-                  </td>
+                  <td className="p-4 text-center">{product.stock}</td>
 
                   <td className="p-4 text-center">
                     <div className="relative w-16 h-16 mx-auto rounded-xl overflow-hidden bg-gray-100">
@@ -138,7 +131,6 @@ const [selectedProduct, setSelectedProduct] =
 
                   <td className="p-4">
                     <div className="flex justify-center gap-2">
-
                       <button
                         onClick={() => handleEdit(product)}
                         className="px-3 py-1 rounded-lg bg-amber-400 text-white font-bold hover:bg-amber-500"
@@ -152,31 +144,27 @@ const [selectedProduct, setSelectedProduct] =
                       >
                         حذف
                       </button>
-
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
-
           </table>
         </div>
       </div>
 
       {/* Edit Modal */}
-<Modal isOpen={editOpen} onClose={closeEditModal} size="lg">
-  {selectedProduct && (
-    <EditProductForm
-      product={selectedProduct}
-      onClose={closeEditModal}
-    />
-  )}
-</Modal>
+      <Modal isOpen={editOpen} onClose={closeEditModal} size="lg">
+        {selectedProduct && (
+          <EditProductForm product={selectedProduct} onClose={closeEditModal} />
+        )}
+      </Modal>
 
       {/* Delete Modal */}
       <Modal isOpen={deleteOpen} onClose={closeDeleteModal} size="sm">
         <DeleteConfirmModal
-          product={selectedProduct}
+          title="محصول"
+          itemName={selectedProduct?.name}
           onConfirm={confirmDelete}
           onClose={closeDeleteModal}
           loading={loading}

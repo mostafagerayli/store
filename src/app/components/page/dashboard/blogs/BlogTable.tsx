@@ -3,38 +3,64 @@
 import Modal from "@/app/components/modal/Modal";
 import Image from "next/image";
 import { useState } from "react";
+
 import AddBlog from "./AddBlog";
+import EditBlogForm from "./EditBlogForm";
+import DeleteConfirmModal from "@/app/components/modal/DeleteConfirmModal";
+import useDeleteBlog from "@/app/hooks/blog/useDeleteBlog";
+import { Blog } from "@/types/blog";
 
+interface BlogTableProps {
+  blogs: Blog[];
+}
 
-const blogs = [
-  {
-    id: 1,
-    title: "آموزش کامل Next.js App Router",
-    slug: "nextjs-app-router-guide",
-    image: "/images/blog-1.jpg",
-    created_at: "۱۴۰۵/۰۴/۱۶",
-  },
-  {
-    id: 2,
-    title: "بهترین روش‌های TypeScript در React",
-    slug: "typescript-react-best-practices",
-    image: "/images/blog-2.jpg",
-    created_at: "۱۴۰۵/۰۴/۱۵",
-  },
-];
-
-export default  function BlogTable() {
+export default function BlogTable({ blogs }: BlogTableProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+
+  const { remove, loading } = useDeleteBlog(() => {
+    setIsDeleteOpen(false);
+    setSelectedBlog(null);
+  });
+
+  const handleDelete = () => {
+    if (!selectedBlog) return;
+
+    remove(selectedBlog.id);
+  };
+
+  const closeEdit = () => {
+    setIsEditOpen(false);
+    setSelectedBlog(null);
+  };
+
+  const closeDelete = () => {
+    setIsDeleteOpen(false);
+    setSelectedBlog(null);
+  };
 
   return (
-    <div
-      dir="rtl"
-      className="space-y-6"
-    >
+    <div dir="rtl" className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm">
+      <div
+        className="
+          flex 
+          flex-col 
+          gap-4
+          rounded-2xl
+          bg-white
+          p-5
+          shadow-sm
+          sm:flex-row
+          sm:items-center
+          sm:justify-between
+        "
+      >
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-xl font-black text-gray-800 sm:text-2xl">
             مدیریت پست‌ها
           </h1>
 
@@ -45,84 +71,186 @@ export default  function BlogTable() {
 
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-medium text-white transition hover:opacity-80"
+          className="
+            flex
+            w-full
+            items-center
+            justify-center
+            gap-2
+            rounded-xl
+            bg-black
+            px-5
+            py-3
+            text-sm
+            font-bold
+            text-white
+            transition
+            hover:opacity-80
+            sm:w-auto
+          "
         >
           <span className="text-xl">+</span>
           افزودن پست جدید
         </button>
       </div>
 
-
       {/* Table */}
       <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
-        <table className="w-full text-right">
-          <thead className="border-b bg-gray-50">
-            <tr>
-              <th className="px-6 py-4">تصویر</th>
-              <th className="px-6 py-4">عنوان</th>
-              <th className="px-6 py-4">آدرس</th>
-              <th className="px-6 py-4">تاریخ انتشار</th>
-              <th className="px-6 py-4">عملیات</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="min-w-[850px] w-full text-right">
+            <thead className="border-b bg-gray-50">
+              <tr className="text-sm text-gray-700">
+                <th className="px-5 py-4">تصویر</th>
 
-          <tbody>
-            {blogs.map((blog) => (
-              <tr
-                key={blog.id}
-                className="border-b last:border-none hover:bg-gray-50"
-              >
-                <td className="px-6 py-4">
-                  <div className="relative h-14 w-14 overflow-hidden rounded-xl">
-                    <Image
-                      src={blog.image}
-                      alt={blog.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                </td>
+                <th className="px-5 py-4">عنوان</th>
 
-                <td className="px-6 py-4 font-medium">
-                  {blog.title}
-                </td>
+                <th className="px-5 py-4">دسته بندی</th>
 
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {blog.slug}
-                </td>
+                <th className="px-5 py-4">تاریخ انتشار</th>
 
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {blog.created_at}
-                </td>
-
-                <td className="px-6 py-4">
-                  <div className="flex gap-3">
-                    <button className="rounded-lg bg-blue-500 px-4 py-2 text-sm text-white">
-                      ویرایش
-                    </button>
-
-                    <button className="rounded-lg bg-red-500 px-4 py-2 text-sm text-white">
-                      حذف
-                    </button>
-                  </div>
-                </td>
+                <th className="px-5 py-4">عملیات</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {blogs.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="py-10 text-center text-sm text-gray-500"
+                  >
+                    هیچ پستی وجود ندارد
+                  </td>
+                </tr>
+              ) : (
+                blogs.map((blog) => (
+                  <tr
+                    key={blog.id}
+                    className="
+                      border-b
+                      transition
+                      hover:bg-gray-50
+                    "
+                  >
+                    {/* Image */}
+                    <td className="px-5 py-4">
+                      <div
+                        className="
+                          relative
+                          h-12
+                          w-12
+                          overflow-hidden
+                          rounded-xl
+                          bg-gray-100
+                        "
+                      >
+                        {blog.image ? (
+                          <Image
+                            src={blog.image}
+                            alt={blog.title}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full items-center justify-center text-xs text-gray-400">
+                            -
+                          </div>
+                        )}
+                      </div>
+                    </td>
+
+                    {/* Title */}
+                    <td className="max-w-[220px] px-5 py-4">
+                      <p className="truncate font-semibold text-gray-800">
+                        {blog.title}
+                      </p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                        {blog.category}
+                      </span>
+                    </td>
+
+
+                    {/* Date */}
+                    <td className="px-5 py-4 text-sm text-gray-500">
+                      {new Date(blog.created_at).toLocaleDateString("fa-IR")}
+                    </td>
+
+                    {/* Actions */}
+                    <td className="px-5 py-4">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedBlog(blog);
+                            setIsEditOpen(true);
+                          }}
+                          className="
+                            rounded-lg
+                            bg-blue-500
+                            px-3
+                            py-2
+                            text-xs
+                            font-bold
+                            text-white
+                            transition
+                            hover:bg-blue-600
+                          "
+                        >
+                          ویرایش
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setSelectedBlog(blog);
+                            setIsDeleteOpen(true);
+                          }}
+                          className="
+                            rounded-lg
+                            bg-red-500
+                            px-3
+                            py-2
+                            text-xs
+                            font-bold
+                            text-white
+                            transition
+                            hover:bg-red-600
+                          "
+                        >
+                          حذف
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
+      {/* Add */}
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="lg">
+        <AddBlog onClose={() => setIsOpen(false)} />
+      </Modal>
 
-      {/* Add Blog Modal */}
-<Modal
-  isOpen={isOpen}
-  onClose={() => setIsOpen(false)}
-  size="lg"
->
-  <AddBlog
-    onClose={() => setIsOpen(false)}
-  />
-</Modal>
+      {/* Edit */}
+      <Modal isOpen={isEditOpen} onClose={closeEdit} size="lg">
+        {selectedBlog && (
+          <EditBlogForm blog={selectedBlog} onClose={closeEdit} />
+        )}
+      </Modal>
+
+      {/* Delete */}
+      <Modal isOpen={isDeleteOpen} onClose={closeDelete} size="sm">
+        <DeleteConfirmModal
+          title="پست"
+          itemName={selectedBlog?.title}
+          loading={loading}
+          onClose={closeDelete}
+          onConfirm={handleDelete}
+        />
+      </Modal>
     </div>
   );
 }

@@ -1,46 +1,75 @@
 import BlogCard from "./BlogCard";
+import { getBlogs } from "@/app/lib/getBlogs";
 
-export interface BlogPost {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  image: string;
-  category: string;
-  createdAt: string;
-}
 
-export const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: "خواص پسته برای سلامت قلب",
-    slug: "benefits-of-pistachio-for-heart",
-    excerpt:
-      "پسته سرشار از آنتی‌اکسیدان و چربی‌های مفید برای سلامت قلب است.",
-    image:
-      "/images/luxury_vertical_background_for_a_login_screen._close_up_artistic_shot_of.png",
-    category: "سلامت و تغذیه",
-    createdAt: "1405/03/20",
-  },
-  {
-    id: 2,
-    title: "تفاوت پسته اکبری و احمدآقایی",
-    slug: "akbari-vs-ahmad-aghaei",
-    excerpt:
-      "در این مقاله تفاوت‌های مهم این دو نوع پسته را بررسی می‌کنیم.",
-    image:
-      "/images/luxury_vertical_background_for_a_login_screen._close_up_artistic_shot_of.png",
-    category: "راهنمای خرید",
-    createdAt: "1405/03/15",
-  },
-];
+type SearchParams = {
+  page?: string;
+};
 
-export default function BlogGrid() {
+
+type BlogGridProps = {
+  searchParams: Promise<SearchParams>;
+};
+
+
+export default async function BlogGrid({
+  searchParams,
+}: BlogGridProps) {
+
+  const params = await searchParams;
+
+
+  const limit = 5;
+
+  const page = Number(
+    params.page ?? "1"
+  );
+
+
+  const {
+    blogs,
+    error,
+  } = await getBlogs(
+    page,
+    limit
+  );
+
+  if (error) {
+    return (
+      <div className="mt-10 rounded-xl bg-red-100 p-5 text-red-600">
+        خطا در دریافت مقالات
+      </div>
+    );
+  }
+
+
+  if (!blogs.length) {
+    return (
+      <div className="mt-10 text-center text-gray-500">
+        هنوز مقاله‌ای منتشر نشده است
+      </div>
+    );
+  }
+
+
   return (
-    <section className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {blogPosts.map((post) => (
-        <BlogCard key={post.id} post={post} />
+    <section
+      className="
+        mt-14
+        grid
+        gap-8
+        sm:grid-cols-2
+        lg:grid-cols-3
+      "
+    >
+
+      {blogs.map((post) => (
+        <BlogCard
+          key={post.id}
+          post={post}
+        />
       ))}
+
     </section>
   );
 }

@@ -1,16 +1,16 @@
 "use client";
 
-import { ProductTableItem } from "@/types/product";
-
 interface Props {
-  product: ProductTableItem | null;
+  title: string;
+  itemName?: string;
   onConfirm: () => void;
   onClose: () => void;
   loading?: boolean;
 }
 
 export default function DeleteConfirmModal({
-  product,
+  title,
+  itemName,
   onConfirm,
   onClose,
   loading = false,
@@ -18,10 +18,12 @@ export default function DeleteConfirmModal({
   return (
     <div className="space-y-6">
       <p className="text-gray-600">
-        {product ? (
-          <>آیا از حذف محصول <b>{product.name}</b> مطمئن هستید؟</>
+        {itemName ? (
+          <>
+            آیا از حذف <b>{title}</b> <b>{itemName}</b> مطمئن هستید؟
+          </>
         ) : (
-          "محصولی انتخاب نشده"
+          `آیا از حذف ${title} مطمئن هستید؟`
         )}
       </p>
 
@@ -36,10 +38,10 @@ export default function DeleteConfirmModal({
 
         <button
           onClick={onConfirm}
-          disabled={loading || !product}
+          disabled={loading}
           className="rounded-xl bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
         >
-          {loading ? "در حال حذف..." : "حذف محصول"}
+          {loading ? "در حال حذف..." : "حذف"}
         </button>
       </div>
     </div>

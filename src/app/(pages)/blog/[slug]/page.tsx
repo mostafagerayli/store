@@ -1,19 +1,51 @@
-import Image from "next/image";
-type Props = {
+import BlogDetail from "@/app/components/page/blog/BlogDetail";
+import Footer from "@/app/layout/Footer";
+import Header from "@/app/layout/Header";
+import { notFound } from "next/navigation";
+
+type BlogPageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
 
-export default async function BlogDetail({ params }: Props) {
-  const res = await fetch(`/api/blog/${params.slug}`);
-  const post = await res.json();
+export default async function BlogPage({
+  params,
+}: BlogPageProps) {
+
+  const { slug } = await params;
+
+  const decodedSlug = decodeURIComponent(slug);
+
+  console.log("BLOG SLUG:", decodedSlug);
+
+
+  const res = await fetch(
+    `http://localhost:3000/api/blogs/${encodeURIComponent(decodedSlug)}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+
+  console.log("BLOG RESPONSE:", res.status);
+
+
+  if (!res.ok) {
+    notFound();
+  }
+
+
+  const blog = await res.json();
+
 
   return (
-    <article className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold">{post.title}</h1>
-      <Image src={post.coverImage} alt={post.title} className="my-4 rounded-xl" />
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
-    </article>
+    <>
+      <Header />
+
+      <BlogDetail blog={blog} />
+
+      <Footer />
+    </>
   );
 }

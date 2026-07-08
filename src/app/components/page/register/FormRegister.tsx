@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 
 import Button from "../../button/Button";
 import InputField from "../../input/InputField";
-import useRegister from "@/app/hooks/useRegister";
 import { RegisterDto } from "@/types/auth";
+import useRegister from "@/app/hooks/auth/useRegister";
 
 
 export default function FormRegister() {
