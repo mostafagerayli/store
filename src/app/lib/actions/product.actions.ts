@@ -3,6 +3,10 @@
 import { prisma } from "@/app/lib/prisma";
 import { revalidateTag } from "next/cache";
 import { supabaseAdmin } from "../supabaseAdmin";
+import { Product } from "@/types/product";
+import { getString } from "@/app/utils/getString";
+import { getNumber } from "@/app/utils/getNumber";
+import { Prisma } from "@/generated/prisma/browser";
 
 export async function uploadImage(file: File) {
   const fileName = `${Date.now()}-${file.name}`;
@@ -66,10 +70,6 @@ export async function createProduct(formData: FormData) {
   return product;
 }
 
-import type { Prisma } from "@prisma/client";
-import { Product } from "@/types/product";
-import { getString } from "@/app/utils/getString";
-import { getNumber } from "@/app/utils/getNumber";
 
 export async function editProduct(
   id: number | string,

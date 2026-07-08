@@ -1,4 +1,5 @@
 import AddProduct from "@/app/components/page/dashboard/AddProducts";
+import BlogTable from "@/app/components/page/dashboard/blogs/BlogTable";
 import ProductsDashboard from "@/app/components/page/dashboard/ProductsDashboard";
 import ClientLayout from "@/app/layout/ClientLayout";
 
@@ -30,6 +31,7 @@ export default async function DashboardPage({
             <ProductsDashboard searchParams={params} />
           </div>
         </div>
+        <BlogTable/>
       </div>
     </ClientLayout>
   );

@@ -1,4 +1,4 @@
-import { products } from "@prisma/client";
+import { products } from "@prisma/client/wasm";
 
 
 export type Product = products;
