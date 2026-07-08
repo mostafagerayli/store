@@ -1,8 +1,8 @@
 # 🥜 Pistachio Store
 
-فروشگاه آنلاین پسته توسعه داده شده با **Next.js** و **PostgreSQL**.
+فروشگاه آنلاین پسته توسعه داده شده با **Next.js، PostgreSQL، Prisma و Supabase**.
 
-این پروژه با هدف یادگیری و پیاده‌سازی مفاهیم **Full Stack Development** توسعه داده شده و شامل سیستم احراز هویت، مدیریت کاربران، مدیریت محصولات، سبد خرید و پنل مدیریت است.
+این پروژه با هدف یادگیری و پیاده‌سازی معماری **Full Stack Development** توسعه داده شده و شامل سیستم احراز هویت، مدیریت کاربران، مدیریت محصولات، مدیریت بلاگ، سبد خرید و پنل مدیریت است.
 
 ---
 
@@ -18,22 +18,22 @@
 * احراز هویت با **JWT**
 * Access Token & Refresh Token
 * نگهداری Session بعد از Refresh
-* دریافت اطلاعات کاربر از طریق `/api/me`
+* دریافت اطلاعات کاربر از طریق `/api/v1/me`
 * ذخیره JWT داخل **HttpOnly Cookie**
 * محافظت از Routeها با Middleware
 
 ---
 
-## 👤 User Management
+# 👤 User Management
 
 * ذخیره اطلاعات کاربران در PostgreSQL
 * ثبت‌نام با شماره تلفن
-* مدیریت اطلاعات کاربران
-* نمایش نام و نقش کاربر در رابط کاربری
+* مدیریت Role کاربران
+* نمایش اطلاعات کاربر در UI
 
 ---
 
-## 📦 Product Management
+# 📦 Product Management
 
 * ایجاد محصول
 * ویرایش محصول
@@ -41,17 +41,33 @@
 * مشاهده لیست محصولات
 * مدیریت موجودی کالا
 * آپلود تصویر محصول
-* ذخیره تصاویر در `/public/uploads`
-* ذخیره مسیر تصویر در PostgreSQL
+* ذخیره تصاویر در **Supabase Storage**
+* ذخیره URL تصویر در PostgreSQL
 * نمایش تصاویر با `next/image`
-* پشتیبانی از Fallback Image
+* Fallback Image
 * Pagination
 * Search
 * Sort
+* Server Side Data Fetching
 
 ---
 
-## 🛒 Shopping Cart
+# 📝 Blog Management
+
+* ایجاد بلاگ
+* ویرایش بلاگ
+* حذف بلاگ
+* نمایش لیست بلاگ‌ها
+* نمایش جزئیات بلاگ
+* دسته‌بندی بلاگ‌ها
+* آپلود تصویر بلاگ
+* ذخیره تصاویر در Supabase Storage
+* Pagination
+* مدیریت Slug برای صفحات SEO Friendly
+
+---
+
+# 🛒 Shopping Cart
 
 * افزودن محصول به سبد خرید
 * حذف محصول از سبد خرید
@@ -61,75 +77,91 @@
 
 ---
 
-## ⚙️ Admin Dashboard
+# ⚙️ Admin Dashboard
 
 * داشبورد مدیریت
 * مدیریت محصولات
+* مدیریت بلاگ‌ها
 * ایجاد، ویرایش و حذف محصولات
-* آپلود تصاویر
+* ایجاد، ویرایش و حذف بلاگ‌ها
+* مدیریت تصاویر
 * مدیریت موجودی
 
 ---
 
-## 🎨 UI & UX
+# ✅ Backend Validation
 
-* React Hook Form
-* فرم‌های اعتبارسنجی شده
-* Modal برای ویرایش و حذف
-* React Toastify
-* بروزرسانی خودکار رابط کاربری با `router.refresh`
+اعتبارسنجی سمت Backend با استفاده از **Zod** پیاده‌سازی شده است.
+
+قابلیت‌ها:
+
+* Validation برای Authentication
+* Validation برای Product CRUD
+* Validation برای Blog CRUD
+* جلوگیری از ورود داده نامعتبر به Database
+* مدیریت خطاهای Validation
+
+ساختار:
+
+```
+Request
+   ↓
+Zod Validation
+   ↓
+Service / Server Action
+   ↓
+Prisma
+   ↓
+Database
+```
 
 ---
 
-## ⚠️ Error Handling
+# 🔌 API Versioning
 
-ساختار مدیریت خطاها به صورت لایه‌ای پیاده‌سازی شده است:
+ساختار APIها به صورت Versioned پیاده‌سازی شده است:
+
+```
+/api/v1/login
+/api/v1/register
+/api/v1/logout
+/api/v1/reset-password
+/api/v1/forgot-password
+/api/v1/me
+```
+
+مزایا:
+
+* جلوگیری از Breaking Changes
+* قابلیت توسعه نسخه‌های بعدی API
+* معماری استاندارد Backend
+
+---
+
+# ⚠️ Error Handling
+
+ساختار مدیریت خطاها به صورت لایه‌ای:
 
 ```
 UI
  ↓
-Service Layer
+Server Actions
  ↓
-fetchClient
+API Layer
  ↓
-Server
+Prisma
+ ↓
+Database
 ```
 
-### قابلیت‌ها
+قابلیت‌ها:
 
 * Centralized Error Handling
 * ApiError
 * Fetch Client
 * Toast Notifications
-* try/catch در UI
+* try/catch در Server Actions
 * مدیریت یکپارچه خطاها
-
----
-
-# 🧱 Tech Stack
-
-## Frontend
-
-* Next.js (App Router)
-* React
-* Tailwind CSS
-* Redux Toolkit
-* React Hook Form
-* React Toastify
-
-## Backend
-
-* Next.js
-* Server Actions
-* Prisma ORM
-* PostgreSQL
-
-## Security
-
-* JWT
-* bcrypt
-* HttpOnly Cookies
-* Middleware Authentication
 
 ---
 
@@ -139,12 +171,14 @@ Server
 
 ```sql
 id
-full_name
+name
 phone
 password
 role
 created_at
 ```
+
+---
 
 ## products
 
@@ -153,9 +187,28 @@ id
 name
 description
 price
+weight
 stock
 image_url
+slug
 created_at
+updated_at
+```
+
+---
+
+## blogs
+
+```sql
+id
+title
+description
+content
+category
+image
+slug
+created_at
+updated_at
 ```
 
 ---
@@ -174,33 +227,82 @@ useResetPassword
 # 📂 Project Structure
 
 ```text
-app/
-components/
-actions/
-services/
-lib/
-hooks/
-context/
-prisma/
-public/uploads/
+src/
+ ├── app/
+ │    ├── api/
+ │    │    └── v1/
+ │    ├── actions/
+ │    ├── components/
+ │    ├── dashboard/
+ │    └── lib/
+ │
+ ├── hooks/
+ ├── validations/
+ ├── types/
+ ├── prisma/
+ └── public/
 ```
+
+---
+
+# 🧱 Tech Stack
+
+## Frontend
+
+* Next.js (App Router)
+* React
+* TypeScript
+* Tailwind CSS
+* Redux Toolkit
+* React Hook Form
+* React Toastify
+
+---
+
+## Backend
+
+* Next.js Server Actions
+* API Routes
+* Prisma ORM
+* PostgreSQL
+* Supabase Storage
+
+---
+
+## Validation
+
+* Zod
+
+---
+
+## Security
+
+* JWT
+* bcrypt
+* HttpOnly Cookies
+* Middleware Authentication
 
 ---
 
 # 🔥 Highlights
 
 * Full CRUD محصولات
+* Full CRUD بلاگ
 * Prisma ORM
+* Supabase Storage
 * Server Actions
-* Image Upload
-* Authentication با JWT
+* API Versioning
+* Backend Validation
+* JWT Authentication
 * Refresh Token Flow
 * Session Persistence
 * Shopping Cart
 * Admin Dashboard
 * Centralized Error Handling
 * Pagination
-* Search & Sort
+* Search
+* Sort
+* Next.js Cache Revalidation
 
 ---
 
@@ -211,6 +313,7 @@ public/uploads/
 * Authentication
 * User Management
 * Product CRUD
+* Blog CRUD
 * Admin Dashboard
 * Shopping Cart
 * Image Upload
@@ -219,10 +322,13 @@ public/uploads/
 * Refresh Token Flow
 * Session Persistence
 * Prisma Migration
+* API Versioning
+* Backend Validation
 * Pagination
 * Search
 * Sort
 * Centralized Error Handling
+* Supabase Storage Integration
 
 ---
 
@@ -241,10 +347,10 @@ public/uploads/
 * Global Loading System
 * Auto Logout on 401
 * Retry Failed Requests
-* Error Mapping
 * Product Filtering
 * Order History
 * User Profile
+* Dashboard Analytics
 
 ---
 
@@ -252,9 +358,10 @@ public/uploads/
 
 * رمز عبور کاربران با **bcrypt** هش می‌شود.
 * احراز هویت با JWT انجام شده است.
-* Access Token و Refresh Token به صورت مجزا مدیریت می‌شوند.
-* اطلاعات حساس از طریق **HttpOnly Cookie** منتقل می‌شوند.
+* Access Token و Refresh Token جداگانه مدیریت می‌شوند.
+* Tokenها داخل HttpOnly Cookie ذخیره می‌شوند.
 * Routeهای محافظت‌شده توسط Middleware کنترل می‌شوند.
+* تمام ورودی‌های مهم سمت Backend Validation می‌شوند.
 
 ---
 
@@ -279,9 +386,17 @@ npm run dev
 ```env
 DATABASE_URL=
 
-JWT_ACCESS_SECRET=
+DIRECT_URL=
 
-JWT_REFRESH_SECRET=
+ACCESS_SECRET=
+
+REFRESH_SECRET=
+
+RESET_PASSWORD_SECRET=
+
+SUPABASE_URL=
+
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 ---
@@ -295,9 +410,12 @@ JWT_REFRESH_SECRET=
 * Email Verification
 * Notifications
 * Dashboard Analytics
+* Redis Cache در صورت نیاز به Scale بالا
 
 ---
 
 # 📝 Notes
 
-این پروژه همچنان در حال توسعه است و به مرور قابلیت‌های جدیدی به آن اضافه خواهد شد. هدف اصلی پروژه، پیاده‌سازی یک فروشگاه آنلاین مدرن با معماری استاندارد Full Stack و استفاده از بهترین شیوه‌های توسعه در اکوسیستم Next.js است.
+این پروژه همچنان در حال توسعه است و به مرور قابلیت‌های جدیدی به آن اضافه خواهد شد.
+
+هدف اصلی پروژه، پیاده‌سازی یک فروشگاه آنلاین مدرن با معماری استاندارد Full Stack و استفاده از بهترین روش‌های توسعه در اکوسیستم Next.js است.
