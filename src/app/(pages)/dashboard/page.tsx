@@ -1,6 +1,6 @@
-import AddProduct from "@/app/components/page/dashboard/AddProducts";
 import BlogsDashboard from "@/app/components/page/dashboard/blogs/BlogsDashboard";
-import ProductsDashboard from "@/app/components/page/dashboard/ProductsDashboard";
+import AddProduct from "@/app/components/page/dashboard/products/AddProducts";
+import ProductsDashboard from "@/app/components/page/dashboard/products/ProductsDashboard";
 import ClientLayout from "@/app/layout/ClientLayout";
 
  type SearchParams = {

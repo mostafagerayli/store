@@ -37,7 +37,7 @@ function LoginForm() {
   return (
     <div className="flex flex-col justify-center px-6 sm:px-10 py-10">
       <h1 className="text-center text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-        پسته چی
+       طلا سبز
       </h1>
 
       <h4 className="text-center text-lg font-serif text-gray-600 mb-2">

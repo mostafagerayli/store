@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HeroSectionAboat() {
   return (
@@ -21,13 +22,13 @@ export default function HeroSectionAboat() {
           </p>
 
           <div className="flex gap-4 justify-center">
-            <button className="bg-green-700 px-6 py-3 rounded-full">
+            <Link href='/products' className="bg-green-700 px-6 py-3 rounded-full">
               محصولات
-            </button>
+            </Link>
 
-            <button className="bg-white text-black px-6 py-3 rounded-full">
+            <Link href='/blog' className="bg-white text-black px-6 py-3 rounded-full">
               بیشتر
-            </button>
+            </Link>
           </div>
         </div>
       </div>

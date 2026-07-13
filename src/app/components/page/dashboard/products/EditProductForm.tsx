@@ -3,10 +3,10 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Image from "next/image";
-import InputField from "../../input/InputField";
 import { Product, ProductFormData } from "@/types/product";
 import { useEditProduct } from "@/app/hooks/product/useEditProduct";
 import { useRef } from "react";
+import InputField from "@/app/components/input/InputField";
 
 type EditProductFormProps = {
   product: Product;

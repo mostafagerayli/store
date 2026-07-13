@@ -32,7 +32,7 @@ export default function ContentSection() {
           <span className="text-green-700">ارزش‌های ما</span>
 
           <h2 className="mt-3 text-4xl font-bold">
-            چرا پسته‌چی؟
+            چرا طلا سبز ؟
           </h2>
         </div>
 

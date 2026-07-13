@@ -1,6 +1,6 @@
 import { getProducts } from "@/app/lib/getProducts";
 import ProductsTable from "./ProductsTable";
-import Pagination from "../../pagination/Pagination";
+import Pagination from "@/app/components/pagination/Pagination";
 
 type SearchParams = {
   page?: string;

@@ -20,8 +20,6 @@ export default function BlogHero() {
         <p className="max-w-xl mb-8 text-center text-gray-200">
           جدیدترین مقالات درباره خواص پسته، راهنمای خرید و تغذیه سالم
         </p>
-
-        <BlogSearch />
       </div>
     </section>
   );

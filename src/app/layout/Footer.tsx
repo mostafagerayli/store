@@ -18,7 +18,7 @@ export default function Footer() {
 
           {/* برند */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-xl font-bold">🥜 پسته‌چی</h3>
+            <h3 className="text-xl font-bold">🥜 طلا سبز</h3>
 
             <p className="text-white/80 text-sm leading-7">
               فروشگاه تخصصی پسته ایرانی با کیفیت صادراتی.
@@ -45,8 +45,8 @@ export default function Footer() {
             <Link href="/about" className="text-white/80 hover:text-yellow-300 text-sm">
               درباره ما
             </Link>
-            <Link href="/contact" className="text-white/80 hover:text-yellow-300 text-sm">
-              تماس با ما
+            <Link href="/blog" className="text-white/80 hover:text-yellow-300 text-sm">
+                بلاگ
             </Link>
           </div>
 
@@ -66,12 +66,12 @@ export default function Footer() {
 
             <div className="flex items-center gap-2 text-white/80 text-sm">
               <FaMapMarkerAlt />
-              <span>تهران، خیابان ولیعصر</span>
+              <span>خراسان رضوی - سبزوار - منطقه صفی آباد</span>
             </div>
 
             <div className="flex items-center gap-2 text-white/80 text-sm">
               <FaPhone />
-              <span dir="ltr">021 - 8888 1234</span>
+              <span dir="ltr">09395236615</span>
             </div>
 
             <div className="flex items-center gap-2 text-white/80 text-sm">
@@ -84,7 +84,7 @@ export default function Footer() {
         {/* پایین فوتر */}
         <div className="border-t border-white/20 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70">
 
-          <p>© 1403 پسته‌چی - همه حقوق محفوظ است</p>
+          <p>© 1403 طلا سبز - همه حقوق محفوظ است</p>
 
         </div>
 

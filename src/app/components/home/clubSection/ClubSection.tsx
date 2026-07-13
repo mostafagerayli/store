@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function ClubSection() {
   return (
-    <section className="bg-[#f8f7f4] py-16 md:py-24">
+    <section className="py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* CTA */}
@@ -20,7 +20,7 @@ export default function ClubSection() {
           "
           >
             <h2 className="text-amber-400 font-black text-2xl md:text-3xl">
-              باشگاه پسته‌ای
+              باشگاه طلا سبز
             </h2>
 
             <p className="mt-4 text-white/80 leading-7 max-w-2xl mx-auto text-sm md:text-base">
@@ -32,7 +32,7 @@ export default function ClubSection() {
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
 
               <Link
-                href="/rejister"
+                href="/register"
                 className="
                 h-12
                 px-8
@@ -91,13 +91,13 @@ export default function ClubSection() {
             md:text-3xl
           "
           >
-            ما در پسته‌چی معتقدیم که هر دانه پسته،
+            ما در طلا سبز معتقدیم که هر دانه پسته،
             قطعه‌ای از زمان است که با احترام و
             وقار به جهان عرضه شده.
           </blockquote>
 
           <p className="mt-8 text-sm text-[#0b2a24]/70">
-            باشگاه پسته‌چی
+            باشگاه طلا سبز
           </p>
 
         </div>

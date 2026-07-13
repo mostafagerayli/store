@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import Modal from "../../modal/Modal";
-import DeleteConfirmModal from "../../modal/DeleteConfirmModal";
 import EditProductForm from "./EditProductForm";
 
 import useDeleteProduct from "@/app/hooks/product/useDeleteProduct";
 import { Product } from "@/types/product";
+import DeleteConfirmModal from "@/app/components/modal/DeleteConfirmModal";
+import Modal from "@/app/components/modal/Modal";
 
 export default function ProductsTable({
   products = [],

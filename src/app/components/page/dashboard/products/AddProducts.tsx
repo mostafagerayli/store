@@ -1,11 +1,11 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import InputField from "../../input/InputField";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { ProductFormData } from "@/types/product";
 import { useAddProduct } from "@/app/hooks/product/useAddProduct";
+import InputField from "@/app/components/input/InputField";
 
 export default function AddProduct() {
   const {

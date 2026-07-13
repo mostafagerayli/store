@@ -1,65 +1,40 @@
-import { getProducts } from "@/app/lib/getProducts";
-import Image from "next/image";
 import Link from "next/link";
+import { getProducts } from "@/app/lib/getProducts";
+import FeaturesBottomSlider from "./FeaturesBottomSlider";
 
 export default async function FeaturesBottom() {
-  const {products} = await getProducts()
-const featuredProducts = products
-  .filter((product) =>
-    ["پسته اکبری", "پسته کله قوچی", "پسته احمدآقایی"].includes(product.name)
-  )
-  .slice(0, 3);
-  
+  const { products } = await getProducts();
+
+  const featuredProducts = products;
+
   return (
-    <section className="overflow-hidden bg-[#f8f7f4] py-20">
-      <div className="mx-auto max-w-7xl px-4">
-        {/* Heading */}
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl font-black text-[#0a2d24] md:text-4xl">
-            محصولات برگزیده
-          </h2>
+    <section className="py-14">
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        {/* Header */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          {/* Title */}
+          <div>
+            <h2 className="text-2xl font-black text-[#0A2D24] sm:text-3xl lg:text-4xl dark:text-white">
+              پرفروش‌ترین محصولات
+            </h2>
 
-          <div className="mx-auto mt-4 h-[3px] w-14 rounded-full bg-amber-500" />
-        </div>
-
-        {/* Products */}
-<div className="grid grid-cols-1 items-start gap-8 md:grid-cols-3 lg:gap-10">
-  {featuredProducts.map((product) => (
-    <Link
-      key={product.id}
-      href={`/products/${product.slug}`}
-      className="group block md:translate-y-14"
-    >
-      <article>
-        <div className="relative overflow-hidden rounded-[34px] bg-white shadow-[0_20px_50px_rgba(0,0,0,.08)]">
-          <div className="absolute top-4 right-4 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-gray-700 backdrop-blur-md">
-            ★ ۴.۹
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              محبوب‌ترین محصولات فروشگاه طلای سبز
+            </p>
           </div>
 
-          <div className="relative h-[420px] md:h-[460px] lg:h-[520px]">
-            <Image
-              src={product.image_url ?? "/images/images1.jpg"}
-              alt={product.name}
-              fill
-              sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 33vw"
-              className="object-cover transition duration-700 group-hover:scale-110"
-            />
+          {/* Actions */}
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <Link
+              href="/products"
+              className="rounded-full border border-[#0A2D24] px-4 py-2 text-xs font-bold text-[#0A2D24] transition hover:bg-[#0A2D24] hover:text-white sm:px-5 sm:py-2.5 sm:text-sm dark:border-green-500 dark:text-green-400"
+            >
+              مشاهده همه
+            </Link>
           </div>
         </div>
-
-        <div className="pt-5 text-center">
-          <h3 className="text-lg font-bold text-[#0a2d24]">
-            {product.name}
-          </h3>
-
-          <p className="mt-2 text-sm font-medium text-amber-600">
-            {product.price.toLocaleString()}
-          </p>
-        </div>
-      </article>
-    </Link>
-  ))}
-</div>
+        <FeaturesBottomSlider products={featuredProducts} />
       </div>
     </section>
   );

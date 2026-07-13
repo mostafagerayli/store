@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================
+   Base
+========================= */
+
 html,
 body {
   width: 100%;
@@ -9,28 +13,42 @@ body {
   overflow-x: hidden;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-/* میتونی استایل‌های شخصی هم اضافه کنی */
+/* =========================
+   Animations
+========================= */
+
 @keyframes float {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0) scale(1);
   }
 
   50% {
-    transform: translateY(-15px);
+    transform: translateY(-12px) scale(1.03);
   }
 
   100% {
-    transform: translateY(0px);
+    transform: translateY(0) scale(1);
   }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.animate-float,
+.heroImage {
+  animation: float 5s ease-in-out infinite;
 }
+
+.heroImage {
+  filter: drop-shadow(0 25px 60px rgba(0, 0, 0, 0.45));
+}
+
+/* =========================
+   Shared
+========================= */
 
 .glass-card {
   backdrop-filter: blur(25px);
@@ -43,4 +61,109 @@ body {
 
 .story-image:hover {
   transform: scale(1.05);
+}
+
+/* =========================
+   HERO SWIPER
+========================= */
+
+.heroSwiper .swiper-pagination {
+  bottom: 18px !important;
+}
+
+.heroSwiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px !important;
+  background: rgba(255, 255, 255, .45);
+  opacity: 1;
+  transition: .35s;
+}
+
+.heroSwiper .swiper-pagination-bullet-active {
+  width: 34px;
+  border-radius: 999px;
+  background: #facc15;
+}
+
+.heroSwiper .swiper-button-prev,
+.heroSwiper .swiper-button-next {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .18);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  transition: .3s;
+}
+
+.heroSwiper .swiper-button-prev::after,
+.heroSwiper .swiper-button-next::after {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.heroSwiper .swiper-button-prev:hover,
+.heroSwiper .swiper-button-next:hover {
+  background: #facc15;
+  color: #032b1f;
+}
+
+/* =========================
+   BEST SELLER SWIPER
+========================= */
+
+.bestSellerSwiper {
+  padding: 6px 2px 42px;
+}
+
+.bestSellerSwiper .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.bestSellerSwiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #d1d5db;
+  opacity: 1;
+  transition: .3s;
+}
+
+.bestSellerSwiper .swiper-pagination-bullet-active {
+  width: 22px;
+  border-radius: 999px;
+  background: #0A2D24;
+}
+
+.best-prev,
+.best-next {
+  cursor: pointer;
+  transition: .25s;
+}
+
+.best-prev:hover,
+.best-next:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+
+  .heroSwiper .swiper-button-prev,
+  .heroSwiper .swiper-button-next,
+  .best-prev,
+  .best-next {
+    display: none;
+  }
+
+  .heroSwiper .swiper-pagination {
+    bottom: 10px !important;
+  }
+
+  .bestSellerSwiper {
+    padding-bottom: 30px;
+  }
 }
