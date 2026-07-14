@@ -1,5 +1,4 @@
 import FeatureCard from "./FeatureCard";
-import { Feature } from "@/types/home";
 
 export interface Feature {
   title: string;

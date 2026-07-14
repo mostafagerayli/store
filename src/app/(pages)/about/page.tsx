@@ -1,18 +1,15 @@
-import ContantSection from "@/app/components/about/ContantSection";
-import StorySection from "@/app/components/about/StorySection";
 import Footer from "@/app/layout/Footer";
 import Header from "@/app/layout/Header";
-import HeroSectionAboat from "@/app/components/about/HiroSectionAbout";
+// import HeroSectionAboat from "@/app/components/about/HiroSectionAbout";
 import CraftsmanshipSection from "@/app/components/about/CraftsmanshipSection";
+import TrustSection from "@/app/components/about/TrustSection";
 
 export default function AboutPage() {
   return (
     <div className="bg-white">
       <Header />
-      <HeroSectionAboat/>
-      <StorySection />
       <CraftsmanshipSection />
-      <ContantSection />
+      <TrustSection />
       <Footer />
     </div>
   );

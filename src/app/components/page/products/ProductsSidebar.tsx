@@ -9,7 +9,7 @@ export default function ProductsSidebar() {
         <ul className="space-y-3 text-sm text-gray-600">
           <CategoryItem title="پسته اکبری" value="اکبری" />
           <CategoryItem title="پسته احمدآقایی" value="احمدآقایی" />
-          <CategoryItem title="پسته فندقی" value="فندقی" />
+          <CategoryItem title="پسته سفید" value="سفید" />
           <CategoryItem title="پسته کله قوچی" value="کله قوچی" />
         </ul>
       </div>

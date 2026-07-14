@@ -3,36 +3,67 @@ import AddProduct from "@/app/components/page/dashboard/products/AddProducts";
 import ProductsDashboard from "@/app/components/page/dashboard/products/ProductsDashboard";
 import ClientLayout from "@/app/layout/ClientLayout";
 
- type SearchParams = {
-  page?: string;
+
+type SearchParams = {
+  productPage?: string;
+  blogPage?: string;
   sort?: string;
   search?: string;
+
   [key: string]: string | string[] | undefined;
 };
+
 
 type DashboardPageProps = {
   searchParams: Promise<SearchParams>;
 };
 
+
 export default async function DashboardPage({
   searchParams,
 }: DashboardPageProps) {
+
   const params = await searchParams;
+
 
   return (
     <ClientLayout>
+
       <div className="p-6">
+
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+
           <div className="xl:col-span-4">
             <AddProduct />
           </div>
 
+
           <div className="xl:col-span-8">
-            <ProductsDashboard searchParams={params} />
+
+            <ProductsDashboard
+              searchParams={{
+                productPage: params.productPage,
+              }}
+            />
+
           </div>
+
+
         </div>
-        <BlogsDashboard searchParams={params}/>
+
+
+        <BlogsDashboard
+
+          searchParams={{
+            blogPage: params.blogPage,
+          }}
+
+        />
+
+
       </div>
+
     </ClientLayout>
   );
 }

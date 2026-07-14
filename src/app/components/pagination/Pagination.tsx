@@ -4,28 +4,42 @@ type PaginationProps = {
   page: number;
   totalPages: number;
   basePath: string;
-  searchParams?: URLSearchParams ;
+  paramName?: string;
+  searchParams?: URLSearchParams;
 };
 
 export default function Pagination({
   page,
   totalPages,
   basePath,
+  paramName = "page",
   searchParams,
 }: PaginationProps) {
+
+
   const createPageUrl = (pageNumber: number): string => {
+
     const params = new URLSearchParams(
       searchParams?.toString() ?? ""
     );
 
-    params.set("page", pageNumber.toString());
+
+    params.set(
+      paramName,
+      pageNumber.toString()
+    );
+
 
     return `${basePath}?${params.toString()}`;
   };
 
+
   return (
     <div className="mt-8 flex items-center justify-center">
+
       <div className="flex items-center gap-2 rounded-2xl bg-white p-2 shadow-lg">
+
+
         <Link
           href={createPageUrl(Math.max(page - 1, 1))}
           scroll={false}
@@ -38,24 +52,33 @@ export default function Pagination({
           ←
         </Link>
 
-        {Array.from({ length: totalPages }, (_, index) => {
-          const pageNumber = index + 1;
 
-          return (
-            <Link
-              key={pageNumber}
-              href={createPageUrl(pageNumber)}
-              scroll={false}
-              className={`flex h-10 w-10 items-center justify-center rounded-xl font-medium transition ${
-                page === pageNumber
-                  ? "bg-[#0b5b3c] text-white shadow-md"
-                  : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              {pageNumber}
-            </Link>
-          );
-        })}
+
+        {Array.from(
+          { length: totalPages },
+          (_, index) => {
+
+            const pageNumber = index + 1;
+
+
+            return (
+              <Link
+                key={pageNumber}
+                href={createPageUrl(pageNumber)}
+                scroll={false}
+                className={`flex h-10 w-10 items-center justify-center rounded-xl font-medium transition ${
+                  page === pageNumber
+                    ? "bg-[#0b5b3c] text-white shadow-md"
+                    : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                {pageNumber}
+              </Link>
+            );
+          }
+        )}
+
+
 
         <Link
           href={createPageUrl(
@@ -70,7 +93,10 @@ export default function Pagination({
         >
           →
         </Link>
+
+
       </div>
+
     </div>
   );
 }
