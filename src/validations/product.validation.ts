@@ -1,16 +1,27 @@
 import { z } from "zod";
 
 export const CreateProductSchema = z.object({
-  name: z.string().trim().min(3).max(100),
+  name: z
+    .string()
+    .trim()
+    .min(3, "نام محصول حداقل ۳ کاراکتر باشد")
+    .max(100),
 
-  description: z.string().trim().min(2),
+  description: z
+    .string()
+    .trim()
+    .optional(),
 
-  price: z.coerce.number().positive(),
+  price_per_kg: z.coerce
+    .number()
+    .positive("قیمت هر کیلو باید بزرگتر از صفر باشد"),
 
-  weight: z.coerce.number().positive().optional(),
-
-  stock: z.coerce.number().int().min(0),
+  stock: z.coerce
+    .number()
+    .int()
+    .min(0, "موجودی نمی‌تواند منفی باشد"),
 });
+
 
 export const UpdateProductSchema = z.object({
   name: z
@@ -23,12 +34,11 @@ export const UpdateProductSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(2, "توضیحات حداقل 2 کاراکتر باشد")
     .optional(),
 
-  price: z.coerce
+  price_per_kg: z.coerce
     .number()
-    .positive("قیمت باید بزرگتر از صفر باشد")
+    .positive("قیمت هر کیلو باید بزرگتر از صفر باشد")
     .optional(),
 
   stock: z.coerce

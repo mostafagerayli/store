@@ -21,20 +21,27 @@ export function useEditProduct(productId: number, onClose?: () => void) {
       const formData = new FormData();
 
       formData.append("name", data.name);
-      formData.append("weight", String(data.weight));
-      formData.append("price", String(data.price));
+
+      formData.append("price_per_kg", String(data.price_per_kg));
+
       formData.append("stock", String(data.stock));
-      formData.append("description", data.description);
+
+      formData.append("description", data.description ?? "");
 
       if (data.image) {
         formData.append("image_url", data.image);
       }
 
-      await editProduct(productId, formData);
+      const result = await editProduct(productId, formData);
+
+      if (!result.success) {
+        throw new Error(result.message || "خطا در ویرایش محصول");
+      }
 
       toast.success("محصول با موفقیت ویرایش شد");
 
       router.refresh();
+
       onClose?.();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "خطا در ویرایش");
@@ -43,5 +50,8 @@ export function useEditProduct(productId: number, onClose?: () => void) {
     }
   };
 
-  return { edit, loading };
+  return {
+    edit,
+    loading,
+  };
 }

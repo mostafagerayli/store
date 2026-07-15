@@ -16,16 +16,17 @@ export async function getProducts(
 
     switch (sort) {
       case "price_asc":
-        orderBy = { price: "asc" };
+        orderBy = { price_per_kg: "asc" };
         break;
 
       case "price_desc":
-        orderBy = { price: "desc" };
+        orderBy = { price_per_kg: "desc" };
         break;
 
       default:
         orderBy = { created_at: "desc" };
     }
+
 
     const where: Prisma.productsWhereInput = search
       ? {
@@ -46,6 +47,7 @@ export async function getProducts(
         }
       : {};
 
+
     const [products, total] = await Promise.all([
       prisma.products.findMany({
         where,
@@ -53,20 +55,25 @@ export async function getProducts(
         take: limit,
         skip: offset,
       }),
+
       prisma.products.count({
         where,
       }),
     ]);
 
+
     return {
       products: products.map((p) => ({
         ...p,
-        price: p.price = Number(p.price),
-        weight: p.weight = Number(p.weight),
+        price_per_kg: Number(p.price_per_kg),
+        stock_gram: Number(p.stock_gram),
       })),
+
       total,
       error: null,
     };
+
+
   } catch (error) {
     console.error("Get Products Error:", error);
 

@@ -1,12 +1,19 @@
-import { products } from "@prisma/client/wasm";
+import { products } from "@prisma/client";
 
 
 export type Product = products;
 
+
 export type ProductTableItem = Pick<
   Product,
-  "id" | "name" | "price" | "weight" | "stock" | "image_url" | "description"
+  | "id"
+  | "name"
+  | "price_per_kg"
+  | "stock_gram"
+  | "image_url"
+  | "description"
 >;
+
 
 export interface ProductsResponse {
   products: Product[];
@@ -14,26 +21,28 @@ export interface ProductsResponse {
   error: string | null;
 }
 
+
 export interface CreateProductDto {
   name: string;
   description?: string;
-  price: number;
-  weight: number;
-  stock: number;
+  price_per_kg: number;
+  stock: number; // کیلو (برای فرم ادمین)
   image?: File;
 }
+
 
 export type UpdateProductDto = Partial<CreateProductDto> & {
   id: number;
 };
 
-  export interface ProductFormData {
+
+export interface ProductFormData {
   name: string;
-  weight: number;
-  price: number;
-  stock: number;
+  price_per_kg: number;
+  stock: number; // کیلو
   description: string;
 }
+
 
 export interface ProductDetailItem {
   id: number;
@@ -41,7 +50,7 @@ export interface ProductDetailItem {
   slug: string;
   description: string | null;
   image_url: string | null;
-  price: number;
-  stock: number;
-  weight: number | null;
+
+  price_per_kg: number;
+  stock_gram: number;
 }

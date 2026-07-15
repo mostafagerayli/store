@@ -30,17 +30,12 @@ export default function ContentSection() {
         <div className="mb-14 text-center">
           <span className="text-green-700">ارزش‌های ما</span>
 
-          <h2 className="mt-3 text-4xl font-bold">
-            چرا طلا سبز ؟
-          </h2>
+          <h2 className="mt-3 text-4xl font-bold">چرا پسته پسته ؟</h2>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
           {features.map((feature) => (
-            <FeatureCard
-              key={feature.title}
-              {...feature}
-            />
+            <FeatureCard key={feature.title} {...feature} />
           ))}
         </div>
       </div>

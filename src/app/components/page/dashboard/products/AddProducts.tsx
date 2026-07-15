@@ -56,56 +56,40 @@ export default function AddProduct() {
             }}
             error={errors.name?.message}
           />
-          {/* وزن */}
-          <InputField<ProductFormData>
-            name="weight"
-            label="وزن (گرم)"
-            placeholder="مثال : 1,000"
-            inputMode="numeric"
-            register={register}
-            rules={{
-              required: "وزن الزامی است",
-              pattern: {
-                value: /^\d+(\.\d+)?$/,
-                message: "وزن باید عدد معتبر باشد",
-              },
-            }}
-            error={errors.weight?.message}
-          />
 
           {/* قیمت */}
           <InputField<ProductFormData>
-            name="price"
-            label="قیمت (تومان)"
+            name="price_per_kg"
+            label="قیمت هر کیلو (تومان)"
             inputMode="numeric"
-            placeholder="مثال : 1,000,000"
+            placeholder="مثال : 2,000,000"
             register={register}
             rules={{
-              required: "قیمت الزامی است",
+              required: "قیمت هر کیلو الزامی است",
               pattern: {
                 value: /^\d+$/,
                 message: "قیمت باید عدد باشد",
               },
             }}
-            error={errors.price?.message}
+            error={errors.price_per_kg?.message}
           />
 
           {/* موجودی */}
-          <InputField<ProductFormData>
-            name="stock"
-            label="موجودی"
-            inputMode="numeric"
-            placeholder="مثال : 10"
-            register={register}
-            rules={{
-              required: "موجودی الزامی است",
-              pattern: {
-                value: /^\d+$/,
-                message: "موجودی باید عدد باشد",
-              },
-            }}
-            error={errors.stock?.message}
-          />
+<InputField<ProductFormData>
+  name="stock"
+  label="موجودی (کیلو)"
+  inputMode="numeric"
+  placeholder="مثال : 10"
+  register={register}
+  rules={{
+    required: "موجودی الزامی است",
+    pattern: {
+      value: /^\d+$/,
+      message: "موجودی باید عدد باشد",
+    },
+  }}
+  error={errors.stock?.message}
+/>
 
           {/* عکس */}
           <div

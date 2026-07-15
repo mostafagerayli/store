@@ -16,17 +16,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* برند */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-xl font-bold">🥜 طلا سبز</h3>
+            <h3 className="text-xl font-bold">🥜 پسته پسته</h3>
 
             <p className="text-white/80 text-sm leading-7">
-              تولیدکننده و عرضه‌کننده پسته اصیل ایرانی. محصولات طلای سبز
+              تولیدکننده و عرضه‌کننده پسته اصیل ایرانی. محصولات پسته پسته
               مستقیماً از باغ‌های اختصاصی و کشاورزان منتخب تهیه شده و با حفظ
               کیفیت، تازگی و بسته‌بندی حرفه‌ای به دست شما می‌رسد.
             </p>
 
             <div className="flex gap-4 mt-2">
-              <FaInstagram className="hover:text-yellow-300 cursor-pointer transition" />
-              <FaTelegramPlane className="hover:text-yellow-300 cursor-pointer transition" />
+              <Link href="https://www.instagram.com/peste__peste">
+                <FaInstagram className="hover:text-yellow-300 cursor-pointer transition" />
+              </Link>
               <FaEnvelope className="hover:text-yellow-300 cursor-pointer transition" />
             </div>
           </div>
@@ -134,7 +135,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-white/20 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70">
-          <p>© 1403 طلا سبز - همه حقوق محفوظ است</p>
+          <p>© 1403 پسته پسته - همه حقوق محفوظ است</p>
         </div>
       </div>
     </footer>

@@ -27,8 +27,6 @@ export default async function ProductsDashboard({
     limit
   );
 
-  console.log("PRODUCT PAGE:", page);
-
 
   if (error) {
     return (

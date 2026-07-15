@@ -15,9 +15,7 @@ export default async function BlogPage({
 
   const { slug } = await params;
 
-  const decodedSlug = decodeURIComponent(slug);
-
-  console.log("BLOG SLUG:", decodedSlug);
+  const decodedSlug = decodeURIComponent(slug)
 
 
   const res = await fetch(
@@ -26,9 +24,6 @@ export default async function BlogPage({
       cache: "no-store",
     }
   );
-
-
-  console.log("BLOG RESPONSE:", res.status);
 
 
   if (!res.ok) {

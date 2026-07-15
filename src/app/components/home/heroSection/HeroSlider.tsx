@@ -18,7 +18,7 @@ import brandBanner from "../../../../../public/images/unnamed (1).jpg";
 
 const slides = [
   {
-    title: "طلای سبز",
+    title: "پسته پسته",
     subtitle: "طعم اصالت، هدیه‌ی طبیعت",
     description: "پسته تازه، دست‌چین و درجه یک؛ مستقیم از باغ‌های ایران.",
     image: brandBanner,
@@ -83,7 +83,7 @@ export default function HeroSlider() {
             <div className="relative z-20 mx-auto flex h-full max-w-7xl items-center px-5 sm:px-8 lg:px-14">
               <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl text-white">
                 <span className="mb-3 inline-flex items-center rounded-full border border-yellow-400/40 bg-yellow-400/10 px-3 py-1 text-[11px] font-medium text-yellow-300 backdrop-blur sm:px-4 sm:py-2 sm:text-sm">
-                  🌿 طلای سبز
+                  🌿 پسته پسته
                 </span>
 
                 <h1 className="mb-3 text-2xl font-black leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,.6)] sm:text-3xl md:text-5xl lg:text-6xl">

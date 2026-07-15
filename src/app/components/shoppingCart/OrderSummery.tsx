@@ -37,7 +37,7 @@ export default function OrderSummary({
       </div>
 
       <button
-        className="mt-6 w-full rounded-lg bg-green-600 py-3 font-semibold text-white transition hover:bg-green-700"
+        className="mt-6 w-full rounded-lg bg-[#02462c] py-3 font-semibold text-white transition hover:bg-green-700"
       >
         پرداخت
       </button>

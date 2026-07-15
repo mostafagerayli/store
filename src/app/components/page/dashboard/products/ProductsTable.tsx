@@ -77,8 +77,7 @@ export default function ProductsTable({
               <tr className="bg-gray-50 border-b text-gray-700">
                 <th className="p-4 text-center">شناسه</th>
                 <th className="p-4 text-center">نام محصول</th>
-                <th className="p-4 text-center">وزن</th>
-                <th className="p-4 text-center">قیمت</th>
+                <th className="p-4 text-center">قیمت هر کیلو</th>
                 <th className="p-4 text-center">موجودی</th>
                 <th className="p-4 text-center">تصویر</th>
                 <th className="p-4 text-center">توضیحات</th>
@@ -98,15 +97,13 @@ export default function ProductsTable({
                     {product.name}
                   </td>
 
-                  <td className="p-4 text-center">
-                    {Number(product.weight).toLocaleString()} گرم
-                  </td>
-
                   <td className="p-4 text-center text-[#0b5b3c] font-semibold">
-                    {Number(product.price).toLocaleString()} تومان
+                    {Number(product.price_per_kg).toLocaleString()} تومان
                   </td>
 
-                  <td className="p-4 text-center">{product.stock}</td>
+                  <td className="p-4 text-center">
+                    {(product.stock_gram / 1000).toLocaleString()} کیلو
+                  </td>
 
                   <td className="p-4 text-center">
                     <div className="relative w-16 h-16 mx-auto rounded-xl overflow-hidden bg-gray-100">

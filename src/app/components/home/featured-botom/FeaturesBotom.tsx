@@ -12,7 +12,7 @@ export default async function FeaturesBottom() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         {/* Header */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between ">
           {/* Title */}
           <div>
             <h2 className="text-2xl font-black text-[#0A2D24] sm:text-3xl lg:text-4xl dark:text-white">
@@ -20,7 +20,7 @@ export default async function FeaturesBottom() {
             </h2>
 
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              محبوب‌ترین محصولات فروشگاه طلای سبز
+              محبوب‌ترین محصولات فروشگاه پسته پسته
             </p>
           </div>
 

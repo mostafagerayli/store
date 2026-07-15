@@ -35,25 +35,31 @@ export async function uploadImage(file: File) {
 }
 
 export async function createProduct(formData: FormData) {
-  // دریافت مقادیر از FormData
   const body = {
     name: formData.get("name"),
     description: formData.get("description"),
-    price: formData.get("price"),
-    weight: formData.get("weight"),
-    stock: formData.get("stock"),
+    price_per_kg: formData.get("price_per_kg"),
+    stock: formData.get("stock"), // کیلو
   };
 
-  // اعتبارسنجی
   const result = CreateProductSchema.safeParse(body);
 
   if (!result.success) {
     throw new Error(result.error.issues[0].message);
   }
 
-  const { name, description, price, weight, stock } = result.data;
+  const {
+    name,
+    description,
+    price_per_kg,
+    stock,
+  } = result.data;
 
-  // فایل
+
+  // تبدیل کیلو به گرم برای دیتابیس
+  const stock_gram = stock * 1000;
+
+
   const image = formData.get("image");
 
   let imagePath: string | null = null;
@@ -62,32 +68,34 @@ export async function createProduct(formData: FormData) {
     imagePath = await uploadImage(image);
   }
 
-  // ساخت Slug
+
   const slug = `${name
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "-")}-${Date.now()}`;
 
-  // ذخیره در دیتابیس
+
   const product = await prisma.products.create({
     data: {
       name,
       description,
-      price,
-      weight: weight ?? 0,
-      stock,
+      price_per_kg,
+      stock_gram,
       image_url: imagePath,
       slug,
     },
   });
+
 
   revalidateTag("products", "max");
 
   return product;
 }
 
-export async function editProduct(id: number | string, formData: FormData) {
-
+export async function editProduct(
+  id: number | string,
+  formData: FormData
+) {
   try {
     if (!id) {
       return {
@@ -96,14 +104,17 @@ export async function editProduct(id: number | string, formData: FormData) {
       };
     }
 
+
     const body = {
       name: formData.get("name") || undefined,
       description: formData.get("description") || undefined,
-      price: formData.get("price") || undefined,
+      price_per_kg: formData.get("price_per_kg") || undefined,
       stock: formData.get("stock") || undefined,
     };
 
+
     const result = UpdateProductSchema.safeParse(body);
+
 
     if (!result.success) {
       return {
@@ -112,31 +123,47 @@ export async function editProduct(id: number | string, formData: FormData) {
       };
     }
 
-    const { name, description, price, stock } = result.data;
+
+    const {
+      name,
+      description,
+      price_per_kg,
+      stock,
+    } = result.data;
+
 
     const data: Prisma.productsUpdateInput = {};
+
 
     if (name !== undefined) {
       data.name = name;
     }
 
+
     if (description !== undefined) {
       data.description = description;
     }
 
-    if (price !== undefined) {
-      data.price = price;
+
+    if (price_per_kg !== undefined) {
+      data.price_per_kg = price_per_kg;
     }
+
 
     if (stock !== undefined) {
-      data.stock = stock;
+      data.stock_gram = stock * 1000;
     }
 
+
+
     const image = formData.get("image_url");
+
 
     if (image instanceof File && image.size > 0) {
       data.image_url = await uploadImage(image);
     }
+
+
 
     const updated = await prisma.products.update({
       where: {
@@ -145,17 +172,23 @@ export async function editProduct(id: number | string, formData: FormData) {
       data,
     });
 
+
     return {
       success: true,
       data: updated,
     };
+
+
   } catch (error) {
     console.error("UPDATE PRODUCT ERROR:", error);
+
 
     return {
       success: false,
       message:
-        error instanceof Error ? error.message : "خطا در بروزرسانی محصول",
+        error instanceof Error
+          ? error.message
+          : "خطا در بروزرسانی محصول",
     };
   }
 }

@@ -56,7 +56,7 @@ export default function MobileMenu({
         </div>
 
         <div className="border-t border-gray-100 px-5 py-3 text-center text-xs text-gray-400 dark:border-gray-800">
-          طلا سبز © 1405
+          پسته پسته © 1405
         </div>
       </div>
     </div>

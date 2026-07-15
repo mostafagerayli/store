@@ -13,8 +13,7 @@ interface Product {
   name: string;
   image_url?: string;
   description?: string;
-  price: number;
-  weight: number;
+  price_per_kg: number;
   badge?: string;
   currency?: string;
 }
@@ -33,13 +32,12 @@ export default function ProductCard({ product, className = "" }: Props) {
     image_url,
     badge,
     description,
-    price,
-    weight,
+    price_per_kg,
     currency = "تومان",
   } = product;
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // جلوگیری از رفتن به صفحه محصول
+    e.stopPropagation();
 
     dispatch(
       addToCart({
@@ -47,9 +45,9 @@ export default function ProductCard({ product, className = "" }: Props) {
         name: product.name,
         image: product.image_url?.trim() || "/placeholder.png",
         quantity: 1,
-        selectedWeight: weight,
-        price,
-      })
+        selectedWeight: 1000,
+        price: price_per_kg,
+      }),
     );
 
     toast.success("محصول به سبد خرید اضافه شد");
@@ -89,11 +87,7 @@ export default function ProductCard({ product, className = "" }: Props) {
       <div className="p-4 text-center">
         <h3 className="font-bold text-[#011c12] text-lg">{name}</h3>
 
-        <p className="text-sm text-gray-500 mt-1">
-          {weight >= 1000
-            ? `${weight / 1000} کیلوگرم`
-            : `${weight} گرم`}
-        </p>
+        <p className="text-sm text-gray-500 mt-1">۱ کیلوگرم</p>
 
         {description && (
           <p className="mt-2 text-sm text-gray-500 line-clamp-2">
@@ -103,7 +97,7 @@ export default function ProductCard({ product, className = "" }: Props) {
 
         <div className="mt-3">
           <p className="text-[#c69b2c] text-lg font-bold">
-            {Number(price).toLocaleString()} {currency}
+            {Number(price_per_kg).toLocaleString()} {currency}
           </p>
         </div>
 

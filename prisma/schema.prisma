@@ -14,20 +14,19 @@ model users {
   phone      String   @unique @db.VarChar(11)
   password   String   @db.VarChar(255)
   created_at DateTime @default(now())
-  role       String   @default("user")
+  role       String   @default("admin")
 }
 
 model products {
-  name        String   @db.VarChar(150)
-  description String?
-  image_url   String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  slug        String   @unique @db.VarChar(255)
-  price       Float    @default(0)
-  weight      Float    @default(0)
-  stock       Int      @default(0)
-  id          Int      @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(150)
+  description  String?
+  image_url    String?
+  slug         String   @unique @db.VarChar(255)
+  price_per_kg Int      @default(0)
+  stock_gram   Int      @default(0)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -40,5 +39,5 @@ model blogs {
   created_at  DateTime @default(now()) @db.Timestamptz(6)
   updated_at  DateTime @default(now()) @db.Timestamptz(6)
   slug        String   @unique
-  category    String 
+  category    String
 }

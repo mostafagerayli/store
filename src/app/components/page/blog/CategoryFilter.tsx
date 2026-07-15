@@ -40,7 +40,7 @@ export default function CategoryFilter() {
           onClick={() => handleClick(category.value)}
           className={`rounded-full px-5 py-2 transition ${
             active === category.value
-              ? "bg-green-500 text-white"
+              ? "bg-[#0b5b3c] text-white"
               : "bg-gray-100 hover:bg-gray-200"
           }`}
         >

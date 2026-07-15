@@ -11,7 +11,7 @@ import ClientLayout from "./layout/ClientLayout";
 export default function Home() {
   return (
     <ClientLayout>
-      <div className="dark:bg-green-950 bg-[#f7f5ef]">
+      <div className="dark:bg-green-950 bg-[#fdfdf9]">
         <HeroSection />
         {/* <PopularCategories /> */}
         {/* <FeaturedProducts /> */}

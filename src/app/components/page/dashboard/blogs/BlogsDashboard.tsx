@@ -26,7 +26,6 @@ export default async function BlogsDashboard({
     page,
     limit
   );
-  console.log("BLOG PAGE:", page);
 
 
   if (error) {

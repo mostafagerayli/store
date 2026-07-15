@@ -1,4 +1,5 @@
 "use client"
+
 import { createProduct } from "@/app/lib/actions/product.actions";
 import { ProductFormData } from "@/types/product";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,6 @@ type AddProductData = ProductFormData & {
 export function useAddProduct() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  
 
   const addProduct = async (data: AddProductData) => {
     try {
@@ -21,26 +21,47 @@ export function useAddProduct() {
       const formData = new FormData();
 
       formData.append("name", data.name);
-      formData.append("weight", String(data.weight));
-      formData.append("price", String(data.price));
-      formData.append("stock", String(data.stock));
-      formData.append("description", data.description);
 
-      // 📦 فایل
+      formData.append(
+        "price_per_kg",
+        String(data.price_per_kg)
+      );
+
+      formData.append(
+        "stock",
+        String(data.stock)
+      );
+
+      formData.append(
+        "description",
+        data.description ?? ""
+      );
+
+
       if (data.image) {
         formData.append("image", data.image);
       }
 
+
       await createProduct(formData);
 
       toast.success("محصول با موفقیت اضافه شد");
+
       router.refresh();
+
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "خطا");
+      toast.error(
+        err instanceof Error ? err.message : "خطا"
+      );
+      
+
     } finally {
       setLoading(false);
     }
   };
 
-  return { addProduct, loading };
+  return {
+    addProduct,
+    loading
+  };
 }

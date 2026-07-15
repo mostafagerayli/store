@@ -1,36 +1,41 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { Product, ProductFormData } from "@/types/product";
 import { useEditProduct } from "@/app/hooks/product/useEditProduct";
-import { useRef } from "react";
 import InputField from "@/app/components/input/InputField";
 
 type EditProductFormProps = {
   product: Product;
   onClose: () => void;
 };
+
 export default function EditProductForm({
   product,
   onClose,
 }: EditProductFormProps) {
   const [image, setImage] = useState<File | null>(null);
+
   const [preview, setPreview] = useState<string | null>(product?.image_url);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const { edit } = useEditProduct(product.id, onClose);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<ProductFormData>({
     defaultValues: {
       name: product?.name,
-      weight: Number(product?.weight),
-      price: Number(product?.price),
-      stock: Number(product?.stock),
+
+      price_per_kg: Number(product?.price_per_kg),
+
+      stock: Number(product?.stock_gram / 1000),
+
       description: product?.description ?? "",
     },
   });
@@ -39,6 +44,7 @@ export default function EditProductForm({
     if (!file) return;
 
     setImage(file);
+
     setPreview(URL.createObjectURL(file));
   };
 
@@ -56,6 +62,7 @@ export default function EditProductForm({
     <div className="px-1">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Header */}
+
         <div className="pb-4 border-b">
           <h3 className="text-xl font-black text-[#0b5b3c]">ویرایش محصول</h3>
 
@@ -65,6 +72,7 @@ export default function EditProductForm({
         </div>
 
         {/* نام محصول */}
+
         <InputField
           label="نام محصول"
           name="name"
@@ -75,33 +83,23 @@ export default function EditProductForm({
           error={errors.name?.message}
         />
 
-        {/* وزن */}
-        <InputField
-          label="وزن (کیلوگرم)"
-          name="weight"
-          inputMode="numeric"
-          register={register}
-          rules={{
-            required: "وزن الزامی است",
-          }}
-          error={errors.weight?.message}
-        />
+        {/* قیمت هر کیلو */}
 
-        {/* قیمت */}
         <InputField
-          label="قیمت (تومان)"
-          name="price"
+          label="قیمت هر کیلو (تومان)"
+          name="price_per_kg"
           inputMode="numeric"
           register={register}
           rules={{
-            required: "قیمت الزامی است",
+            required: "قیمت هر کیلو الزامی است",
           }}
-          error={errors.price?.message}
+          error={errors.price_per_kg?.message}
         />
 
         {/* موجودی */}
+
         <InputField
-          label="موجودی"
+          label="موجودی (کیلو)"
           name="stock"
           inputMode="numeric"
           register={register}
@@ -112,6 +110,7 @@ export default function EditProductForm({
         />
 
         {/* تصویر */}
+
         <div>
           <label className="text-sm font-bold text-gray-600 mb-2 block">
             تصویر محصول
@@ -123,6 +122,7 @@ export default function EditProductForm({
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
+
               handleFile(e.dataTransfer.files[0] ?? null);
             }}
           >
@@ -159,15 +159,14 @@ export default function EditProductForm({
         </div>
 
         {/* توضیحات */}
+
         <div>
           <label className="text-sm font-bold text-gray-600">
             توضیحات محصول
           </label>
 
           <textarea
-            {...register("description", {
-              required: "توضیحات الزامی است",
-            })}
+            {...register("description")}
             className={`${inputClass} h-32 resize-none`}
             placeholder="توضیحات محصول..."
           />
@@ -180,6 +179,7 @@ export default function EditProductForm({
         </div>
 
         {/* Footer */}
+
         <div className="flex gap-3 pt-4 border-t">
           <button
             type="button"

@@ -4,7 +4,7 @@ import NavigationLink from "../components/header/navigationLink/NavigationLink";
 
 export default function Header() {
   return (
-    <header className="bg-gray-200 dark:bg-gray-900 shadow-md">
+    <header className="bg-gray-50 dark:bg-gray-900 shadow-md">
       <div className="container mx-auto flex justify-between items-center p-4">
         <IconsHeader />
         <NavigationLink />

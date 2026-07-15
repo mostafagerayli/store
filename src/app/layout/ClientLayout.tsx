@@ -7,7 +7,7 @@ type ClientLayoutProps = {
 
 function ClientLayout({ children }: ClientLayoutProps) {
   return (
-    <div className="dark:bg-green-950 bg-[#f7f5ef]">
+    <div className="dark:bg-green-950 bg-[#fdfdf9]">
       <Header />
       {children}
       <Footer />
