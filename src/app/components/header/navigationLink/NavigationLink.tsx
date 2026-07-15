@@ -19,6 +19,7 @@ export default function NavigationLink() {
     { name: "محصولات", href: "/products" },
     { name: "درباره ما", href: "/about" },
     { name: "بلاگ", href: "/blog" },
+    { name: "ارتباط با ما", href: "/contant" },
     {
       name: "داشبورد",
       href: "/dashboard",

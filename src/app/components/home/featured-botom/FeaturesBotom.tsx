@@ -3,9 +3,17 @@ import { getProducts } from "@/app/lib/getProducts";
 import FeaturesBottomSlider from "./FeaturesBottomSlider";
 
 export default async function FeaturesBottom() {
-  const { products } = await getProducts();
+  const { products ,error } = await getProducts();
 
   const featuredProducts = products;
+
+    if (error) {
+    return (
+      <div className="rounded-xl bg-red-100 p-6 text-red-700">
+        ❌ خطا در دریافت محصولات از سرور
+      </div>
+    );
+  }
 
   return (
     <section className="py-14">

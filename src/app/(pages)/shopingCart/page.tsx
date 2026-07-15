@@ -32,7 +32,7 @@ export default function ShoppingCartPage() {
     <>
       <Header />
 
-      <div className="min-h-screen bg-[#f7f5ef] px-4 py-10">
+      <div className="min-h-screen bg-[#fdfdf9] px-4 py-10">
         <div className="max-w-6xl mx-auto">
           <h1 className="mb-8 text-2xl font-bold text-gray-900 md:text-3xl">
             سبد خرید

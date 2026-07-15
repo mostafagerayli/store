@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 
 import Button from "../../button/Button";
 import InputField from "../../input/InputField";
-import useForgetPassword from "@/app/hooks/auth/useForgetPassword";
 
 import type { ForgotPasswordDto } from "@/types/auth";
+import useForgetPassword from "@/app/hooks/auth/useFogetPassword";
 
 export default function ForgetPasswordForm() {
   const { forgetPassword } = useForgetPassword();

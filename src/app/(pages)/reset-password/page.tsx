@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/app/components/reset-password/ResetPasswordForm";
+import ResetPasswordForm from "@/app/components/page/reset-password/ResetPasswordForm";
 import Image from "next/image";
 
 function ResetPas() {

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-
-import Button from "../button/Button";
-import InputField from "../input/InputField";
 import useResetPassword from "@/app/hooks/auth/useResetPassword";
+import InputField from "../../input/InputField";
+import Button from "../../button/Button";
 
 interface ResetPasswordFormDto {
   newPassword: string;

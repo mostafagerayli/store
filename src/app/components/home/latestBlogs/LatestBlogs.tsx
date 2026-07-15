@@ -3,7 +3,14 @@ import Link from "next/link";
 import LatestBlogsSlider from "./LatestBlogsSlider";
 
 export default async function LatestBlogs() {
-  const { blogs } = await getBlogs(1, 10);
+  const { blogs, error } = await getBlogs(1, 10);
+  if (error) {
+    return (
+      <div className="rounded-xl bg-red-100 p-6 text-red-700">
+        ❌ خطا در دریافت پست از سرور
+      </div>
+    );
+  }
 
   return (
     <section className="py-14">

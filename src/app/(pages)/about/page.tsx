@@ -6,7 +6,7 @@ import TrustSection from "@/app/components/about/TrustSection";
 
 export default function AboutPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-[#fdfdf9]">
       <Header />
       <CraftsmanshipSection />
       <TrustSection />
