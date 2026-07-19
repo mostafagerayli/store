@@ -2,50 +2,61 @@ import Link from "next/link";
 
 export default function ClubSection() {
   return (
-    <section className="py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-12 md:py-24">
+      <div className="mx-auto max-w-7xl px-4">
         {/* CTA */}
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto max-w-5xl">
           <div
             className="
-            rounded-[24px]
-            bg-[#01291f]
-            px-6
-            py-10
-            md:px-12
-            md:py-12
-            text-center
-            shadow-[0_25px_60px_rgba(0,0,0,.12)]
+              overflow-hidden
+              rounded-3xl
+              bg-gradient-to-br
+              from-[#013628]
+              via-[#01291f]
+              to-[#001b14]
+              px-5
+              py-8
+              text-center
+              shadow-[0_20px_60px_rgba(0,0,0,.18)]
+              sm:px-8
+              sm:py-10
+              md:px-12
+              md:py-14
             "
           >
-            <h2 className="text-amber-400 font-black text-2xl md:text-3xl">
-              باشگاه مشتریان پسته پسته
+            <span className="rounded-full bg-white/10 px-4 py-1 text-xs font-bold text-amber-300">
+              باشگاه مشتریان
+            </span>
+
+            <h2 className="mt-4 text-2xl font-black leading-tight text-amber-400 sm:text-3xl md:text-4xl">
+              به خانواده پسته پسته بپیوندید
             </h2>
 
-            <p className="mt-4 text-white/80 leading-7 max-w-2xl mx-auto text-sm md:text-base">
-              با عضویت در باشگاه پسته پسته، شما به جمع مشتریان ویژه ما
-              می‌پیوندید و از مزایای اختصاصی، تخفیف‌های ویژه، محصولات جدید و
-              پیشنهادهای خاص بهره‌مند خواهید شد.
-              <br />
-              ما قدردان اعتماد شما هستیم و تلاش می‌کنیم تجربه‌ای متفاوت از خرید
-              محصولات اصیل و طبیعی را برایتان رقم بزنیم.
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/80 sm:text-base">
+              با عضویت در باشگاه مشتریان، از تخفیف‌های اختصاصی، اطلاع‌رسانی
+              محصولات جدید و پیشنهادهای ویژه بهره‌مند شوید و تجربه‌ای متفاوت از
+              خرید محصولات اصیل را داشته باشید.
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
                 href="/register"
                 className="
-                h-12
-                px-8
-                rounded-full
-                bg-amber-400
-                text-[#01291f]
-                font-bold
-                flex
-                items-center
-                justify-center
-                transition
-                hover:scale-105
+                  flex
+                  h-12
+                  w-full
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-amber-400
+                  px-8
+                  font-bold
+                  text-[#01291f]
+                  transition-all
+                  duration-300
+                  hover:scale-105
+                  hover:bg-amber-300
+                  sm:w-auto
                 "
               >
                 عضویت در باشگاه
@@ -54,17 +65,21 @@ export default function ClubSection() {
               <Link
                 href="/about"
                 className="
-                h-12
-                px-8
-                rounded-full
-                border
-                border-amber-400/30
-                text-white
-                flex
-                items-center
-                justify-center
-                transition
-                hover:bg-white/5
+                  flex
+                  h-12
+                  w-full
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-white/20
+                  px-8
+                  font-medium
+                  text-white
+                  transition-all
+                  duration-300
+                  hover:bg-white/10
+                  sm:w-auto
                 "
               >
                 درباره پسته پسته
@@ -74,27 +89,32 @@ export default function ClubSection() {
         </div>
 
         {/* Quote */}
-        <div className="max-w-3xl mx-auto text-center mt-24 md:mt-32">
-          <div className="text-amber-400 text-6xl font-black leading-none">
+        <div className="mx-auto mt-16 max-w-3xl text-center md:mt-24">
+          <div className="text-5xl font-black leading-none text-amber-400 md:text-7xl">
             ”
           </div>
 
           <blockquote
             className="
-            mt-4
-            text-[#0b2a24]
-            font-black
-            leading-loose
-            text-xl
-            sm:text-2xl
-            md:text-3xl
+              mt-3
+              text-lg
+              font-black
+              leading-9
+              text-[#0b2a24]
+              sm:text-2xl
+              sm:leading-loose
+              md:text-3xl
             "
           >
-            در پسته پسته، هر دانه پسته حاصل سال‌ها مراقبت، تجربه و عشق به طبیعت
-            است؛ محصولی اصیل که از باغ ما با احترام به دست شما می‌رسد.
+            در پسته پسته، هر دانه پسته حاصل سال‌ها مراقبت، تجربه و عشق به
+            طبیعت است؛ محصولی اصیل که از باغ ما با احترام به دست شما می‌رسد.
           </blockquote>
 
-          <p className="mt-8 text-sm text-[#0b2a24]/70">خانواده پسته پسته</p>
+          <div className="mx-auto mt-8 h-px w-20 bg-amber-400" />
+
+          <p className="mt-4 text-sm font-medium text-[#0b2a24]/70">
+            خانواده پسته پسته
+          </p>
         </div>
       </div>
     </section>

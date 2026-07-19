@@ -17,6 +17,37 @@ model users {
   role       String   @default("admin")
 }
 
+model settings {
+  id         BigInt    @id @default(autoincrement())
+  key        String    @unique @db.VarChar(100)
+  value      String    @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+}
+
+model orders {
+  id             BigInt    @id @default(autoincrement())
+  full_name      String    @db.VarChar(100)
+  phone          String    @db.VarChar(11)
+  province       String    @db.VarChar(100)
+  city           String    @db.VarChar(100)
+  address        String
+  postal_code    String?   @db.VarChar(10)
+  products       Json
+  total_price    Int
+  shipping_price Int       @default(0)
+  final_price    Int
+  payment_method String    @default("online") @db.VarChar(20)
+  payment_status String    @default("pending") @db.VarChar(20)
+  authority      String?   @db.VarChar(100)
+  ref_id         String?   @db.VarChar(100)
+  status         String    @default("pending") @db.VarChar(20)
+  tracking_code  String?   @db.VarChar(100)
+  description    String?
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  updated_at     DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+}
+
 model products {
   id           Int      @id @default(autoincrement())
   name         String   @db.VarChar(150)

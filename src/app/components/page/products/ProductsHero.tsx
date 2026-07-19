@@ -13,11 +13,11 @@ export default function ProductsHero() {
 
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 text-center">
         <h1 className="text-xl md:text-4xl font-bold mb-2 md:mb-4">
-          فروشگاه محصولات ممتاز
+          فروشگاه پسته پسته
         </h1>
 
         <p className="text-xs md:text-sm opacity-90">
-          بهترین پسته‌های ایرانی با کیفیت صادراتی
+          محصولات تازه، مستقیم از باغ؛ بدون واسطه.
         </p>
       </div>
     </section>

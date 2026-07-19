@@ -31,7 +31,7 @@ export default function ProductsSidebar() {
         <div className="bg-[#0b5b3c] text-white rounded-2xl md:rounded-3xl p-5 md:p-6 mt-4 md:mt-6">
           <h4 className="font-bold mb-2">محصولات ویژه</h4>
           <p className="text-sm opacity-90">
-            بهترین محصولات صادراتی با کیفیت تضمینی
+          گلچینی از تازه‌ترین و باکیفیت‌ترین محصولات، مستقیم از باغ.
           </p>
         </div>
       </aside>

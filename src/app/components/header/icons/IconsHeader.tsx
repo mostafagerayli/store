@@ -80,6 +80,7 @@ export default function IconsHeader() {
       <MobileMenu
         open={open}
         setOpen={setOpen}
+        role={user?.role}
       />
 
       {showLogoutModal && (
