@@ -10,9 +10,23 @@ import {
 import { useAppSelector } from "@/app/store/hook";
 import { getShippingInfo } from "@/app/lib/getShippingInfo";
 
-export default function CheckoutSummary() {
-  const totalQuantity = useAppSelector(selectCartQuantity);
-  const totalPrice = useAppSelector(selectCartTotal);
+import type { CartItem } from "@/types/cart";
+
+interface CheckoutSummaryProps {
+  items: CartItem[];
+  totalQuantity: number;
+  totalPrice: number;
+  shippingPrice?: number;
+  finalPrice?: number;
+}
+
+export default function CheckoutSummary({
+  items,
+  totalQuantity,
+  totalPrice,
+}: CheckoutSummaryProps) {
+  const cartQuantity = useAppSelector(selectCartQuantity);
+  const cartTotal = useAppSelector(selectCartTotal);
 
   const [shippingPrice, setShippingPrice] = useState(0);
 
@@ -21,31 +35,35 @@ export default function CheckoutSummary() {
       const data = await getShippingInfo();
 
       const price =
-        totalPrice >= data.freeShippingThreshold ? 0 : data.shippingPrice;
+        cartTotal >= data.freeShippingThreshold
+          ? 0
+          : data.shippingPrice;
 
       setShippingPrice(price);
     }
 
     fetchShippingInfo();
-  }, [totalPrice]);
+  }, [cartTotal]);
 
-  const finalPrice = totalPrice + shippingPrice;
+  const finalPrice = cartTotal + shippingPrice;
 
   return (
     <div className="h-fit rounded-3xl border border-gray-100 bg-white p-6 shadow-lg">
-      <h2 className="mb-6 text-xl font-black text-gray-900">خلاصه سفارش</h2>
+      <h2 className="mb-6 text-xl font-black text-gray-900">
+        خلاصه سفارش
+      </h2>
 
       <div className="space-y-4 text-sm">
         <div className="flex justify-between text-gray-600">
           <span>تعداد کالا</span>
-
-          <span>{totalQuantity}</span>
+          <span>{cartQuantity}</span>
         </div>
 
         <div className="flex justify-between text-gray-600">
           <span>مبلغ کالاها</span>
-
-          <span>{totalPrice.toLocaleString()} تومان</span>
+          <span>
+            {cartTotal.toLocaleString()} تومان
+          </span>
         </div>
 
         <div className="flex justify-between text-gray-600">
