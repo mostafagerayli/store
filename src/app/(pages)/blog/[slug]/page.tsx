@@ -19,7 +19,7 @@ export default async function BlogPage({
 
 
   const res = await fetch(
-    `http://localhost:3000/api/v1/blogs/${encodeURIComponent(decodedSlug)}`,
+    `https://pestepeste.vercel.app/api/v1/blogs/${encodeURIComponent(decodedSlug)}`,
     {
       cache: "no-store",
     }

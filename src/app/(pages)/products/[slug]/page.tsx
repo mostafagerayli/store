@@ -16,7 +16,7 @@ export default async function ProductPage({
   const { slug } = await params;
 
   const res = await fetch(
-    `http://localhost:3000/api/v1/products/slug/${slug}`,
+    `https://pestepeste.vercel.app/api/v1/products/slug/${slug}`,
     {
       cache: "no-store",
     }
