@@ -13,11 +13,16 @@ import type { LoginDto } from "@/types/auth";
 function LoginForm() {
   const { login } = useLogin();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginDto>();
+const {
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+} = useForm<LoginDto>({
+  defaultValues: {
+    phone: "09395236615",
+    password: "12345678",
+  },
+});
 
   const onSubmit = async (data: LoginDto): Promise<void> => {
     try {

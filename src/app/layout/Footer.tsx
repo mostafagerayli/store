@@ -78,7 +78,7 @@ export default function Footer() {
 
             <div className="flex items-center gap-2 text-white/80 text-sm">
               <FaMapMarkerAlt />
-              <span>خراسان رضوی - سبزوار - منطقه صفی آباد</span>
+              <span>خراسان رضوی</span>
             </div>
 
             <div className="flex items-center gap-2 text-white/80 text-sm">
