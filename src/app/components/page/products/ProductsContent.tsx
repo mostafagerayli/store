@@ -3,7 +3,6 @@ import ProductsSidebar from "./ProductsSidebar";
 import ProductsHeader from "./ProductsHeader";
 import ProductsGrid from "./ProductsGrid";
 import Pagination from "../../pagination/Pagination";
-import GiftPage from "./GiftPage";
 
 export interface SearchParams {
   page?: string;
@@ -66,8 +65,6 @@ export default async function ProductsContent({
           </div>
         </div>
       </div>
-
-      <GiftPage />
     </section>
   );
 }
