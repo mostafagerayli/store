@@ -1,5 +1,6 @@
 export interface SearchParams {
-  search?: string;
   page?: string;
   sort?: string;
+  category?: string;
+  search?: string;
 }
