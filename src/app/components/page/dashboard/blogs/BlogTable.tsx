@@ -26,11 +26,11 @@ export default function BlogTable({ blogs }: BlogTableProps) {
     setSelectedBlog(null);
   });
 
-  const handleDelete = () => {
-    if (!selectedBlog) return;
+const handleDelete = () => {
+  if (!selectedBlog) return;
 
-    remove(selectedBlog.id);
-  };
+  remove(Number(selectedBlog.id));
+};
 
   const closeEdit = () => {
     setIsEditOpen(false);

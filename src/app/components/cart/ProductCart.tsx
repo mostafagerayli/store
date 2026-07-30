@@ -11,8 +11,8 @@ interface Product {
   id: number;
   slug: string;
   name: string;
-  image_url?: string;
-  description?: string;
+  image_url?: string | null;
+  description?: string | null;
   price_per_kg: number;
   badge?: string;
   currency?: string;

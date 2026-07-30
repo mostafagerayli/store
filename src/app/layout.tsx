@@ -3,23 +3,11 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 
-import { Geist, Geist_Mono } from "next/font/google";
-
 import { ThemeProvider } from "./components/darkMode/ThemeProvider";
 import ToastProvider from "./components/toast/ToastProvider";
 import CartPersistence from "./components/shoppingCart/Persistence";
 import AuthProvider from "./context/AuthContext";
 import ReduxProvider from "./store/Provider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "پسته پسته | فروشگاه آنلاین پسته",
@@ -42,6 +30,7 @@ export const metadata: Metadata = {
     locale: "fa_IR",
   },
 };
+
 type RootLayoutProps = {
   children: ReactNode;
 };
@@ -55,9 +44,7 @@ export default function RootLayout({
       dir="rtl"
       suppressHydrationWarning
     >
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <AuthProvider>
           <ThemeProvider>
             <ReduxProvider>

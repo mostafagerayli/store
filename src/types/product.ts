@@ -12,6 +12,7 @@ export type ProductTableItem = Pick<
   | "stock_gram"
   | "image_url"
   | "description"
+  | "slug"
 >;
 
 

@@ -26,7 +26,7 @@ export default function EditBlogForm({ blog, onClose }: EditBlogFormProps) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { edit } = useEditBlog(blog.id, onClose);
+  const { edit } = useEditBlog(Number(blog.id), onClose);
 
   const {
     register,

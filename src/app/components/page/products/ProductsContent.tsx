@@ -42,6 +42,9 @@ export default async function ProductsContent({
       </div>
     );
   }
+  const urlSearchParams = new URLSearchParams(
+  searchParams as Record<string, string>
+);
 
   return (
     <section className="mx-auto mt-8 max-w-6xl px-4 md:mt-12">
@@ -58,7 +61,7 @@ export default async function ProductsContent({
               page={page}
               totalPages={totalPages}
               basePath="/products"
-              searchParams={searchParams}
+              searchParams={urlSearchParams}
             />
           </div>
         </div>

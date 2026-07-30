@@ -1,5 +1,3 @@
-import BlogSearch from "./BlogSearch";
-
 export default function BlogHero() {
   return (
     <section
