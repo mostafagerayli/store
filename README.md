@@ -1,101 +1,81 @@
-# 🥜 Pistachio Store
+# 🥜 Peste Peste
 
-Full Stack Online Pistachio Store built with **Next.js, TypeScript, PostgreSQL, Prisma and Supabase**.
+A modern full-stack e-commerce platform for selling pistachio products, built with **Next.js**, **TypeScript**, **Prisma**, and **PostgreSQL**.
 
-This project focuses on building a scalable e-commerce system with modern Next.js architecture, secure authentication, backend business logic and admin management.
+Designed with scalable architecture, secure authentication, responsive RTL interfaces, and a complete admin dashboard for product management.
+
+### 🌐 Live Demo
+
+https://pestepeste.vercel.app/
 
 ---
 
-# ✨ Features
+# ✨ Key Features
 
-## 🔐 Authentication
+### 🔐 Authentication
 
 - JWT Authentication
-- Access & Refresh Token
 - HttpOnly Cookies
-- Password Hashing with bcrypt
+- Password Hashing (bcrypt)
 - Protected Routes
-- Role Management
+- Role-Based Authorization
 
----
-
-## 📦 Product & Blog Management
+### 📦 Product Management
 
 - Product CRUD
 - Blog CRUD
-- Image Upload with Supabase Storage
-- Inventory Management
+- Image Upload
+- Search & Filtering
 - Pagination
-- Search & Sort
-- SEO Friendly Slugs
+- SEO-Friendly Slugs
+- Inventory Management
 
----
+### 🛒 Shopping Experience
 
-## 🛒 Shopping Cart & Orders
-
-- Shopping Cart with Redux Toolkit
-- Server Side Price Calculation
-- Weight-based Product Pricing
-- Shipping Cost Calculation
+- Shopping Cart
+- Weight-Based Pricing
+- Dynamic Shipping Calculation
 - Packaging Cost Calculation
-- Dynamic Store Settings from Database
-- Order Management Structure
+- Secure Server-Side Price Calculation
+- Checkout Flow
 
-> All sensitive calculations are handled on the Backend to prevent client-side manipulation.
+### ⚙️ Admin Dashboard
 
----
+- Product Management
+- Blog Management
+- Store Settings
+- Inventory Control
 
-## ✅ Validation & Error Handling
+### ✅ Validation
 
-- Zod Schema Validation
-- React Hook Form Integration
+- React Hook Form
+- Zod Validation
 - Backend Validation
 - Centralized Error Handling
-- API Error Management
 
-Flow:
+---
+
+# 🏗 Architecture
 
 ```
-React Hook Form
-        ↓
-Zod Validation
-        ↓
-API Route
-        ↓
+React UI
+      │
+Next.js App Router
+      │
+Server Actions / API Routes
+      │
 Service Layer
-        ↓
-Prisma
-        ↓
-Database
+      │
+Prisma ORM
+      │
+PostgreSQL Database
 ```
 
 ---
 
-# 📂 Project Structure
+# 🛠 Tech Stack
 
-```
-src/
-
-├── app/
-│   ├── api/
-│   ├── components/
-│   ├── hooks/
-│   ├── services/
-│   ├── store/
-│   ├── provider/
-│   ├── lib/
-│   └── utils/
-
-├── types/
-├── validations/
-└── proxy.ts
-```
-
----
-
-# 🧱 Tech Stack
-
-### Frontend
+## Frontend
 
 - Next.js App Router
 - React
@@ -104,15 +84,18 @@ src/
 - Redux Toolkit
 - React Hook Form
 
-### Backend
+## Backend
 
 - Next.js API Routes
-- Service Layer Architecture
+- Server Actions
 - Prisma ORM
 - PostgreSQL
+
+## Storage
+
 - Supabase Storage
 
-### Validation & Security
+## Validation & Security
 
 - Zod
 - JWT
@@ -121,42 +104,62 @@ src/
 
 ---
 
-# 🔥 Highlights
+# 📁 Project Structure
 
-- Full Stack E-commerce Architecture
-- Secure Authentication System
+```
+src
+│
+├── app
+│   ├── api
+│   ├── components
+│   ├── services
+│   ├── hooks
+│   ├── store
+│   ├── lib
+│   └── utils
+│
+├── types
+├── validations
+└── middleware
+```
+
+---
+
+# 🚀 Highlights
+
+- Full-Stack E-commerce Architecture
+- Responsive RTL Design
+- Admin Dashboard
+- Secure Authentication
+- Server-Side Business Logic
 - Prisma ORM Integration
-- Server Side Business Logic
-- Dynamic Pricing System
-- Admin Dashboard
-- Database Driven Settings
-- Image Management
-- SEO Friendly Pages
+- PostgreSQL Database
+- SEO-Friendly Pages
+- Reusable Components
+- Scalable Folder Structure
 
 ---
 
-# 🚧 Project Status
+# 🔮 Future Improvements
 
-Completed:
-- Authentication
-- Product Management
-- Blog Management
-- Admin Dashboard
-- Shopping Cart
-- Backend Validation
-- Price Calculation System
-
-In Progress:
-- Checkout System
-- Order Management
-- ZarinPal Payment Integration
-
----
-
-# 🚀 Future Improvements
-
-- RBAC
-- Wishlist
-- Product Reviews
+- Online Payment Integration
 - Order Tracking
+- Product Reviews
+- Wishlist
 - Analytics Dashboard
+- RBAC Permissions
+
+---
+
+# 📸 Screenshots
+![Peste_Peste](./public/images/preview.png)
+---
+
+# 👨‍💻 Author
+
+**Mostafa Gerayli**
+
+Frontend Developer
+
+- Portfolio: https://my-portfio.vercel.app/
+- LinkedIn: https://www.linkedin.com/in/mostafa-gerayli-react/
