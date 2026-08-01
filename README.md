@@ -152,13 +152,9 @@ src
 ---
 
 # 📸 Screenshots
-<<<<<<< HEAD
-![Peste_Peste](./public/images/preview.png)
-=======
 
 ![Peste Peste](public/images/preview.png)
 
->>>>>>> db9225fd4672a17333b9d32539acf029f69c91bd
 ---
 
 # 👨‍💻 Author
