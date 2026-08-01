@@ -153,7 +153,7 @@ src
 
 # 📸 Screenshots
 
-_Add project screenshots here._
+![Peste Peste](public/images/preview.png)
 
 ---
 
