@@ -4,25 +4,49 @@ import { prisma } from "../prisma";
 import { revalidateTag } from "next/cache";
 import { supabaseAdmin } from "../supabaseAdmin";
 import { CreateBlogSchema, UpdateBlogSchema } from "@/validations/blog.validation";
+import { randomUUID } from "node:crypto";
+import { compressToWebp, toSafeBuffer } from "../image";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export async function uploadBlogImage(file: File) {
-  const fileName = `${Date.now()}-${file.name}`;
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error("حجم فایل نباید بیشتر از ۱۰ مگابایت باشد");
+  }
 
   const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+
+  // جلوگیری از SharedArrayBuffer
+  const inputBuffer = toSafeBuffer(arrayBuffer);
+
+  const { buffer } = await compressToWebp(inputBuffer, {
+    maxWidth: 1600,
+    quality: 75,
+  });
+
+  // کپی نهایی برای Supabase Storage
+  const uploadBuffer = Buffer.from(
+    Uint8Array.from(buffer)
+  );
+
+  const fileName = `${randomUUID()}.webp`;
 
   const { error } = await supabaseAdmin.storage
     .from("blogs")
-    .upload(fileName, buffer, {
-      contentType: file.type,
+    .upload(fileName, uploadBuffer, {
+      contentType: "image/webp",
+      cacheControl: "31536000",
       upsert: false,
     });
 
   if (error) {
+
     throw new Error(error.message);
   }
 
-  const { data } = supabaseAdmin.storage.from("blogs").getPublicUrl(fileName);
+  const { data } = supabaseAdmin.storage
+    .from("blogs")
+    .getPublicUrl(fileName);
 
   return data.publicUrl;
 }

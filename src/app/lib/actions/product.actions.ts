@@ -8,22 +8,36 @@ import {
   UpdateProductSchema,
 } from "@/validations/product.validation";
 import { prisma } from "../prisma";
+import { compressToWebp, toSafeBuffer } from "../image";
+import { randomUUID } from "node:crypto";
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export async function uploadImage(file: File) {
-  const fileName = `${Date.now()}-${file.name}`;
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error("حجم فایل نباید بیشتر از ۱۰ مگابایت باشد");
+  }
 
-  // 🔥 تبدیل File به Buffer (خیلی مهم)
   const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+
+  const inputBuffer = toSafeBuffer(arrayBuffer);
+
+  const { buffer } = await compressToWebp(inputBuffer);
+
+  // کپی نهایی برای جلوگیری از SharedArrayBuffer
+  const uploadBuffer = Buffer.from(Uint8Array.from(buffer));
+
+  const fileName = `${randomUUID()}.webp`;
 
   const { error } = await supabaseAdmin.storage
     .from("products")
-    .upload(fileName, buffer, {
-      contentType: file.type,
+    .upload(fileName, uploadBuffer, {
+      contentType: "image/webp",
+      cacheControl: "31536000",
       upsert: false,
     });
 
   if (error) {
+
     throw new Error(error.message);
   }
 
@@ -48,17 +62,10 @@ export async function createProduct(formData: FormData) {
     throw new Error(result.error.issues[0].message);
   }
 
-  const {
-    name,
-    description,
-    price_per_kg,
-    stock,
-  } = result.data;
-
+  const { name, description, price_per_kg, stock } = result.data;
 
   // تبدیل کیلو به گرم برای دیتابیس
   const stock_gram = stock * 1000;
-
 
   const image = formData.get("image");
 
@@ -68,12 +75,10 @@ export async function createProduct(formData: FormData) {
     imagePath = await uploadImage(image);
   }
 
-
   const slug = `${name
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "-")}-${Date.now()}`;
-
 
   const product = await prisma.products.create({
     data: {
@@ -86,16 +91,12 @@ export async function createProduct(formData: FormData) {
     },
   });
 
-
   revalidateTag("products", "max");
 
   return product;
 }
 
-export async function editProduct(
-  id: number | string,
-  formData: FormData
-) {
+export async function editProduct(id: number | string, formData: FormData) {
   try {
     if (!id) {
       return {
@@ -104,7 +105,6 @@ export async function editProduct(
       };
     }
 
-
     const body = {
       name: formData.get("name") || undefined,
       description: formData.get("description") || undefined,
@@ -112,9 +112,7 @@ export async function editProduct(
       stock: formData.get("stock") || undefined,
     };
 
-
     const result = UpdateProductSchema.safeParse(body);
-
 
     if (!result.success) {
       return {
@@ -123,47 +121,31 @@ export async function editProduct(
       };
     }
 
-
-    const {
-      name,
-      description,
-      price_per_kg,
-      stock,
-    } = result.data;
-
+    const { name, description, price_per_kg, stock } = result.data;
 
     const data: Prisma.productsUpdateInput = {};
-
 
     if (name !== undefined) {
       data.name = name;
     }
 
-
     if (description !== undefined) {
       data.description = description;
     }
-
 
     if (price_per_kg !== undefined) {
       data.price_per_kg = price_per_kg;
     }
 
-
     if (stock !== undefined) {
       data.stock_gram = stock * 1000;
     }
 
-
-
     const image = formData.get("image_url");
-
 
     if (image instanceof File && image.size > 0) {
       data.image_url = await uploadImage(image);
     }
-
-
 
     const updated = await prisma.products.update({
       where: {
@@ -172,23 +154,17 @@ export async function editProduct(
       data,
     });
 
-
     return {
       success: true,
       data: updated,
     };
-
-
   } catch (error) {
     console.error("UPDATE PRODUCT ERROR:", error);
-
 
     return {
       success: false,
       message:
-        error instanceof Error
-          ? error.message
-          : "خطا در بروزرسانی محصول",
+        error instanceof Error ? error.message : "خطا در بروزرسانی محصول",
     };
   }
 }

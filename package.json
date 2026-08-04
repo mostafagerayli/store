@@ -27,6 +27,7 @@
     "react-redux": "^9.2.0",
     "react-toastify": "^11.1.0",
     "recharts": "^3.6.0",
+    "sharp": "^0.35.3",
     "swiper": "^12.2.0",
     "zod": "^4.4.3"
   },
