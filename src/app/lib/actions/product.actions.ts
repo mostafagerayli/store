@@ -1,6 +1,6 @@
 "use server";
 import { Prisma } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "../supabaseAdmin";
 import { Product } from "@/types/product";
 import {
@@ -37,7 +37,6 @@ export async function uploadImage(file: File) {
     });
 
   if (error) {
-
     throw new Error(error.message);
   }
 
@@ -91,7 +90,8 @@ export async function createProduct(formData: FormData) {
     },
   });
 
-  revalidateTag("products", "max");
+  revalidatePath("/");
+  revalidatePath("/products");
 
   return product;
 }
@@ -153,7 +153,8 @@ export async function editProduct(id: number | string, formData: FormData) {
       },
       data,
     });
-
+    revalidatePath("/");
+    revalidatePath("/products");
     return {
       success: true,
       data: updated,
@@ -185,7 +186,8 @@ export async function deleteProduct(id: number): Promise<{
       },
     });
 
-    revalidateTag("products", "max");
+    revalidatePath("/");
+    revalidatePath("/products");
 
     return {
       success: true,
