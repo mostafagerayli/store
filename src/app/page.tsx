@@ -7,7 +7,7 @@ import LatestBlogs from "./components/home/latestBlogs/LatestBlogs";
 // import HeroSectioneEnd from "./components/home/heroSectionEnd/HeroSectioneEnd";
 import LuxuryPackaging from "./components/home/luxuryPackaging/LuxuryPackaging";
 import ClientLayout from "./layout/ClientLayout";
-
+export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <ClientLayout>

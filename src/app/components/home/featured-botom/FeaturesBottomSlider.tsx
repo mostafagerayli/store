@@ -25,13 +25,11 @@ type Props = {
 export default function FeaturesBottomSlider({ products }: Props) {
   return (
     <div className="relative">
-      <button
-className="product-prev absolute left-2 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl text-[#0A2D24] shadow-md transition hover:bg-[#0A2D24] hover:text-white sm:h-10 sm:w-10">
+      <button className="product-prev absolute left-2 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl text-[#0A2D24] shadow-md transition hover:bg-[#0A2D24] hover:text-white sm:h-10 sm:w-10">
         ‹
       </button>
 
-      <button
-        className="product-next absolute right-0 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl text-[#0A2D24] shadow-md transition hover:bg-[#0A2D24] hover:text-white sm:h-10 sm:w-10">
+      <button className="product-next absolute right-0 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl text-[#0A2D24] shadow-md transition hover:bg-[#0A2D24] hover:text-white sm:h-10 sm:w-10">
         ›
       </button>
 
