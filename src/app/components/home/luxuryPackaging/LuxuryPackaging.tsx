@@ -35,7 +35,7 @@ export default function LuxuryPackaging() {
         {/* Heading */}
         <div className="mb-10 text-center md:mb-14">
           <span className="text-xs font-bold tracking-wide text-[#2f7d4a] uppercase sm:text-sm">
-            چرا طلای سبز؟
+            چرا پسته پسته؟
           </span>
 
           <h2 className="mt-2 text-2xl font-black leading-tight text-[#0d2b24] sm:text-3xl md:mt-3 md:text-4xl">

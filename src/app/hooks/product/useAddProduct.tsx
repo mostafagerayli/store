@@ -48,6 +48,7 @@ export function useAddProduct() {
       toast.success("محصول با موفقیت اضافه شد");
 
       router.refresh();
+      return true;
 
     } catch (err) {
       toast.error(

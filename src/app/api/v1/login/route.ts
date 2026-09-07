@@ -21,31 +21,39 @@ export async function POST(req: NextRequest) {
     }
 
     const { phone, password } = result.data;
-    //پیدا کردن کاربر از دیتابیس
+
+    // پیدا کردن کاربر از دیتابیس
     const user = await prisma.users.findUnique({
       where: {
         phone,
       },
     });
-    //اگر نبود
+
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 401 });
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 401 },
+      );
     }
 
+    // بررسی رمز عبور
     const match = await bcrypt.compare(password, user.password);
+
     if (!match) {
       return NextResponse.json(
         { error: "Incorrect password" },
         { status: 401 },
       );
     }
+
     const accessSecret = process.env.ACCESS_SECRET;
     const refreshSecret = process.env.REFRESH_SECRET;
 
     if (!accessSecret || !refreshSecret) {
       throw new Error("JWT secrets are not configured");
     }
-    // 🔐 ساخت توکن‌ها
+
+    // Access Token
     const accessToken = jwt.sign(
       {
         id: user.id,
@@ -53,14 +61,22 @@ export async function POST(req: NextRequest) {
         name: user.name,
       },
       accessSecret,
-      { expiresIn: "15m" },
+      {
+        expiresIn: "15m",
+      },
     );
 
-    const refreshToken = jwt.sign({ id: user.id }, refreshSecret, {
-      expiresIn: "7d",
-    });
+    // Refresh Token
+    const refreshToken = jwt.sign(
+      {
+        id: user.id,
+      },
+      refreshSecret,
+      {
+        expiresIn: "7d",
+      },
+    );
 
-    // ✅ ساخت response
     const response = NextResponse.json({
       success: true,
       user: {
@@ -70,27 +86,28 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // ✅ ست کردن Access Token داخل Cookie
+    // Access Token Cookie
     response.cookies.set("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 15, // 15 دقیقه
+      maxAge: 15 * 60,
     });
 
-    // ✅ ست کردن Refresh Token داخل Cookie
+    // Refresh Token Cookie
     response.cookies.set("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 روز
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
+    const message =
+      err instanceof Error ? err.message : "Unknown error";
 
     console.error("Login error:", message);
 

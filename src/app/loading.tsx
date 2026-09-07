@@ -5,8 +5,8 @@ export default function Loading() {
       <div className="flex flex-col items-center gap-6">
 
         <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-black animate-pulse" />
-          <div className="absolute inset-0 w-16 h-16 rounded-full border-2 border-black animate-ping" />
+          <div className="w-16 h-16 rounded-full bg-green-900 animate-pulse" />
+          <div className="absolute inset-0 w-16 h-16 rounded-full border-2 border-green-900 animate-ping" />
         </div>
 
         <p className="text-lg font-semibold">Loading</p>

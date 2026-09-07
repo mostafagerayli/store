@@ -135,7 +135,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-white/20 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70">
-          <p>© 1403 پسته پسته - همه حقوق محفوظ است</p>
+          <p>© 1405 پسته پسته - همه حقوق محفوظ است</p>
         </div>
       </div>
     </footer>

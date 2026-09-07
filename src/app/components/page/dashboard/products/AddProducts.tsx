@@ -7,7 +7,11 @@ import { ProductFormData } from "@/types/product";
 import { useAddProduct } from "@/app/hooks/product/useAddProduct";
 import InputField from "@/app/components/input/InputField";
 
-export default function AddProduct() {
+interface AddProductProps {
+  onClose: () => void;
+}
+
+export default function AddProduct({ onClose }: AddProductProps) {
   const {
     register,
     handleSubmit,
@@ -20,10 +24,13 @@ export default function AddProduct() {
   const { addProduct } = useAddProduct();
 
   const onSubmit = async (data: ProductFormData) => {
-    await addProduct({
+    const success = await addProduct({
       ...data,
       image,
     });
+       if (success) {
+      onClose();
+    }
   };
   const handleFile = (file: File | null) => {
     if (!file) return;
@@ -75,21 +82,21 @@ export default function AddProduct() {
           />
 
           {/* موجودی */}
-<InputField<ProductFormData>
-  name="stock"
-  label="موجودی (کیلو)"
-  inputMode="numeric"
-  placeholder="مثال : 10"
-  register={register}
-  rules={{
-    required: "موجودی الزامی است",
-    pattern: {
-      value: /^\d+$/,
-      message: "موجودی باید عدد باشد",
-    },
-  }}
-  error={errors.stock?.message}
-/>
+          <InputField<ProductFormData>
+            name="stock"
+            label="موجودی (کیلو)"
+            inputMode="numeric"
+            placeholder="مثال : 10"
+            register={register}
+            rules={{
+              required: "موجودی الزامی است",
+              pattern: {
+                value: /^\d+$/,
+                message: "موجودی باید عدد باشد",
+              },
+            }}
+            error={errors.stock?.message}
+          />
 
           {/* عکس */}
           <div
