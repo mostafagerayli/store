@@ -62,12 +62,10 @@ export default function AddToCartButton({
 
         selectedWeight,
 
-        price: totalPrice,
+        price: totalPrice / quantity,
 
       })
     );
-
-console.log('lk',dispatch);
 
 
     toast.success(
