@@ -3,7 +3,7 @@ import FormRegister from "./FormRegister";
 
 function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 relative">
+    <div className="min-h-screen flex items-center justify-center bg-[#fdfdf9] px-4 relative">
 
       {/* MOBILE BACKGROUND ONLY */}
       <div className="md:hidden absolute inset-0">

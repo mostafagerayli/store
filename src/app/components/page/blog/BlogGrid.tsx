@@ -54,13 +54,16 @@ export default async function BlogGrid({
           gap-8
           sm:grid-cols-2
           lg:grid-cols-3
+          bg-[#fdfdf9]
         "
       >
         {blogs.map((post) => (
+
+
           <BlogCard
             key={post.id}
             post={post}
-          />
+            />
         ))}
       </section>
 

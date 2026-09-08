@@ -7,7 +7,7 @@ export default function FeaturedPost() {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <section className="grid gap-8 mt-14 lg:grid-cols-2 items-center">
+    <section className="grid gap-8 mt-14 lg:grid-cols-2 items-center ">
       {/* Image */}
       <div className="relative h-[350px]">
         <Image

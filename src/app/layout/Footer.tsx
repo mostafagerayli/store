@@ -1,7 +1,6 @@
 import {
   FaEnvelope,
   FaInstagram,
-  FaTelegramPlane,
   FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
@@ -107,7 +106,7 @@ export default function Footer() {
     "
           >
             <Image
-              src="/images/Enamad1.jpg"
+              src="/images/Enamad1.webp"
               width={80}
               height={80}
               alt="نماد اعتماد الکترونیکی"
@@ -126,7 +125,7 @@ export default function Footer() {
     "
           >
             <Image
-              src="/images/Enamad3.jpg"
+              src="/images/Enamad3.webp"
               width={80}
               height={80}
               alt="مجوز کسب و کار"

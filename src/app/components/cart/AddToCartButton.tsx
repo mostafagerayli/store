@@ -2,6 +2,7 @@
 
 import { addToCart } from "@/app/store/cart/shoppingCartSlice";
 import { useAppDispatch } from "@/app/store/hook";
+
 import { FaShoppingCart } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -18,8 +19,8 @@ interface Props {
   quantity: number;
   selectedWeight: number;
   totalPrice: number;
+  disabled?: boolean;
 }
-
 
 
 export default function AddToCartButton({
@@ -27,14 +28,16 @@ export default function AddToCartButton({
   quantity,
   selectedWeight,
   totalPrice,
+  disabled = false,
 }: Props) {
-
 
   const dispatch = useAppDispatch();
 
 
-
   const handleAddToCart = () => {
+
+    if (disabled) return;
+
 
     if (!product || quantity <= 0) {
 
@@ -44,7 +47,6 @@ export default function AddToCartButton({
 
       return;
     }
-
 
 
     dispatch(
@@ -62,6 +64,7 @@ export default function AddToCartButton({
 
         selectedWeight,
 
+        // قیمت هر واحد
         price: totalPrice / quantity,
 
       })
@@ -75,29 +78,35 @@ export default function AddToCartButton({
   };
 
 
-
   return (
 
     <button
+      type="button"
       onClick={handleAddToCart}
+      disabled={disabled}
       className="
-      w-full 
-      bg-[#02462c] 
-      text-white 
-      py-3 
-      rounded-full 
-      flex 
-      items-center 
-      justify-center 
-      gap-2 
-      transition 
-      hover:bg-[#08452d]
+        w-full
+        bg-[#02462c]
+        text-white
+        py-3
+        rounded-full
+        flex
+        items-center
+        justify-center
+        gap-2
+        transition
+        hover:bg-[#08452d]
+        disabled:cursor-not-allowed
+        disabled:bg-gray-400
+        disabled:hover:bg-gray-400
       "
     >
 
       <FaShoppingCart size={16} />
 
-      افزودن به سبد خرید
+      {disabled
+        ? "در حال محاسبه قیمت..."
+        : "افزودن به سبد خرید"}
 
     </button>
 

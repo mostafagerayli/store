@@ -17,7 +17,7 @@ export default function Products({
   searchParams,
 }: ProductsProps) {
   return (
-    <main className="min-h-screen bg-[#f7f5ef]">
+    <main className="min-h-screen bg-[#fdfdf9]">
       <ProductsHero />
       <ProductsToolbar />
 

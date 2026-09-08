@@ -116,7 +116,7 @@ function TrustSection() {
             "
           >
             <Image
-              src="/images/Enamad1.jpg"
+              src="/images/Enamad1.webp"
               width={90}
               height={90}
               alt="نماد اعتماد الکترونیکی"
@@ -135,7 +135,7 @@ function TrustSection() {
             "
           >
             <Image
-              src="/images/Enamad3.jpg"
+              src="/images/Enamad3.webp"
               width={90}
               height={90}
               alt="مجوز کسب و کار"

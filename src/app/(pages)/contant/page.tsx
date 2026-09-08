@@ -85,7 +85,7 @@ export default function ContactPage() {
               {/* Image Side */}
               <div className="relative h-64 md:h-70 order-1 md:order-2">
                 <Image
-                  src="/images/logo1.png"
+                  src="/images/logo1.webp"
                   alt="پسته پسته"
                   fill
                   className="object-contain md:scale-150"

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function ForgotPassword() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#fdfdf9] px-4">
       <div className="w-full max-w-4xl grid md:grid-cols-2 rounded-xl shadow-xl overflow-hidden bg-white min-h-[520px]">
         {/* Left Image */}
         <div className="hidden md:block relative">

@@ -78,6 +78,28 @@ const shoppingCartSlice = createSlice({
     hydrateCart: (state, action: PayloadAction<CartState>) => {
       state.items = action.payload.items;
     },
+    updateCartPrices: (
+      state,
+      action: PayloadAction<
+        {
+          id: number;
+          selectedWeight: number;
+          price: number;
+        }[]
+      >,
+    ) => {
+      action.payload.forEach((updatedItem) => {
+        const item = state.items.find(
+          (item) =>
+            item.id === updatedItem.id &&
+            item.selectedWeight === updatedItem.selectedWeight,
+        );
+
+        if (item) {
+          item.price = updatedItem.price;
+        }
+      });
+    },
   },
 });
 
@@ -98,4 +120,5 @@ export const {
   increaseQuantity,
   clearCart,
   hydrateCart,
+  updateCartPrices,
 } = shoppingCartSlice.actions;

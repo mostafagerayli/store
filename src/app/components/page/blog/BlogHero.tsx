@@ -3,7 +3,7 @@ export default function BlogHero() {
     <section
       className="relative overflow-hidden rounded-sm h-[400px] w-full"
       style={{
-        backgroundImage: "url('/images/a_lush_sun_drenched_pistachio_orchard_in_kerman_iran._rows_of_mature_pistachio.png')",
+        backgroundImage: "url('/images/a_lush_sun_drenched_pistachio_orchard_in_kerman_iran._rows_of_mature_pistachio.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

@@ -20,7 +20,7 @@ export default async function FeaturesBottom() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         {/* Header */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between ">
+        <div className="mb-8 flex flex-col gap-4 px-2 sm:flex-row sm:items-center sm:justify-between sm:px-0">
           {/* Title */}
           <div>
             <h2 className="text-2xl font-black text-[#0A2D24] sm:text-3xl lg:text-4xl dark:text-white">

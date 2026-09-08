@@ -4,7 +4,7 @@ export default function ProductsHero() {
   return (
     <section className="relative h-[220px] md:h-[280px] overflow-hidden">
       <Image
-        src="/images/a_lush_sun_drenched_pistachio_orchard_in_kerman_iran._rows_of_mature_pistachio.png"
+        src="/images/a_lush_sun_drenched_pistachio_orchard_in_kerman_iran._rows_of_mature_pistachio.webp"
         alt="پسته"
         fill
         className="object-cover"

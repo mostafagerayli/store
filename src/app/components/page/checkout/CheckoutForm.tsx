@@ -1,14 +1,31 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import InputField from "@/app/components/input/InputField";
 import { useCreateOrder } from "@/app/hooks/order/useCreateOrder";
 import { OrderFormData } from "@/types/order";
-import { toast } from "react-toastify";
+
 import { createPayment } from "@/app/lib/actions/payment.actions";
 
+import {
+  selectCartItems,
+  updateCartPrices,
+} from "@/app/store/cart/shoppingCartSlice";
+
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/app/store/hook";
+import { validateCartPrices } from "@/app/lib/validateCartPrices";
+
+
 export default function CheckoutForm() {
+  const dispatch = useAppDispatch();
+
+  const items = useAppSelector(selectCartItems);
+
   const { submitOrder } = useCreateOrder();
 
   const {
@@ -22,6 +39,50 @@ export default function CheckoutForm() {
 
   const onSubmit = async (data: OrderFormData) => {
     try {
+      /*
+       * مرحله اول:
+       * بررسی آخرین قیمت محصولات قبل از ثبت سفارش
+       */
+      const priceValidation = await validateCartPrices(
+        items.map((item) => ({
+          id: item.id,
+          selectedWeight: item.selectedWeight,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+      );
+
+      if (!priceValidation.success) {
+        toast.error("خطا در بررسی قیمت محصولات");
+        return;
+      }
+
+      /*
+       * اگر قیمت محصول تغییر کرده باشد،
+       * سفارش ساخته نمی‌شود.
+       */
+      if (priceValidation.priceChanged) {
+        dispatch(
+          updateCartPrices(
+            priceValidation.items.map((item) => ({
+              id: item.id,
+              selectedWeight: item.selectedWeight,
+              price: item.price,
+            })),
+          ),
+        );
+
+        toast.info(
+          "قیمت سبد خرید شما تغییر کرده و به‌روزرسانی شد. لطفاً مبلغ جدید را بررسی کنید.",
+        );
+
+        return;
+      }
+
+      /*
+       * قیمت‌ها درست هستند
+       * → ثبت سفارش
+       */
       const result = await submitOrder(data);
 
       if (!result.success || !result.orderId) {
@@ -29,6 +90,9 @@ export default function CheckoutForm() {
         return;
       }
 
+      /*
+       * ایجاد پرداخت
+       */
       const payment = await createPayment(result.orderId);
 
       if (!payment.success || !payment.url) {
@@ -36,9 +100,16 @@ export default function CheckoutForm() {
         return;
       }
 
+      /*
+       * انتقال به زرین‌پال
+       */
       window.location.href = payment.url;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "خطایی رخ داد");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "خطایی رخ داد",
+      );
     }
   };
 
@@ -49,7 +120,10 @@ export default function CheckoutForm() {
           اطلاعات گیرنده
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-5"
+        >
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <InputField<OrderFormData>
               label="نام و نام خانوادگی"
@@ -99,7 +173,9 @@ export default function CheckoutForm() {
           </div>
 
           <div>
-            <label className="text-sm font-bold text-gray-600">آدرس کامل</label>
+            <label className="text-sm font-bold text-gray-600">
+              آدرس کامل
+            </label>
 
             <textarea
               {...register("address", {
@@ -118,8 +194,8 @@ export default function CheckoutForm() {
           </div>
 
           <InputField<OrderFormData>
-            label="کد پستی (اختیاری)
-پیشنهاد می‌شود برای ارسال دقیق‌تر وارد شود."
+            label={`کد پستی (اختیاری)
+پیشنهاد می‌شود برای ارسال دقیق‌تر وارد شود.`}
             name="postal_code"
             placeholder=""
             inputMode="numeric"
@@ -151,7 +227,9 @@ export default function CheckoutForm() {
             disabled={isSubmitting}
             className="w-full rounded-2xl bg-[#0b5b3c] py-3 font-bold text-white transition hover:bg-[#08452d] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? "در حال ثبت سفارش..." : "ادامه و پرداخت"}
+            {isSubmitting
+              ? "در حال بررسی و ثبت سفارش..."
+              : "ادامه و پرداخت"}
           </button>
         </form>
       </div>

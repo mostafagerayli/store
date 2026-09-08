@@ -29,7 +29,7 @@ export default function ResetPasswordForm() {
   };
 
   return (
-    <div className="flex flex-col justify-center px-6 py-10 sm:px-10">
+    <div className="flex flex-col justify-center px-6 py-10 sm:px-10 bg-[#fdfdf9]">
       <h1 className="mb-8 text-center text-2xl font-bold text-gray-900 sm:text-3xl">
         Reset Password
       </h1>

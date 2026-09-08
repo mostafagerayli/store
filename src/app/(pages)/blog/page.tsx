@@ -17,12 +17,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <>
       <Header />
+<div className="bg-[#fdfdf9]">
 
-      <section className="w-full">
+      <section className="w-full bg-[#fdfdf9]">
         <BlogHero />
       </section>
 
-      <section className="container mx-auto px-4">
+      <section className="container mx-auto px-4 bg-[#fdfdf9]">
         <FeaturedPost />
 
         <CategoryFilter />
@@ -31,6 +32,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
       </section>
 
+</div>
       <Footer />
     </>
   );

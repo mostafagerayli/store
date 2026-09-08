@@ -37,8 +37,10 @@ export default async function BlogPage({
   return (
     <>
       <Header />
+<div className="bg-[#fdfdf9]">
 
       <BlogDetail blog={blog} />
+</div>
 
       <Footer />
     </>

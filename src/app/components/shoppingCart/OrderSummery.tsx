@@ -115,12 +115,21 @@ export default function OrderSummary({
 
 
 
-      <Link
-        href="/checkout"
-        className="mt-6 flex h-12 w-full items-center justify-center rounded-xl bg-[#0b5b3c] text-sm font-bold text-white transition-all duration-200 hover:bg-[#08452d] hover:shadow-md"
-      >
-        ادامه ثبت سفارش
-      </Link>
+{totalQuantity > 0 ? (
+  <Link
+    href="/checkout"
+    className="mt-6 flex h-12 w-full items-center justify-center rounded-xl bg-[#0b5b3c] text-sm font-bold text-white transition-all duration-200 hover:bg-[#08452d] hover:shadow-md"
+  >
+    ادامه ثبت سفارش
+  </Link>
+) : (
+  <button
+    disabled
+    className="mt-6 flex h-12 w-full items-center justify-center rounded-xl bg-gray-300 text-sm font-bold text-gray-500"
+  >
+    ادامه ثبت سفارش
+  </button>
+)}
 
 
       <button

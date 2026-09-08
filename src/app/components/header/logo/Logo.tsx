@@ -8,7 +8,7 @@ function Logo() {
       className="flex items-center gap-2 font-extrabold text-base text-green-800 dark:text-green-400 whitespace-nowrap"
     >
       <Image
-        src="/images/logo.jpg"
+        src="/images/sticker.webp"
         alt="پسته پسته"
         width={60}
         height={60}

@@ -17,7 +17,7 @@ export default async function LatestBlogs() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
 
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between px-2">
           <h2
             className="
             text-2xl

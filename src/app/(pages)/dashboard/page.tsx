@@ -18,7 +18,7 @@ export default async function DashboardPage({
 
 return (
   <ClientLayout>
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-6 bg-[#fdfdf9]">
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         {/* نصف اول */}
         <div className="min-w-0">

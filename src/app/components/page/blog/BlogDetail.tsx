@@ -30,6 +30,7 @@ export default function BlogDetail({
         sm:px-6
         lg:px-8
         sm:py-12
+        
       "
     >
 
@@ -185,6 +186,7 @@ export default function BlogDetail({
           mt-8
           rounded-3xl
           bg-white
+          p-5
           leading-9
           text-gray-700
           sm:mt-10
