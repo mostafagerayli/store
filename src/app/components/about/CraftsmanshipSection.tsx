@@ -8,7 +8,7 @@ export default function CraftsmanshipSection() {
           <div className="grid grid-cols-2 gap-4">
             <div className="relative h-60 rounded-2xl overflow-hidden">
               <Image
-                src="/images/screen3.png"
+                src="/images/peste1.webp"
                 alt=""
                 fill
                 className="object-cover"
@@ -17,7 +17,7 @@ export default function CraftsmanshipSection() {
 
             <div className="relative h-60 rounded-2xl overflow-hidden">
               <Image
-                src="/images/screen2.png"
+                src="/images/peste2.webp"
                 alt=""
                 fill
                 className="object-cover"

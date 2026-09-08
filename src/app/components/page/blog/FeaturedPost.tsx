@@ -11,7 +11,7 @@ export default function FeaturedPost() {
       {/* Image */}
       <div className="relative h-[350px]">
         <Image
-          src="/images/screen2.png"
+          src="/images/peste.webp"
           alt="خواص پسته"
           fill
           className="object-cover rounded-3xl"
