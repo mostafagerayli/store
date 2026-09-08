@@ -1,6 +1,6 @@
 "use server";
 import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { supabaseAdmin } from "../supabaseAdmin";
 import { Product } from "@/types/product";
 import {
@@ -90,8 +90,9 @@ export async function createProduct(formData: FormData) {
     },
   });
 
-  revalidatePath("/");
-  revalidatePath("/products");
+revalidatePath("/");
+revalidatePath("/products");
+revalidateTag("products", "max");
 
   return product;
 }
@@ -153,8 +154,9 @@ export async function editProduct(id: number | string, formData: FormData) {
       },
       data,
     });
-    revalidatePath("/");
-    revalidatePath("/products");
+revalidatePath("/");
+revalidatePath("/products");
+revalidateTag("products", "max");
     return {
       success: true,
       data: updated,
