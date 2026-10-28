@@ -164,4 +164,4 @@ src
 Frontend Developer
 
 - Portfolio: https://my-portfio.vercel.app/
-- LinkedIn: https://www.linkedin.com/in/mostafa-gerayli-react/
+- LinkedIn: https://www.linkedin.com/in/mostafagerayli
